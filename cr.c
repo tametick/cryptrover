@@ -1,4 +1,4 @@
-#ifdef CYGWIN
+#ifdef WIN32
 	#include <pdcurses.h>
 #else
 	#include <ncurses.h>
