@@ -1,4 +1,8 @@
-#include <ncurses.h>
+#ifdef CYGWIN
+	#include <pdcurses.h>
+#else
+	#include <ncurses.h>
+#endif
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
@@ -47,8 +51,8 @@ ent ent_l[ENTS_];
 ent *ent_m[Y_][X_];
 //items
 #define ITEMS_ 6
-#define MED_PACK ('+'|COLOR_PAIR(2))
-#define AIR_CAN ('*'|COLOR_PAIR(4))
+#define MED_PACK ('+'|COLOR_PAIR(COLOR_GREEN))
+#define AIR_CAN ('*'|COLOR_PAIR(COLOR_BLUE))
 #define MED_CHARGE 6
 #define AIR_CHARGE 27
 item item_l[ITEMS_];
@@ -86,7 +90,7 @@ void init_ents(int level) {
 		} while (WALL==map[ce->y][ce->x].type || NULL!=ent_m[ce->y][ce->x]);
 		if (e>0) {
 			ce->hp=2;
-			ce->type='a'|COLOR_PAIR(1);
+			ce->type='a'|COLOR_PAIR(COLOR_RED);
 		}
 
 		ent_m[ce->y][ce->x]=ce;
