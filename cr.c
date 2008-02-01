@@ -1,4 +1,4 @@
-#include <curses.h>
+#include <ncurses.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>

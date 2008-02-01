@@ -1,6 +1,6 @@
 'CFLAGS= -std=c99 -O0 -g -Wall -Wextra -pedantic
 CFLAGS= -std=c99 -O2 
-LDFLAGS= -lcurses -lm
+LDFLAGS= -lncurses -lm
 
 all: $(basename $(wildcard *.c)) 
 
