@@ -400,7 +400,7 @@ int main() {
 			move_to(y,x,1,-1);
 		if ('3'==key)//lower right
 			move_to(y,x,1,1);
-		if ('<'==key && NEXT_LEVEL==map[*y][*x].type) {
+		if (('<'==key || ','==key) && NEXT_LEVEL==map[*y][*x].type) {
 			if (++level>LAST_LEVEL)
 				you_won();
 			init_map();
