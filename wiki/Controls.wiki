@@ -1,5 +1,7 @@
 *Numpad*: move around the level (make sure Num Lock is on).
 
-*'<' or ','*: go to the next level when standing on the staircase.
+*'<'* or *','*: go to the next level when standing on the staircase.
+
+*ESC* or *'q'*: quit the game.
 
 Step on an item to use it.
