@@ -1,4 +1,4 @@
-#ifdef WIN32
+#ifdef __WIN32__
 #include <pdcurses.h>
 #else
 #include <ncurses.h>
