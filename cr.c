@@ -11,7 +11,7 @@
 
 #define ESC 27 //ASCII for escape
 
-//entities: the player and his enemies
+//entities: the player and his/her enemies
 typedef struct {
 	int id,y,x,hp,air;
 	chtype type;
