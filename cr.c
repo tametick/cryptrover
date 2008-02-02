@@ -53,13 +53,13 @@ ent *ent_m[Y_][X_];
 #define ITEMS_ 6
 #define MED_PACK ('+'|COLOR_PAIR(COLOR_GREEN))
 #define AIR_CAN ('*'|COLOR_PAIR(COLOR_BLUE))
-#define MED_CHARGE 6
-#define AIR_CHARGE 27
+#define MED_CHARGE 5
+#define AIR_CHARGE 20
 item item_l[ITEMS_];
 item *item_m[Y_][X_];
 //player attributes
-#define PLAYER_HP 30
-#define PLAYER_AIR 135
+#define PLAYER_HP (MED_CHARGE*5)
+#define PLAYER_AIR (AIR_CHARGE*5)
 #define FOV_RADIUS 5
 
 int errs;
