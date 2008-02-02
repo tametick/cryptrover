@@ -1,5 +1,3 @@
-= Screenshots of cryptrover: =
-
 You Have Won (7drl version), taken by pol:
 
 http://cryptrover.googlecode.com/files/cryptrover_7drl_you_won.png
