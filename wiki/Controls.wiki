@@ -1,0 +1,6 @@
+= Controls =
+
+Numpad: move around the level (make sure Num Lock is on).
+'<' or ',': go to next level when standing on staircase.
+
+Step on an item to use it.
