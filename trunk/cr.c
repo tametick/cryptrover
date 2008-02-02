@@ -1,7 +1,7 @@
 #ifdef WIN32
-	#include <pdcurses.h>
+#include <pdcurses.h>
 #else
-	#include <ncurses.h>
+#include <ncurses.h>
 #endif
 #include <stdbool.h>
 #include <stdlib.h>
