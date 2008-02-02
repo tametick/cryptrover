@@ -1,5 +1,3 @@
-= Keybindings for cryptrover =
-
 *Numpad*: move around the level (make sure Num Lock is on).
 
 *'<' or ','*: go to the next level when standing on the staircase.
