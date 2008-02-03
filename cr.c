@@ -71,7 +71,7 @@ void init_curses() {
 		mvaddstr(Y_+errs++,0,"Cannot set noecho mode");
 	if (ERR==curs_set(0))
 		mvaddstr(errs++,X_+1,"Cannot set invisible cursor");
-	if (ERR==start_color())
+	if (ERR==start_color() || !has_colors())
 		mvaddstr(errs++,X_+1,"Cannot enable colors");
 	else {
 		for (int c=0; c<8; c++)
