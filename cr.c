@@ -3,11 +3,11 @@
 #else
 #include <ncurses.h>
 #endif
-#include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include <string.h>
+#include <utils.h>
 
 #define ESC 27 //ASCII for escape
 
@@ -120,23 +120,7 @@ void init_items() {
 	}
 }
 
-void swap(int *i, int *j) {
-	int t=*i;
-	*i=*j;
-	*j=t;
-}
-int min(int i,int j) {
-	return i<j?i:j;
-}
-int max(int i,int j) {
-	return i>j?i:j;
-}
-int dist(int y0,int x0,int y1,int x1) {
-	return pow(y0-y1,2)+pow(x0-x1,2);
-}
-bool in_range(int y0,int x0,int y1,int x1,int r) {
-	return dist(y0,x0,y1,x1)<=pow(r,2);
-}
+
 //compare 2 tiles by their distance to the player
 int compare_tiles(const void* t1, const void* t2) {
 	int py=ent_l[0].y;
@@ -149,16 +133,6 @@ int compare_tiles(const void* t1, const void* t2) {
 		return 0;
 	else
 		return 1;
-}
-int density() {
-	int size= Y_*X_;
-	int walls=0;
-	for (int y=0; y<Y_; y++)
-		for (int x=0; x<X_; x++)
-			if (WALL==map[y][x].type)
-				walls++;
-
-	return 100*walls/size;
 }
 
 //line of sight

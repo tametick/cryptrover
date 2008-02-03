@@ -1,19 +1,16 @@
+CFLAGS= -std=c99 -O2 -I.
 ifdef WINDIR
-  CFLAGS= -std=c99 -O2 -mno-cygwin
-  LDFLAGS= pdc28_ming_w32/pdcurses.a -lm -I. 
+  LDFLAGS= -mno-cygwin pdc28_ming_w32/pdcurses.a -lm  
   BIN= $@.exe
 else
-  CFLAGS= -std=c99 -O2 
   LDFLAGS= -lncurses -lm
   BIN= $@
 endif
-CFLAGS_DBG= -std=c99 -O0 -g -Wall -Wextra -pedantic -DDBG
+CFLAGS_DBG= -std=c99 -O0 -g -Wall -Wextra -pedantic -DDBG -I.
 
-cr: cr.c
+cr: cr.c utils.o
 	cc ${CFLAGS} $? -o $@ ${LDFLAGS}
 	strip ${BIN}
-dbg: cr.c
-	cc $(CFLAGS_DBG) $? -o $@ $(LDFLAGS)
 
 astyle:
 	astyle --style=java -t -n *.c
