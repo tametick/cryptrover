@@ -457,14 +457,6 @@ md_getrealname(int uid)
 #endif
 }
 
-extern char *xcrypt(char *key, char *salt);
-
-char *
-md_crypt(char *key, char *salt)
-{
-    return( xcrypt(key,salt) );
-}
-
 char *
 md_getpass(prompt)
 char *prompt;
