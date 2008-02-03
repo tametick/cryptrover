@@ -16,6 +16,9 @@ cr: cr.c utils.o
 	cc ${CFLAGS} $? -o $@ ${LDFLAGS}
 	strip ${BIN}
 
+mdport.o: mdport.c
+	cc -O2 -c -o $@ $?
+
 astyle:
 	astyle --style=java -t -n *.c
 ctags:
