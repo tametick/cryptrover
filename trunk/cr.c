@@ -1,5 +1,5 @@
 #ifdef __WIN32__
-#include <pdcurses.h>
+#include <pdc28_ming_w32\curses.h>
 #else
 #include <ncurses.h>
 #endif
