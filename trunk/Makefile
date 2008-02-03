@@ -1,15 +1,17 @@
-CFLAGS= -std=c99 -O2 
-CFLAGS_W32= ${CFLAGS_W32} -mno-cygwin
+ifdef WINDIR
+  CFLAGS= -std=c99 -O2 -mno-cygwin
+  LDFLAGS= pdc28_ming_w32/pdcurses.a -lm -I. 
+  BIN= $@.exe
+else
+  CFLAGS= -std=c99 -O2 
+  LDFLAGS= -lncurses -lm
+  BIN= $@
+endif
 CFLAGS_DBG= -std=c99 -O0 -g -Wall -Wextra -pedantic -DDBG
-LDFLAGS= -lncurses -lm
-LDFLAGS_W32= pdc28_ming_w32/pdcurses.a -lm -I. 
 
 cr: cr.c
 	cc ${CFLAGS} $? -o $@ ${LDFLAGS}
-	strip $@
-cr.exe: cr.c
-	cc ${CFLAGS_W32} $? -o $@ ${LDFLAGS_W32}
-	strip $@
+	strip ${BIN}
 dbg: cr.c
 	cc $(CFLAGS_DBG) $? -o $@ $(LDFLAGS)
 
