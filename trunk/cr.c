@@ -66,9 +66,9 @@ int errs;
 void init_curses() {
 	errs=0;
 	if (ERR==keypad(stdscr=initscr(),true))
-		mvaddstr(Y_+errs++,0,"Cannot enable keypad");
+		mvaddstr(errs++,X_+1,"Cannot enable keypad");
 	if (ERR==noecho())
-		mvaddstr(Y_+errs++,0,"Cannot set noecho mode");
+		mvaddstr(errs++,X_+1,"Cannot set noecho mode");
 	if (ERR==curs_set(0))
 		mvaddstr(errs++,X_+1,"Cannot set invisible cursor");
 	if (ERR==start_color() || !has_colors())
