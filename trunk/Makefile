@@ -21,7 +21,7 @@ mdtest: mdtest.c mdport.o
 	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
 
 mdport.o: mdport.c
-	${CC} -c -I. ${MDPORT_FLAGS} -o $@ $? 
+	${CC} -c -Wall -I. ${MDPORT_FLAGS} -o $@ $? 
 
 astyle:
 	astyle --style=java -t -n *.c
