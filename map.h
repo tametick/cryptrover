@@ -29,6 +29,14 @@ typedef enum {
 #define WALL '#'
 #define FLOOR '.'
 #define NEXT_LEVEL '<'
+//map generation parameters
+#define ROOM_RADIUS 2
+#define PATHS 5
+#define LAST_LEVEL 12
 
+extern tile map[Y_][X_];
+extern view view_m[Y_][X_];
+
+void init_map();
 
 #endif

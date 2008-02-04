@@ -1,4 +1,5 @@
 #include <math.h>
+#include "map.h"
 #include "utils.h"
 
 void swap(int *i, int *j) {

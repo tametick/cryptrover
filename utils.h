@@ -2,9 +2,6 @@
 #define _UTILS_H
 
 #include <stdbool.h>
-#include "map.h"
-
-extern tile map[Y_][X_];
 
 int dist(int y0,int x0,int y1,int x1);
 bool in_range(int y0,int x0,int y1,int x1,int r);
