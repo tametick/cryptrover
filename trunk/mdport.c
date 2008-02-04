@@ -30,39 +30,11 @@
     SUCH DAMAGE.
 */
 
-#if defined(__WIN32__)
-//#include <Windows.h>
-//#include <Lmcons.h>
-//#include <process.h>
-//#include <shlobj.h>
-//#include <sys/types.h>
-#undef MOUSE_MOVED
-#elif defined(__DJGPP__)
-//#include <process.h>
-#else
-//#include <pwd.h>
-//#include <sys/utsname.h>
-//#include <unistd.h>
-#endif
-
-//#include <stdlib.h>
-
-#if defined(__WIN32__) && !defined(__MINGW32__)
-//#define PATH_MAX _PATH_MAX
-#endif
-
 #ifdef __WIN32__
 #include <pdc28_ming_w32/curses.h>
-//#include <pdc28_ming_w32/term.h>
 #else
 #include <ncurses.h>
-//#include <term.h>
 #endif
-
-//#include <stdio.h>
-//#include <fcntl.h>
-//#include <limits.h>
-//#include <sys/stat.h>
 
 #define MOD_MOVE(c) (toupper(c) )
 
