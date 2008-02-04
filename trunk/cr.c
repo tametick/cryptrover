@@ -123,7 +123,6 @@ void init_items() {
 	}
 }
 
-
 //compare 2 tiles by their distance to the player
 int compare_tiles(const void* t1, const void* t2) {
 	int py=ent_l[0].y;
