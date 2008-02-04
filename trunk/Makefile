@@ -1,7 +1,7 @@
 ifdef DBG
-CFLAGS= -std=c99 -O0 -g -Wall -Wextra -pedantic -I.
+CFLAGS= -std=c99 -O0 -g -Wall -Wextra -pedantic
 else
-CFLAGS= -std=c99 -O2 -I.
+CFLAGS= -std=c99 -O2
 endif
 
 ifdef WINDIR
@@ -21,7 +21,7 @@ mdtest: mdtest.c mdport.o
 	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
 
 mdport.o: mdport.c
-	${CC} -c -I. ${MDPORT_FLAGS} -o $@ $? 
+	${CC} -c ${MDPORT_FLAGS} -o $@ $? 
 
 astyle:
 	astyle --style=java -t -n *.c
