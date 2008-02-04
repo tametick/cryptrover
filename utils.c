@@ -1,5 +1,5 @@
 #include <math.h>
-#include <utils.h>
+#include "utils.h"
 
 void swap(int *i, int *j) {
 	int t=*i;
