@@ -28,10 +28,10 @@ void print_info(int c) {
 	sprintf(msg, "c: %d     ",c);
 	mvaddstr(msgs++,0,msg);
 }
-int main (){
+int main () {
 	init_curses();
 	int c;
-	while(c!=3){
+	while (c!=3) {
 		print_info(c=md_readchar(stdscr));
 	}
 	return endwin();
