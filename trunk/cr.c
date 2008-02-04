@@ -10,7 +10,9 @@
 #include "utils.h"
 #include "mdport.h"
 
-#define ESC 27 //ASCII for escape
+//key codes
+#define ESC 27
+#define CTRL_C 3
 
 //entities: the player and his/her enemies
 typedef struct {
@@ -275,11 +277,12 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		} else {
 			return false;
 		}
-		//if it's still alive don't move into its place
-		if (de->hp>0) {
-			//the move was still successful because of the attack
-			return true;
+		//if it's dead remove its reference
+		if (de->hp<1) {
+			ent_m[de->y][de->x]=NULL;
 		}
+		//the move was still successful because of the attack
+		return true;
 	}
 	//remove reference to the entity's old position
 	ent_m[*y][*x]=NULL;
@@ -334,7 +337,7 @@ void print_info(int level) {
 }
 
 int end_game() {
-	getch();
+	md_readchar(stdscr);
 	exit(endwin());
 }
 void you_won() {
@@ -360,31 +363,52 @@ int main() {
 	int *x=&ent_l[0].x;
 
 	//last key pressed
-	chtype key=0;
+	int key=0;
 	do {
 		//move player
-		if ('8'==key)//up
+		switch (key) {
+		case 'k'://up
+		case '8':
 			move_to(y,x,-1,0);
-		if ('2'==key)//down
+			break;
+		case '2'://down
+		case 'j':
 			move_to(y,x,1,0);
-		if ('4'==key)//left
+			break;
+		case 'h'://left
+		case '4':
 			move_to(y,x,0,-1);
-		if ('6'==key)//right
+			break;
+		case 'l'://right
+		case '6':
 			move_to(y,x,0,1);
-		if ('7'==key)//upper left
+			break;
+		case 'y'://upper left
+		case '7':
 			move_to(y,x,-1,-1);
-		if ('9'==key)//upper right
+			break;
+		case 'u'://upper right
+		case '9':
 			move_to(y,x,-1,1);
-		if ('1'==key)//lower left
+			break;
+		case 'b'://lower left
+		case '1':
 			move_to(y,x,1,-1);
-		if ('3'==key)//lower right
+			break;
+		case 'n'://lower right
+		case '3':
 			move_to(y,x,1,1);
-		if (('<'==key || ','==key) && NEXT_LEVEL==map[*y][*x].type) {
-			if (++level>LAST_LEVEL)
-				you_won();
-			init_map();
-			init_ents(level);
-			init_items();
+			break;
+		case '<':
+		case ',':
+			if (NEXT_LEVEL==map[*y][*x].type) {
+				if (++level>LAST_LEVEL)
+					you_won();
+				init_map();
+				init_ents(level);
+				init_items();
+			}
+			break;
 		}
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
@@ -444,9 +468,9 @@ int main() {
 
 		print_info(level);
 		ent_l[0].air--;
-		key=getch();
+		key=md_readchar(stdscr);
 	} //exit when the player is dead or when ESC or q are pressed
-	while (ent_l[0].hp>0 && ent_l[0].air>0 && ESC!=key && 'q'!=key);
+	while (ent_l[0].hp>0 && ent_l[0].air>0 && ESC!=key && 'q'!=key && CTRL_C!=key);
 	you_lost();
 }
 
