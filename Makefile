@@ -17,9 +17,10 @@ cr: cr.c utils.o
 	strip ${BIN}
 
 mdtest: mdtest.c mdport.o
+	cc ${CFLAGS} $? -o $@ ${LDFLAGS}
 
 mdport.o: mdport.c
-	cc -g -c -o $@ $?
+	cc -g -c -I. -o $@ $? -D__WIN32__
 
 astyle:
 	astyle --style=java -t -n *.c
