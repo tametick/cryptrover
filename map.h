@@ -6,6 +6,7 @@
 #else
 #include <ncurses.h>
 #endif
+#include <stdbool.h>
 
 typedef struct {
 	int y,x;
