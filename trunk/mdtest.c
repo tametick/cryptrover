@@ -1,10 +1,11 @@
 #ifdef __WIN32__
-#include <pdc28_ming_w32/curses.h>
+#include "pdc28_ming_w32/curses.h"
 #else
 #include <ncurses.h>
 #endif
 
 #include <stdbool.h>
+#include "mdport.h"
 
 int errs;
 void init_curses() {
