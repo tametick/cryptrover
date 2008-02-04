@@ -21,7 +21,7 @@ mdport.o: mdport.c
 	${CC} -c ${MDPORT_FLAGS} -o $@ $? 
 
 astyle:
-	astyle --style=java -t -n *.c
+	astyle --style=java -t -n *.c *.h
 ctags:
 	ctags -f ~/tags $(shell pwd)/*.c
 clean:
