@@ -353,59 +353,70 @@ void you_lost() {
 	end_game();
 }
 
-void player_action(int *key,int *y,int *x, int level) {
-		switch (*key) {
-		case 'k'://up
-		case '8':
-			move_to(y,x,-1,0);
-			break;
-		case '2'://down
-		case 'j':
-			move_to(y,x,1,0);
-			break;
-		case 'h'://left
-		case '4':
-			move_to(y,x,0,-1);
-			break;
-		case 'l'://right
-		case '6':
-			move_to(y,x,0,1);
-			break;
-		case 'y'://upper left
-		case '7':
-			move_to(y,x,-1,-1);
-			break;
-		case 'u'://upper right
-		case '9':
-			move_to(y,x,-1,1);
-			break;
-		case 'b'://lower left
-		case '1':
-			move_to(y,x,1,-1);
-			break;
-		case 'n'://lower right
-		case '3':
-			move_to(y,x,1,1);
-			break;
-		case '.'://wait
-		case '5':
-		case KP_5:
-			break;
-		case '<'://next level
-		case ',':
-			if (NEXT_LEVEL==map[*y][*x].type) {
-				if (++level>LAST_LEVEL)
-					you_won();
-				init_map();
-				init_ents(level);
-				init_items();
-			}
-			break;
-		default:
-			*key=md_readchar(stdscr);
-			player_action(key,y,x,level);
-			break;
+void handle_input(int *key,int *y,int *x, int level) {
+	bool success=true;
+	switch (*key) {
+	case 'k'://up
+	case '8':
+		success=move_to(y,x,-1,0);
+		break;
+	case '2'://down
+	case 'j':
+		success=move_to(y,x,1,0);
+		break;
+	case 'h'://left
+	case '4':
+		success=move_to(y,x,0,-1);
+		break;
+	case 'l'://right
+	case '6':
+		success=move_to(y,x,0,1);
+		break;
+	case 'y'://upper left
+	case '7':
+		success=move_to(y,x,-1,-1);
+		break;
+	case 'u'://upper right
+	case '9':
+		success=move_to(y,x,-1,1);
+		break;
+	case 'b'://lower left
+	case '1':
+		success=move_to(y,x,1,-1);
+		break;
+	case 'n'://lower right
+	case '3':
+		success=move_to(y,x,1,1);
+		break;
+	case '.'://wait
+	case '5':
+	case KP_5:
+		break;
+	case '<'://next level
+	case ',':
+		if (NEXT_LEVEL==map[*y][*x].type) {
+			if (++level>LAST_LEVEL)
+				you_won();
+			init_map();
+			init_ents(level);
+			init_items();
+		} else {
+			success=false;
 		}
+		break;
+	case ESC:
+	case 'q':
+	case CTRL_C:
+		you_lost();
+		break;
+	default:
+		success=false;
+		break;
+	}
+	if (!success) {
+		*key=md_readchar(stdscr);
+		handle_input(key,y,x,level);
+	}
 }
 
 int main() {
@@ -425,7 +436,7 @@ int main() {
 	//last key pressed
 	int key='.';//wait
 	do {
-		player_action(&key,y,x,level);
+		handle_input(&key,y,x,level);
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
 			if (ent_l[e].hp>0)
@@ -486,7 +497,7 @@ int main() {
 		ent_l[0].air--;
 		key=md_readchar(stdscr);
 	} //exit when the player is dead
-	while (ent_l[0].hp>0 && ent_l[0].air>0 && ESC!=key && 'q'!=key && CTRL_C!=key);
+	while (ent_l[0].hp>0 && ent_l[0].air>0);
 	you_lost();
 }
 
