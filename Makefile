@@ -5,7 +5,7 @@ CFLAGS= -std=c99 -O2 -I.
 endif
 
 ifdef WINDIR
-  LDFLAGS= pdc28_ming_w32/pdcurses.a -lm  -D__WIN32__
+  LDFLAGS= pdc28_ming_w32/pdcurses.a -lm -D__WIN32__
   BIN= $@.exe
   MDPORT_FLAGS=-D__WIN32__
 else
@@ -13,7 +13,7 @@ else
   BIN= $@
 endif
 
-cr: cr.c utils.o
+cr: cr.c utils.o mdport.o
 	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
 	strip ${BIN}
 
@@ -21,7 +21,7 @@ mdtest: mdtest.c mdport.o
 	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
 
 mdport.o: mdport.c
-	${CC} -c -Wall -I. ${MDPORT_FLAGS} -o $@ $? 
+	${CC} -c -I. ${MDPORT_FLAGS} -o $@ $? 
 
 astyle:
 	astyle --style=java -t -n *.c
