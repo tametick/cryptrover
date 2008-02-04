@@ -22,7 +22,9 @@
    other languages) to be compiled. Anyone who tries to actually _use_ 
    them will be disappointed, since they only return ERR. */
 
+#ifndef __PDCURSES__
 #include <curses.h>
+#endif
 
 #if defined(__cplusplus) || defined(__cplusplus__) || defined(__CPLUSPLUS)
 extern "C"

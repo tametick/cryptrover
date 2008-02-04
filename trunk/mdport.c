@@ -30,7 +30,7 @@
     SUCH DAMAGE.
 */
 
-#if defined(_WIN32)
+#if defined(__WIN32__)
 #include <Windows.h>
 #include <Lmcons.h>
 #include <process.h>
@@ -51,13 +51,13 @@
 #include <string.h>
 #include <ctype.h>
 
-#if defined(_WIN32) && !defined(__MINGW32__)
+#if defined(__WIN32__) && !defined(__MINGW32__)
 #define PATH_MAX _PATH_MAX
 #endif
 
 #ifdef __WIN32__
-#include <pdc28_ming_w32\curses.h>
-#include <pdc28_ming_w32\term.h>
+#include <pdc28_ming_w32/curses.h>
+#include <pdc28_ming_w32/term.h>
 #else
 #include <ncurses.h>
 #include <term.h>
