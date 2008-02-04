@@ -13,7 +13,7 @@ else
   BIN= $@
 endif
 
-cr: cr.c map.o utils.o entities.o items.o mdport.o
+cr: cr.c map.o utils.o entities.o items.o io.o mdport.o
 	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
 	strip ${BIN}
 
