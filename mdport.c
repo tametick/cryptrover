@@ -31,10 +31,11 @@
 */
 
 #ifdef __WIN32__
-#include <pdc28_ming_w32/curses.h>
+#include "pdc28_ming_w32/curses.h"
 #else
 #include <ncurses.h>
 #endif
+#include "mdport.h"
 
 #define MOD_MOVE(c) (toupper(c) )
 

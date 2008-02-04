@@ -1,5 +1,5 @@
 #ifdef __WIN32__
-#include <pdc28_ming_w32\curses.h>
+#include "pdc28_ming_w32\curses.h"
 #else
 #include <ncurses.h>
 #endif
@@ -7,7 +7,8 @@
 #include <time.h>
 #include <math.h>
 #include <string.h>
-#include <utils.h>
+#include "utils.h"
+#include "mdport.h"
 
 #define ESC 27 //ASCII for escape
 
