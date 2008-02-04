@@ -1,12 +1,8 @@
-#ifdef __WIN32__
-#include "pdc28_ming_w32\curses.h"
-#else
-#include <ncurses.h>
-#endif
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include <string.h>
+#include "map.h"
 #include "utils.h"
 #include "mdport.h"
 
@@ -25,28 +21,7 @@ typedef struct {
 	chtype type;
 	bool awake;
 }ent;
-typedef struct {
-	int y,x;
-	chtype type;
-	bool used;
-}item;
-typedef struct {
-	int y,x;
-	chtype type;
-}tile;
 
-typedef enum {
-	UNSEEN,
-	SEEN,
-	IN_SIGHT
-}view;
-
-//map attributes
-#define Y_ 24
-#define X_ 48
-#define WALL '#'
-#define FLOOR '.'
-#define NEXT_LEVEL '<'
 tile map[Y_][X_];
 view view_m[Y_][X_];
 //map generation parameters
@@ -140,45 +115,6 @@ int compare_tiles(const void* t1, const void* t2) {
 		return 0;
 	else
 		return 1;
-}
-
-//line of sight
-bool los(int y0,int x0,int y1,int x1,chtype opaque,void(*apply)(int,int)) {
-	//Bresenham's line algorithm
-	//taken from: http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
-	bool steep=fabs(y1-y0)>fabs(x1-x0);
-	if (steep) {
-		swap(&x0,&y0);
-		swap(&x1,&y1);
-	}
-	if (x0>x1) {
-		swap(&x0,&x1);
-		swap(&y0,&y1);
-	}
-	float err_num=0.0;
-	int y=y0;
-	for (int x=x0; x<=x1; x++) {
-		if (x>x0 && x<x1) {
-			if (steep) {
-				if (opaque==map[x][y].type)
-					return false;
-				else if (apply)
-					apply(x,y);
-			} else {
-				if (opaque==map[y][x].type)
-					return false;
-				else if (apply)
-					apply(y,x);
-			}
-		}
-
-		err_num+=(float)(fabs(y1-y0))/(float)(x1-x0);
-		if (0.5<fabs(err_num)) {
-			y+=y1>y0?1:-1;
-			err_num--;
-		}
-	}
-	return true;
 }
 
 //check if there is enough free space for a room
