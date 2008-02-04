@@ -45,11 +45,8 @@
 #include <unistd.h>
 #endif
 
-#include <arpa/inet.h>
-#include <sys/wait.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #if defined(__WIN32__) && !defined(__MINGW32__)
 #define PATH_MAX _PATH_MAX
