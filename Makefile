@@ -17,9 +17,6 @@ cr: cr.c utils.o mdport.o
 	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
 	strip ${BIN}
 
-mdtest: mdtest.c mdport.o
-	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
-
 mdport.o: mdport.c
 	${CC} -c ${MDPORT_FLAGS} -o $@ $? 
 
@@ -28,4 +25,4 @@ astyle:
 ctags:
 	ctags -f ~/tags $(shell pwd)/*.c
 clean:
-	rm -f *.o cr dbg cr.exe
+	rm -f *.o *~ cr dbg cr.exe
