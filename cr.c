@@ -13,6 +13,11 @@
 //key codes
 #define ESC 27
 #define CTRL_C 3
+#ifdef __WIN32__
+#define KP_5 117
+#else
+#define KP_5 69
+#endif
 
 //entities: the player and his/her enemies
 typedef struct {
@@ -347,25 +352,9 @@ void you_lost() {
 	mvaddstr(Y_/2,X_/2," YOU HAVE LOST! :( ");
 	end_game();
 }
-int main() {
-	//current dungeon level
-	int level=1;
 
-	srand((unsigned)time(NULL));
-	init_curses();
-	init_map();
-	init_ents(level);
-	init_items();
-
-	//the player's coordinates
-	int *y=&ent_l[0].y;
-	int *x=&ent_l[0].x;
-
-	//last key pressed
-	int key=0;
-	do {
-		//move player
-		switch (key) {
+void player_action(int *key,int *y,int *x, int level) {
+		switch (*key) {
 		case 'k'://up
 		case '8':
 			move_to(y,x,-1,0);
@@ -398,7 +387,11 @@ int main() {
 		case '3':
 			move_to(y,x,1,1);
 			break;
-		case '<':
+		case '.'://wait
+		case '5':
+		case KP_5:
+			break;
+		case '<'://next level
 		case ',':
 			if (NEXT_LEVEL==map[*y][*x].type) {
 				if (++level>LAST_LEVEL)
@@ -408,7 +401,31 @@ int main() {
 				init_items();
 			}
 			break;
+		default:
+			*key=md_readchar(stdscr);
+			player_action(key,y,x,level);
+			break;
 		}
+}
+
+int main() {
+	//current dungeon level
+	int level=1;
+
+	srand((unsigned)time(NULL));
+	init_curses();
+	init_map();
+	init_ents(level);
+	init_items();
+
+	//the player's coordinates
+	int *y=&ent_l[0].y;
+	int *x=&ent_l[0].x;
+
+	//last key pressed
+	int key='.';//wait
+	do {
+		player_action(&key,y,x,level);
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
 			if (ent_l[e].hp>0)
@@ -468,7 +485,7 @@ int main() {
 		print_info(level);
 		ent_l[0].air--;
 		key=md_readchar(stdscr);
-	} //exit when the player is dead or when ESC or q are pressed
+	} //exit when the player is dead
 	while (ent_l[0].hp>0 && ent_l[0].air>0 && ESC!=key && 'q'!=key && CTRL_C!=key);
 	you_lost();
 }
