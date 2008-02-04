@@ -14,9 +14,9 @@
 #define ESC 27
 #define CTRL_C 3
 #ifdef __WIN32__
-#define KP_5 117
+#define KP_DEL 78
 #else
-#define KP_5 69
+#define KP_DEL 74
 #endif
 
 //entities: the player and his/her enemies
@@ -389,8 +389,7 @@ void handle_input(int *key,int *y,int *x, int level) {
 		success=move_to(y,x,1,1);
 		break;
 	case '.'://wait
-	case '5':
-	case KP_5:
+	case KP_DEL:
 		break;
 	case '<'://next level
 	case ',':
