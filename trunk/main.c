@@ -54,7 +54,7 @@ bool player_action(int key,int *y,int *x, int level) {
 		return move_to(y,x,1,1);
 	case '.'://wait
 	case KP_DEL:
-		break;
+		return true;
 	case '<'://next level
 	case ',':
 		if (NEXT_LEVEL==map[*y][*x].type) {
