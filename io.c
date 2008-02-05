@@ -26,9 +26,9 @@ int readchar() {
 	return md_readchar(stdscr);
 }
 
-status handle_input(int *key,int *y,int *x, int level) {
+status handle_input(int key,int *y,int *x, int level) {
 	bool success=true;
-	switch (*key) {
+	switch (key) {
 	case 'k'://up
 	case '8':
 		success=move_to(y,x,-1,0);
@@ -86,7 +86,7 @@ status handle_input(int *key,int *y,int *x, int level) {
 		break;
 	}
 	if (!success) {
-		*key=readchar();
+		key=readchar();
 		return handle_input(key,y,x,level);
 	}
 	return CONTINUE;
