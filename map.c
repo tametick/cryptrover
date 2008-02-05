@@ -41,7 +41,7 @@ void dig_level() {
 		//dig the first room in the middle of the level
 		int ry=(new_ry?new_ry:Y_/2);
 		int rx=(new_rx?new_rx:X_/2);
-		if ((0!=new_rx&&0!=new_ry) || dig_room(ry,rx,radius,radial)) {
+		if ((new_rx&&new_ry) || dig_room(ry,rx,radius,radial)) {
 			int paths=1+rand()%PATHS;
 			for (int p=0;p<paths;p++) {
 				int tries=0;
