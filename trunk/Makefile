@@ -23,6 +23,6 @@ mdport.o: mdport.c
 astyle:
 	astyle --style=java -t -n *.c *.h
 ctags:
-	ctags -f ~/tags $(shell pwd)/*.c
+	ctags -f ~/tags $(shell pwd)/*.c $(shell pwd)/*.h
 clean:
 	rm -f *.o *~ cr dbg cr.exe

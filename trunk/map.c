@@ -39,8 +39,8 @@ void dig_level() {
 	while (true) {
 		//continue digging from the last new room or
 		//dig the first room in the middle of the level
-		int ry=(0==new_ry?Y_/2:new_ry);
-		int rx=(0==new_rx?X_/2:new_rx);
+		int ry=(new_ry?new_ry:Y_/2);
+		int rx=(new_rx?new_rx:X_/2);
 		if ((0!=new_rx&&0!=new_ry) || dig_room(ry,rx,radius,radial)) {
 			int paths=1+rand()%PATHS;
 			for (int p=0;p<paths;p++) {
