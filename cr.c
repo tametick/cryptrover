@@ -5,7 +5,6 @@
 #include "entities.h"
 #include "items.h"
 #include "io.h"
-#include "mdport.h"
 
 tile map[Y_][X_];
 view view_m[Y_][X_];
@@ -17,7 +16,7 @@ item item_l[ITEMS_];
 item *item_m[Y_][X_];
 
 int end_game() {
-	md_readchar(stdscr);
+	readchar();
 	exit(endwin());
 }
 void you_won() {
@@ -86,7 +85,7 @@ int main() {
 		print_info(errs,level);
 
 		ent_l[0].air--;
-		key=md_readchar(stdscr);
+		key=readchar();
 	}
 	you_lost();
 }

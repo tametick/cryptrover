@@ -22,6 +22,10 @@ int init_curses() {
 	return errs;
 }
 
+int readchar() {
+	return md_readchar(stdscr);
+}
+
 status handle_input(int *key,int *y,int *x, int level) {
 	bool success=true;
 	switch (*key) {
@@ -82,7 +86,7 @@ status handle_input(int *key,int *y,int *x, int level) {
 		break;
 	}
 	if (!success) {
-		*key=md_readchar(stdscr);
+		*key=readchar();
 		return handle_input(key,y,x,level);
 	}
 	return CONTINUE;
