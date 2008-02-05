@@ -38,6 +38,6 @@ typedef enum {
 extern tile map[Y_][X_];
 extern view view_m[Y_][X_];
 
-void init_map();
+void init_map(void);
 
 #endif

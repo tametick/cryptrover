@@ -4,7 +4,7 @@
 #include "entities.h"
 #include "items.h"
 
-void init_items() {
+void init_items(void) {
 	memset(item_m,(int)NULL,sizeof(item *)*Y_*X_);
 
 	for (int i=0; i<ITEMS_; i++) {

@@ -10,6 +10,6 @@
 extern item item_l[];
 extern item *item_m[Y_][X_];
 
-void init_items();
+void init_items(void);
 
 #endif

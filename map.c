@@ -30,7 +30,7 @@ bool dig_room(int y, int x, int radius, bool radial) {
 
 	return true;
 }
-void dig_level() {
+void dig_level(void) {
 	int new_ry=0;
 	int new_rx=0;
 	int radius=1+rand()%ROOM_RADIUS;
@@ -61,7 +61,7 @@ void dig_level() {
 	}
 }
 
-void init_map() {
+void init_map(void) {
 	for (int y=0; y<Y_; y++) {
 		for (int x=0; x<X_; x++) {
 			map[y][x].type=WALL;

@@ -15,12 +15,12 @@ ent *ent_m[Y_][X_];
 item item_l[ITEMS_];
 item *item_m[Y_][X_];
 
-void you_won() {
+void you_won(void) {
 	mvaddstr(Y_/2,X_/2," YOU HAVE WON! :) ");
 	readchar();
 	exit(endwin());
 }
-void you_lost() {
+void you_lost(void) {
 	mvaddstr(Y_/2,X_/2," YOU HAVE LOST! :( ");
 	readchar();
 	exit(endwin());
@@ -75,7 +75,7 @@ bool player_action(int key,int *y,int *x, int level) {
 	}
 }
 
-int main() {
+int main(void) {
 	//current dungeon level
 	int level=1;
 
