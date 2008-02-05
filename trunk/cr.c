@@ -42,14 +42,8 @@ int main() {
 	int *y=&ent_l[0].y;
 	int *x=&ent_l[0].x;
 
-	//last key pressed
-	int key='.';//wait
 	while (ent_l[0].hp>0 && ent_l[0].air>0) {
-		status st=handle_input(&key,y,x,level);
-		if (LOST==st)
-			you_lost();
-		else if (WON==st)
-			you_won();
+
 
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
@@ -85,7 +79,13 @@ int main() {
 		print_info(errs,level);
 
 		ent_l[0].air--;
-		key=readchar();
+		
+		status st=handle_input(readchar(),y,x,level);
+		if (LOST==st)
+			you_lost();
+		else if (WON==st)
+			you_won();
+
 	}
 	you_lost();
 }
