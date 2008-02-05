@@ -10,9 +10,9 @@
 #define KP_DEL 74
 #endif
 
-void draw_screen();
-int init_curses();
+void draw_screen(void);
+int init_curses(void);
 void print_info(int errs,int level);
-int readchar();
+int readchar(void);
 
 #endif

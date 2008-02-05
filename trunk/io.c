@@ -4,7 +4,7 @@
 #include "io.h"
 #include "mdport.h"
 
-int init_curses() {
+int init_curses(void) {
 	int errs=0;
 	stdscr=initscr();
 	if (ERR==keypad(stdscr,true))
@@ -22,7 +22,7 @@ int init_curses() {
 	return errs;
 }
 
-int readchar() {
+int readchar(void) {
 	return md_readchar(stdscr);
 }
 
@@ -42,7 +42,7 @@ void print_info(int errs,int level) {
 	addstr(" - air canister ");
 }
 
-void draw_screen() {
+void draw_screen(void) {
 	//draw map
 	for (int yy=0; yy<Y_; yy++) {
 		for (int xx=0; xx<X_ ;xx++) {
