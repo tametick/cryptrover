@@ -15,17 +15,64 @@ ent *ent_m[Y_][X_];
 item item_l[ITEMS_];
 item *item_m[Y_][X_];
 
-int end_game() {
+void you_won() {
+	mvaddstr(Y_/2,X_/2," YOU HAVE WON! :) ");
 	readchar();
 	exit(endwin());
 }
-void you_won() {
-	mvaddstr(Y_/2,X_/2," YOU HAVE WON! :) ");
-	end_game();
-}
 void you_lost() {
 	mvaddstr(Y_/2,X_/2," YOU HAVE LOST! :( ");
-	end_game();
+	readchar();
+	exit(endwin());
+}
+
+bool player_action(int key,int *y,int *x, int level) {
+	switch (key) {
+	case 'k'://up
+	case '8':
+		return move_to(y,x,-1,0);
+	case '2'://down
+	case 'j':
+		return move_to(y,x,1,0);
+	case 'h'://left
+	case '4':
+		return move_to(y,x,0,-1);
+	case 'l'://right
+	case '6':
+		return move_to(y,x,0,1);
+	case 'y'://upper left
+	case '7':
+		return move_to(y,x,-1,-1);
+	case 'u'://upper right
+	case '9':
+		return move_to(y,x,-1,1);
+	case 'b'://lower left
+	case '1':
+		return move_to(y,x,1,-1);
+	case 'n'://lower right
+	case '3':
+		return move_to(y,x,1,1);
+	case '.'://wait
+	case KP_DEL:
+		break;
+	case '<'://next level
+	case ',':
+		if (NEXT_LEVEL==map[*y][*x].type) {
+			if (++level>LAST_LEVEL)
+				you_won();
+			init_map();
+			init_ents(level);
+			init_items();
+			return true;
+		} else 
+			return false;
+	case ESC:
+	case 'q':
+	case CTRL_C:
+		you_lost();
+	default:
+		return false;
+	}
 }
 
 int main() {
@@ -43,8 +90,6 @@ int main() {
 	int *x=&ent_l[0].x;
 
 	while (ent_l[0].hp>0 && ent_l[0].air>0) {
-
-
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
 			if (ent_l[e].hp>0)
@@ -80,12 +125,8 @@ int main() {
 
 		ent_l[0].air--;
 		
-		status st=handle_input(readchar(),y,x,level);
-		if (LOST==st)
-			you_lost();
-		else if (WON==st)
-			you_won();
-
+		//acting on player's input
+		while(!player_action(readchar(),y,x,level));
 	}
 	you_lost();
 }

@@ -10,14 +10,7 @@
 #define KP_DEL 74
 #endif
 
-typedef enum {
-	CONTINUE,
-	LOST,
-	WON
-}status;
-
 void draw_screen();
-status handle_input(int key,int *y,int *x, int level);
 int init_curses();
 void print_info(int errs,int level);
 int readchar();

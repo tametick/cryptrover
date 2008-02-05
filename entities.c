@@ -84,6 +84,7 @@ bool move_to(int *y,int *x,int dy,int dx) {
 	ent_m[*y][*x]=&ent_l[id];
 	return true;
 }
+
 void move_enemy(ent *enemy, ent *player) {
 	int *ey=&enemy->y;
 	int *ex=&enemy->x;
