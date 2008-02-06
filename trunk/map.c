@@ -8,13 +8,13 @@ bool has_space(int y, int x, int radius) {
 		return false;
 	for (int yy=y-radius-1; yy<=y+radius+1; yy++)
 		for (int xx=x-radius-1; xx<=x+radius+1; xx++)
-			if (FLOOR==map[yy][xx].type)
+			if (FLOOR==tile_m[yy][xx].type)
 				return false;
 	return true;
 }
 
 void dig_tile(int y, int x) {
-	map[y][x].type=FLOOR;
+	tile_m[y][x].type=FLOOR;
 }
 void dig_path(int y0, int x0, int y1, int x1) {
 	los(y0,x0,y1,x1,(char)NULL,&dig_tile);
@@ -26,7 +26,7 @@ bool dig_room(int y, int x, int radius, bool radial) {
 	for (int yy=y-radius; yy<=y+radius; yy++)
 		for (int xx=x-radius; xx<=x+radius; xx++)
 			if ((radial&&in_range(y,x,yy,xx,radius)) || !radial)
-				map[yy][xx].type=FLOOR;
+				tile_m[yy][xx].type=FLOOR;
 
 	return true;
 }
@@ -64,9 +64,9 @@ void dig_level(void) {
 void init_map(void) {
 	for (int y=0; y<Y_; y++) {
 		for (int x=0; x<X_; x++) {
-			map[y][x].type=WALL;
-			map[y][x].y=y;
-			map[y][x].x=x;
+			tile_m[y][x].type=WALL;
+			tile_m[y][x].y=y;
+			tile_m[y][x].x=x;
 			view_m[y][x]=UNSEEN;
 		}
 	}
@@ -74,7 +74,6 @@ void init_map(void) {
 
 	//entry to next level
 	int ny,nx;
-	while (WALL== map[ny=rand()%Y_][nx=rand()%X_].type);
-	map[ny][nx].type=NEXT_LEVEL;
+	while (WALL== tile_m[ny=rand()%Y_][nx=rand()%X_].type);
+	tile_m[ny][nx].type=NEXT_LEVEL;
 }
-

@@ -5,14 +5,14 @@
 #include "items.h"
 
 void init_items(void) {
-	memset(item_m,(int)NULL,sizeof(item *)*Y_*X_);
+	memset(item_m,(int)NULL,sizeof(item_t *)*Y_*X_);
 
 	for (int i=0; i<ITEMS_; i++) {
-		item *ci=&item_l[i];
+		item_t *ci=&item_l[i];
 		do {
 			ci->y=rand()%Y_;
 			ci->x=rand()%X_;
-		} while (WALL==map[ci->y][ci->x].type ||
+		} while (WALL==tile_m[ci->y][ci->x].type ||
 		         NULL!=ent_m[ci->y][ci->x] ||
 		         NULL!=item_m[ci->y][ci->x]);
 		ci->type=(i<ITEMS_/2?MED_PACK:AIR_CAN);

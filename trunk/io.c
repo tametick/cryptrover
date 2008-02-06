@@ -46,7 +46,7 @@ void draw_screen(void) {
 	//draw map
 	for (int yy=0; yy<Y_; yy++) {
 		for (int xx=0; xx<X_ ;xx++) {
-			chtype tile=map[yy][xx].type;
+			chtype tile=tile_m[yy][xx].type;
 			if (IN_SIGHT==view_m[yy][xx]) {
 				mvaddch(yy,xx,tile);
 			} else if (SEEN==view_m[yy][xx]) {
