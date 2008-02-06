@@ -36,9 +36,9 @@ void print_info(int errs,int level) {
 	sprintf(msg, "Dungeon level: %d/%d ",level,LAST_LEVEL);
 	mvaddstr(msgs++,X_+1,msg);
 	mvaddstr(++msgs,X_+1,"Items:" );
-	mvaddch(++msgs,X_+1,MED_PACK);
+	mvaddch(++msgs,X_+1,MED_PACK|COLOR_MED);
 	addstr(" - med pack ");
-	mvaddch(++msgs,X_+1,AIR_CAN);
+	mvaddch(++msgs,X_+1,AIR_CAN|COLOR_AIR);
 	addstr(" - air canister ");
 }
 
@@ -66,12 +66,12 @@ void draw_screen(void) {
 	//draw items
 	for (int i=0; i<ITEMS_; i++) {
 		if (!item_l[i].used && view_m[item_l[i].y][item_l[i].x]==IN_SIGHT)
-			mvaddch(item_l[i].y,item_l[i].x,item_l[i].type);
+			mvaddch(item_l[i].y,item_l[i].x,item_l[i].type|item_l[i].color);
 	}
 	//draw entities
 	for (int e=0; e<ENTS_; e++) {
 		if (ent_l[e].hp>0 && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
-			mvaddch(ent_l[e].y,ent_l[e].x,ent_l[e].type);
+			mvaddch(ent_l[e].y,ent_l[e].x,ent_l[e].type|ent_l[e].color);
 	}
 }
 

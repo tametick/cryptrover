@@ -16,7 +16,13 @@ void init_items(void) {
 				 NEXT_LEVEL==tile_m[ci->y][ci->x].type ||
 		         ent_m[ci->y][ci->x] ||
 		         item_m[ci->y][ci->x]);
-		ci->type=(i<ITEMS_/2?MED_PACK:AIR_CAN);
+		if (i<ITEMS_/2) {
+			ci->type=MED_PACK;
+			ci->color=COLOR_MED;
+		} else {
+			ci->type=AIR_CAN;
+			ci->color=COLOR_AIR;				
+		}
 		ci->used=false;
 
 		item_m[ci->y][ci->x]=ci;
