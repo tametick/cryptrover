@@ -7,6 +7,12 @@
 #include <ncurses.h>
 #endif
 
+typedef struct {
+	int id,y,x,hp,air;
+	chtype type;
+	bool awake;
+}ent_t;
+
 //number of entities
 #define ENTS_ 12
 //player attributes
@@ -14,20 +20,13 @@
 #define PLAYER_AIR (AIR_CHARGE*5)
 #define FOV_RADIUS 5
 
-//entities: the player and his/her enemies
-typedef struct {
-	int id,y,x,hp,air;
-	chtype type;
-	bool awake;
-}ent;
-
-extern ent ent_l[];
-extern ent *ent_m[Y_][X_];
+extern ent_t ent_l[];
+extern ent_t *ent_m[Y_][X_];
 
 int compare_tiles(const void* t1, const void* t2);
 void fov(int y, int x, int radius);
 void init_ents(int level);
-void move_enemy(ent *enemy, ent *player);
+void move_enemy(ent_t *enemy, ent_t *player);
 bool move_to(int *y,int *x,int dy,int dx);
 
 #endif

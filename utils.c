@@ -38,12 +38,12 @@ bool los(int y0,int x0,int y1,int x1,chtype opaque,void(*apply)(int,int)) {
 	for (int x=x0; x<=x1; x++) {
 		if (x>x0 && x<x1) {
 			if (steep) {
-				if (opaque==map[x][y].type)
+				if (opaque==tile_m[x][y].type)
 					return false;
 				else if (apply)
 					apply(x,y);
 			} else {
-				if (opaque==map[y][x].type)
+				if (opaque==tile_m[y][x].type)
 					return false;
 				else if (apply)
 					apply(y,x);

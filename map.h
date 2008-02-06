@@ -11,18 +11,12 @@
 typedef struct {
 	int y,x;
 	chtype type;
-	bool used;
-}item;
-typedef struct {
-	int y,x;
-	chtype type;
-}tile;
-
+}tile_t;
 typedef enum {
 	UNSEEN,
 	SEEN,
 	IN_SIGHT
-}view;
+}view_t;
 
 //map attributes
 #define Y_ 24
@@ -35,8 +29,8 @@ typedef enum {
 #define PATHS 5
 #define LAST_LEVEL 12
 
-extern tile map[Y_][X_];
-extern view view_m[Y_][X_];
+extern tile_t tile_m[Y_][X_];
+extern view_t view_m[Y_][X_];
 
 void init_map(void);
 

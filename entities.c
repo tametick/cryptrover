@@ -6,15 +6,15 @@
 #include "items.h"
 
 void init_ents(int level) {
-	memset(ent_m,(int)NULL,sizeof(ent *)*Y_*X_);
+	memset(ent_m,(int)NULL,sizeof(ent_t *)*Y_*X_);
 	for (int e=0; e<ENTS_; e++) {
-		ent *ce=&ent_l[e];
+		ent_t *ce=&ent_l[e];
 		ce->id=e;
 		ce->awake=false;
 		do {
 			ce->y=rand()%Y_;
 			ce->x=rand()%X_;
-		} while (WALL==map[ce->y][ce->x].type || NULL!=ent_m[ce->y][ce->x]);
+		} while (WALL==tile_m[ce->y][ce->x].type || NULL!=ent_m[ce->y][ce->x]);
 		if (e>0) {
 			ce->hp=2;
 			ce->type='a'|COLOR_PAIR(COLOR_RED);
@@ -34,8 +34,8 @@ void init_ents(int level) {
 int compare_tiles(const void* t1, const void* t2) {
 	int py=ent_l[0].y;
 	int px=ent_l[0].x;
-	tile* tile1 = (tile*)t1;
-	tile* tile2 = (tile*)t2;
+	tile_t* tile1 = (tile_t*)t1;
+	tile_t* tile2 = (tile_t*)t2;
 	if (dist(tile1->y,tile1->x,py,px)<dist(tile2->y,tile2->x,py,px))
 		return -1;
 	else if (dist(tile1->y,tile1->x,py,px)==dist(tile2->y,tile2->x,py,px))
@@ -55,13 +55,13 @@ void fov(int y, int x, int radius) {
 //move entity if there is no living entity on the way
 bool move_to(int *y,int *x,int dy,int dx) {
 	//don't move into walls
-	if (WALL==map[*y+dy][*x+dx].type)
+	if (WALL==tile_m[*y+dy][*x+dx].type)
 		return false;
 
 	int id=ent_m[*y][*x]->id;
 	//if the destination tile has an entity in it
 	if (NULL!=ent_m[*y+dy][*x+dx]) {
-		ent *de=ent_m[*y+dy][*x+dx];
+		ent_t *de=ent_m[*y+dy][*x+dx];
 		//to prevent enemies from attacking one another
 		if (0==id||0==de->id) {
 			de->hp--;
@@ -85,7 +85,7 @@ bool move_to(int *y,int *x,int dy,int dx) {
 	return true;
 }
 
-void move_enemy(ent *enemy, ent *player) {
+void move_enemy(ent_t *enemy, ent_t *player) {
 	int *ey=&enemy->y;
 	int *ex=&enemy->x;
 	if (enemy->awake ||
@@ -94,12 +94,12 @@ void move_enemy(ent *enemy, ent *player) {
 		enemy->awake=true;
 
 		//sort the adjunct tiles by their distance to the player
-		tile adj_tile[9];
+		tile_t adj_tile[9];
 		int t=0;
 		for (int y=*ey-1;y<=*ey+1;y++)
 			for (int x=*ex-1;x<=*ex+1;x++)
-				adj_tile[t++]=map[y][x];
-		qsort(adj_tile,9,sizeof(tile),compare_tiles);
+				adj_tile[t++]=tile_m[y][x];
+		qsort(adj_tile,9,sizeof(tile_t),compare_tiles);
 
 		//move to the closest possible tile
 		t=0;
@@ -111,4 +111,3 @@ void move_enemy(ent *enemy, ent *player) {
 		move_to(ey,ex,-1+rand()%3,-1+rand()%3);
 	}
 }
-

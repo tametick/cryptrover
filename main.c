@@ -6,14 +6,14 @@
 #include "items.h"
 #include "io.h"
 
-tile map[Y_][X_];
-view view_m[Y_][X_];
+tile_t tile_m[Y_][X_];
+view_t view_m[Y_][X_];
 
-ent ent_l[ENTS_];
-ent *ent_m[Y_][X_];
+ent_t ent_l[ENTS_];
+ent_t *ent_m[Y_][X_];
 
-item item_l[ITEMS_];
-item *item_m[Y_][X_];
+item_t item_l[ITEMS_];
+item_t *item_m[Y_][X_];
 
 void you_won(void) {
 	mvaddstr(Y_/2,X_/2," YOU HAVE WON! :) ");
@@ -57,7 +57,7 @@ bool player_action(int key,int *y,int *x, int level) {
 		return true;
 	case '<'://next level
 	case ',':
-		if (NEXT_LEVEL==map[*y][*x].type) {
+		if (NEXT_LEVEL==tile_m[*y][*x].type) {
 			if (++level>LAST_LEVEL)
 				you_won();
 			init_map();
@@ -97,7 +97,7 @@ int main(void) {
 		}
 
 		//use unused item if the player is standing on one
-		item* ci=item_m[*y][*x];
+		item_t* ci=item_m[*y][*x];
 		if (NULL!=ci && !ci->used) {
 			//heal hp
 			if (MED_PACK==ci->type && ent_l[0].hp<PLAYER_HP) {
