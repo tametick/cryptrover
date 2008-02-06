@@ -26,7 +26,7 @@ void you_lost(void) {
 	exit(endwin());
 }
 
-bool player_action(int key,int *y,int *x, int level) {
+bool player_action(int key,int *y,int *x, int *level) {
 	switch (key) {
 	case 'k'://up
 	case '8':
@@ -58,10 +58,10 @@ bool player_action(int key,int *y,int *x, int level) {
 	case '<'://next level
 	case ',':
 		if (NEXT_LEVEL==tile_m[*y][*x].type) {
-			if (++level>LAST_LEVEL)
+			if (++(*level)>LAST_LEVEL)
 				you_won();
 			init_map();
-			init_ents(level);
+			init_ents(*level);
 			init_items();
 			return true;
 		} else
@@ -120,7 +120,7 @@ int main(void) {
 		ent_l[0].air--;
 
 		//acting on player's input
-		while (!player_action(readchar(),y,x,level));
+		while (!player_action(readchar(),y,x,&level));
 
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
