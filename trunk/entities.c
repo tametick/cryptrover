@@ -17,6 +17,7 @@ void init_ents(int level) {
 		} while (WALL==tile_m[ce->y][ce->x].type || NULL!=ent_m[ce->y][ce->x]);
 		if (e>0) {
 			ce->hp=2;
+			ce->air=1;
 			ce->type=ARACHNID;
 			ce->color=COLOR_PAIR(COLOR_RED);
 		}
