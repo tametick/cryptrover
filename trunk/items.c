@@ -13,8 +13,9 @@ void init_items(void) {
 			ci->y=rand()%Y_;
 			ci->x=rand()%X_;
 		} while (WALL==tile_m[ci->y][ci->x].type ||
-		         NULL!=ent_m[ci->y][ci->x] ||
-		         NULL!=item_m[ci->y][ci->x]);
+				 NEXT_LEVEL==tile_m[ci->y][ci->x].type ||
+		         ent_m[ci->y][ci->x] ||
+		         item_m[ci->y][ci->x]);
 		ci->type=(i<ITEMS_/2?MED_PACK:AIR_CAN);
 		ci->used=false;
 
