@@ -69,11 +69,10 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		} else {
 			return false;
 		}
-		//if it's dead mark as a corpse and remove its reference
-		if (de->hp<1) {
-			de->type=CORPSE;
+		//if it's dead remove its reference from the entity map
+		if (de->hp<1)
 			ent_m[de->y][de->x]=NULL;
-		}
+
 		//the move was still successful because of the attack
 		return true;
 	}

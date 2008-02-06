@@ -93,21 +93,12 @@ int main(void) {
 	int *y=&ent_l[0].y;
 	int *x=&ent_l[0].x;
 
+	//draw start conditions
+	fov(*y,*x, FOV_RADIUS);
+	draw_screen();
+	print_info(errs,level);
+
 	while (ent_l[0].hp>0 && ent_l[0].air>0) {
-		//mark last turn's field of view as SEEN
-		for (int yy=0;yy<Y_;yy++)
-			for (int xx=0;xx<X_;xx++)
-				if (IN_SIGHT==view_m[yy][xx])
-					view_m[yy][xx]=SEEN;
-
-		//mark current field of view as IN_SIGHT
-		fov(*y,*x, FOV_RADIUS);
-
-		draw_screen();
-		print_info(errs,level);
-
-		ent_l[0].air--;
-
 		//acting on player's input
 		while (!player_action(readchar(),y,x,&level));
 
@@ -131,6 +122,19 @@ int main(void) {
 			if (ent_l[e].hp>0)
 				move_enemy(&ent_l[e],&ent_l[0]);
 		}
+
+		//mark last turn's field of view as SEEN
+		for (int yy=0;yy<Y_;yy++)
+			for (int xx=0;xx<X_;xx++)
+				if (IN_SIGHT==view_m[yy][xx])
+					view_m[yy][xx]=SEEN;
+
+		//mark current field of view as IN_SIGHT
+		fov(*y,*x, FOV_RADIUS);
+		draw_screen();
+		print_info(errs,level);
+
+		ent_l[0].air--;
 	}
 	you_lost();
 }
