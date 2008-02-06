@@ -121,7 +121,7 @@ int main(void) {
 
 		//acting on player's input
 		while (!player_action(readchar(),y,x,level));
-		
+
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
 			if (ent_l[e].hp>0)
