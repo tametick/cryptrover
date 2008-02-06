@@ -68,10 +68,12 @@ void draw_screen(void) {
 		if (!item_l[i].used && view_m[item_l[i].y][item_l[i].x]==IN_SIGHT)
 			mvaddch(item_l[i].y,item_l[i].x,item_l[i].type|item_l[i].color);
 	}
-	//draw entities
-	for (int e=0; e<ENTS_; e++) {
-		if (ent_l[e].hp>0 && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
+	//draw enemies
+	for (int e=1; e<ENTS_; e++) {
+		if (view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
 			mvaddch(ent_l[e].y,ent_l[e].x,ent_l[e].type|ent_l[e].color);
 	}
+	//draw player
+	mvaddch(ent_l[0].y,ent_l[0].x,ent_l[0].type|ent_l[0].color);
 }
 

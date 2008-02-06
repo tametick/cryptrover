@@ -13,7 +13,7 @@ void init_items(void) {
 			ci->y=rand()%Y_;
 			ci->x=rand()%X_;
 		} while (WALL==tile_m[ci->y][ci->x].type ||
-				 NEXT_LEVEL==tile_m[ci->y][ci->x].type ||
+		         NEXT_LEVEL==tile_m[ci->y][ci->x].type ||
 		         ent_m[ci->y][ci->x] ||
 		         item_m[ci->y][ci->x]);
 		if (i<ITEMS_/2) {
@@ -21,7 +21,7 @@ void init_items(void) {
 			ci->color=COLOR_MED;
 		} else {
 			ci->type=AIR_CAN;
-			ci->color=COLOR_AIR;				
+			ci->color=COLOR_AIR;
 		}
 		ci->used=false;
 
