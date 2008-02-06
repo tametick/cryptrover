@@ -17,7 +17,7 @@ void init_ents(int level) {
 		} while (WALL==tile_m[ce->y][ce->x].type || NULL!=ent_m[ce->y][ce->x]);
 		if (e>0) {
 			ce->hp=2;
-			ce->type='a';
+			ce->type=ARACHNID;
 			ce->color=COLOR_PAIR(COLOR_RED);
 		}
 		ent_m[ce->y][ce->x]=ce;
@@ -69,8 +69,9 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		} else {
 			return false;
 		}
-		//if it's dead remove its reference
+		//if it's dead mark as a corpse and remove its reference
 		if (de->hp<1) {
+			de->type=CORPSE;
 			ent_m[de->y][de->x]=NULL;
 		}
 		//the move was still successful because of the attack
