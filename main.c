@@ -90,21 +90,6 @@ int main(void) {
 	int *x=&ent_l[0].x;
 
 	while (ent_l[0].hp>0 && ent_l[0].air>0) {
-		//use unused item if the player is standing on one
-		item_t* ci=item_m[*y][*x];
-		if (NULL!=ci && !ci->used) {
-			//heal hp
-			if (MED_PACK==ci->type && ent_l[0].hp<PLAYER_HP) {
-				ent_l[0].hp=min(ent_l[0].hp+MED_CHARGE,PLAYER_HP);
-				ci->used=true;
-			}
-			//replenish air
-			if (AIR_CAN==ci->type && ent_l[0].air<PLAYER_AIR) {
-				ent_l[0].air=min(ent_l[0].air+AIR_CHARGE,PLAYER_AIR);
-				ci->used=true;
-			}
-		}
-
 		//mark last turn's field of view as SEEN
 		for (int yy=0;yy<Y_;yy++)
 			for (int xx=0;xx<X_;xx++)
@@ -121,6 +106,21 @@ int main(void) {
 
 		//acting on player's input
 		while (!player_action(readchar(),y,x,&level));
+
+		//use unused item if the player is standing on one
+		item_t* ci=item_m[*y][*x];
+		if (NULL!=ci && !ci->used) {
+			//heal hp
+			if (MED_PACK==ci->type && ent_l[0].hp<PLAYER_HP) {
+				ent_l[0].hp=min(ent_l[0].hp+MED_CHARGE,PLAYER_HP);
+				ci->used=true;
+			}
+			//replenish air
+			if (AIR_CAN==ci->type && ent_l[0].air<PLAYER_AIR) {
+				ent_l[0].air=min(ent_l[0].air+AIR_CHARGE,PLAYER_AIR);
+				ci->used=true;
+			}
+		}
 
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
