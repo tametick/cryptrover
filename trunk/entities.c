@@ -17,9 +17,9 @@ void init_ents(int level) {
 		} while (WALL==tile_m[ce->y][ce->x].type || NULL!=ent_m[ce->y][ce->x]);
 		if (e>0) {
 			ce->hp=2;
-			ce->type='a'|COLOR_PAIR(COLOR_RED);
+			ce->type='a';
+			ce->color=COLOR_PAIR(COLOR_RED);
 		}
-
 		ent_m[ce->y][ce->x]=ce;
 	}
 	//initial player attributes
@@ -27,6 +27,7 @@ void init_ents(int level) {
 		ent_l[0].hp=PLAYER_HP;
 		ent_l[0].air=PLAYER_AIR;
 		ent_l[0].type='@';
+		ent_l[0].color=COLOR_PAIR(COLOR_WHITE);
 	}
 }
 

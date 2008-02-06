@@ -74,6 +74,6 @@ void init_map(void) {
 
 	//entry to next level
 	int ny,nx;
-	while (WALL== tile_m[ny=rand()%Y_][nx=rand()%X_].type);
+	while (WALL==tile_m[ny=rand()%Y_][nx=rand()%X_].type);
 	tile_m[ny][nx].type=NEXT_LEVEL;
 }

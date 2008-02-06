@@ -10,6 +10,7 @@
 typedef struct {
 	int id,y,x,hp,air;
 	chtype type;
+	attr_t color;
 	bool awake;
 }ent_t;
 
