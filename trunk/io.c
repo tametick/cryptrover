@@ -48,7 +48,11 @@ void draw_screen(void) {
 		for (int xx=0; xx<X_ ;xx++) {
 			chtype tile=tile_m[yy][xx].type;
 			if (IN_SIGHT==view_m[yy][xx]) {
-				mvaddch(yy,xx,tile);
+				if (WALL==tile)
+					//to distinguish it from SEEN walls
+					mvaddch(yy,xx,tile|A_BOLD);
+				else
+					mvaddch(yy,xx,tile);
 			} else if (SEEN==view_m[yy][xx]) {
 				if (WALL==tile)
 					mvaddch(yy,xx,tile);
