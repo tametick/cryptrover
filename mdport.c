@@ -579,9 +579,8 @@ int md_readchar(WINDOW * win) {
 		case KEY_C3:
 			ch = 'n';
 			break;
-			/* next should be '.', but for problem with putty/linux */
 		case KEY_B2:
-			ch = 'u';
+			ch = '.';
 			break;
 
 #ifdef KEY_SLEFT

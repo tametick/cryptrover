@@ -8,6 +8,7 @@
 #define KP_DEL 78
 #else
 #define KP_DEL 74
+#define KP_5 69
 #endif
 
 void draw_screen(void);

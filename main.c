@@ -53,7 +53,11 @@ bool player_action(int key,int *y,int *x, int *level) {
 	case '3':
 		return move_to(y,x,1,1);
 	case '.'://wait
+	case '5':
 	case KP_DEL:
+#ifdef KP_5
+	case KP_5:
+#endif
 		return true;
 	case '<'://next level
 	case ',':
