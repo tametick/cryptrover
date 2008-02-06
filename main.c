@@ -90,12 +90,6 @@ int main(void) {
 	int *x=&ent_l[0].x;
 
 	while (ent_l[0].hp>0 && ent_l[0].air>0) {
-		//move living enemies in the player's direction
-		for (int e=1;e<ENTS_;e++) {
-			if (ent_l[e].hp>0)
-				move_enemy(&ent_l[e],&ent_l[0]);
-		}
-
 		//use unused item if the player is standing on one
 		item_t* ci=item_m[*y][*x];
 		if (NULL!=ci && !ci->used) {
@@ -127,6 +121,12 @@ int main(void) {
 
 		//acting on player's input
 		while (!player_action(readchar(),y,x,level));
+		
+		//move living enemies in the player's direction
+		for (int e=1;e<ENTS_;e++) {
+			if (ent_l[e].hp>0)
+				move_enemy(&ent_l[e],&ent_l[0]);
+		}
 	}
 	you_lost();
 }
