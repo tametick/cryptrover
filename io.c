@@ -65,7 +65,7 @@ void draw_screen(void) {
 	}
 	//draw corpses
 	for (int e=0; e<ENTS_; e++) {
-		if (ent_l[e].hp<1 && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
+		if ((ent_l[e].hp<1 || ent_l[e].air<1) && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
 			mvaddch(ent_l[e].y,ent_l[e].x,CORPSE|ent_l[e].color);
 	}
 	//draw items
@@ -75,7 +75,7 @@ void draw_screen(void) {
 	}
 	//draw living entities
 	for (int e=0; e<ENTS_; e++) {
-		if (ent_l[e].hp>0 && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
+		if (ent_l[e].hp>0 && ent_l[e].air>0 && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
 			mvaddch(ent_l[e].y,ent_l[e].x,ent_l[e].type|ent_l[e].color);
 	}
 }
