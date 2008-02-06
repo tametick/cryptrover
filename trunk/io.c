@@ -70,6 +70,11 @@ void draw_screen(void) {
 	}
 	//draw enemies
 	for (int e=1; e<ENTS_; e++) {
+		//don't draw a corpse over an unused item
+		if (ent_l[e].hp<1 &&
+		        item_m[ent_l[e].y][ent_l[e].x] &&
+		        !item_m[ent_l[e].y][ent_l[e].x]->used)
+			continue;
 		if (view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
 			mvaddch(ent_l[e].y,ent_l[e].x,ent_l[e].type|ent_l[e].color);
 	}
