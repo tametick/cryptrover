@@ -63,22 +63,20 @@ void draw_screen(void) {
 			}
 		}
 	}
+	//draw corpses
+	for (int e=0; e<ENTS_; e++) {
+		if (ent_l[e].hp<1 && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
+			mvaddch(ent_l[e].y,ent_l[e].x,CORPSE|ent_l[e].color);
+	}
 	//draw items
 	for (int i=0; i<ITEMS_; i++) {
 		if (!item_l[i].used && view_m[item_l[i].y][item_l[i].x]==IN_SIGHT)
 			mvaddch(item_l[i].y,item_l[i].x,item_l[i].type|item_l[i].color);
 	}
-	//draw enemies
-	for (int e=1; e<ENTS_; e++) {
-		//don't draw a corpse over an unused item
-		if (ent_l[e].hp<1 &&
-		        item_m[ent_l[e].y][ent_l[e].x] &&
-		        !item_m[ent_l[e].y][ent_l[e].x]->used)
-			continue;
-		if (view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
+	//draw living entities
+	for (int e=0; e<ENTS_; e++) {
+		if (ent_l[e].hp>0 && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
 			mvaddch(ent_l[e].y,ent_l[e].x,ent_l[e].type|ent_l[e].color);
 	}
-	//draw player
-	mvaddch(ent_l[0].y,ent_l[0].x,ent_l[0].type|ent_l[0].color);
 }
 
