@@ -82,7 +82,9 @@ void draw_screen(void) {
 	}
 	//draw corpses
 	for (int e=0; e<ENTS_; e++) {
-		if ((ent_l[e].hp<1 || ent_l[e].air<1) && view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
+		if ((ent_l[e].hp<1 || ent_l[e].air<1) &&
+		        view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT &&
+		        NEXT_LEVEL!=tile_m[ent_l[e].y][ent_l[e].x].type)
 			mvaddch(ent_l[e].y,ent_l[e].x,CORPSE|ent_l[e].color);
 	}
 	//draw items
