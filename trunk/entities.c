@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "entities.h"
 #include "items.h"
+#include "io.h"
 
 void init_ents(int level) {
 	memset(ent_m,(int)NULL,sizeof(ent_t *)*Y_*X_);
@@ -56,23 +57,34 @@ void fov(int y, int x, int radius) {
 
 //move entity if there is no living entity on the way
 bool move_to(int *y,int *x,int dy,int dx) {
-	//don't move into walls
-	if (WALL==tile_m[*y+dy][*x+dx].type)
-		return false;
-
 	int id=ent_m[*y][*x]->id;
+
+	//don't move into walls
+	if (WALL==tile_m[*y+dy][*x+dx].type) {
+		if (!id)
+			add_message("There is a wall in the way!",0);
+		return false;
+	}
+
 	//if the destination tile has an entity in it
 	if (NULL!=ent_m[*y+dy][*x+dx]) {
 		ent_t *de=ent_m[*y+dy][*x+dx];
 		//to prevent enemies from attacking one another
-		if (0==id||0==de->id) {
+		if (!id||!de->id) {
 			de->hp--;
-		} else {
+			if (id)
+				add_message("The archanid hits you.",0);
+			else
+				add_message("You hit the archanid.",0);
+		} else
 			return false;
-		}
+
 		//if it's dead remove its reference from the entity map
-		if (de->hp<1)
+		if (de->hp<1) {
 			ent_m[de->y][de->x]=NULL;
+			if (!id)
+				add_message("You kill the archanid!",COLOR_PAIR(COLOR_RED));
+		}
 
 		//the move was still successful because of the attack
 		return true;

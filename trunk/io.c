@@ -4,31 +4,54 @@
 #include "io.h"
 #include "mdport.h"
 
+WINDOW *message_win;
+int message_win_height;
+int messages;
+
 int init_curses(void) {
-	int errs=0;
+	int error_lines=0;
 	stdscr=initscr();
 	if (ERR==keypad(stdscr,true))
-		mvaddstr(errs++,X_+1,"Cannot enable keypad");
+		mvaddstr(error_lines++,X_+1,"Cannot enable keypad");
 	if (ERR==noecho())
-		mvaddstr(errs++,X_+1,"Cannot set noecho mode");
+		mvaddstr(error_lines++,X_+1,"Cannot set noecho mode");
 	if (ERR==curs_set(0))
-		mvaddstr(errs++,X_+1,"Cannot set invisible cursor");
+		mvaddstr(error_lines++,X_+1,"Cannot set invisible cursor");
 	if (ERR==start_color() || !has_colors())
-		mvaddstr(errs++,X_+1,"Cannot enable colors");
+		mvaddstr(error_lines++,X_+1,"Cannot enable colors");
 	else {
 		for (int c=0; c<8; c++)
 			init_pair(c,c,0);
 	}
-	return errs;
+	return error_lines;
+}
+
+void init_message_win(int info_lines) {
+	message_win = newwin(message_win_height=LINES-info_lines-2,COLS-X_-1,info_lines+2,X_+1);
+	scrollok(message_win,true);
+	wrefresh(message_win);
+	messages=0;
+}
+
+void add_message(char *msg, attr_t attr) {
+	wattron(message_win,attr);
+	if (messages>=message_win_height-1) {
+		mvwaddstr(message_win,messages,0,msg);
+		scroll(message_win);
+	} else
+		mvwaddstr(message_win,messages++,0,msg);
+
+	wrefresh(message_win);
+	wattroff(message_win,attr);
 }
 
 int readchar(void) {
 	return md_readchar(stdscr);
 }
 
-void print_info(int errs,int level) {
+int print_info(int errs,int level) {
 	int msgs=errs;
-	char msg[50];
+	char msg[COLS-X_-1];
 	sprintf(msg, "Hit points: %d%%     ",100*ent_l[0].hp/PLAYER_HP);
 	mvaddstr(msgs++,X_+1,msg);
 	sprintf(msg, "Air: %d%%            ",100*ent_l[0].air/PLAYER_AIR);
@@ -40,6 +63,7 @@ void print_info(int errs,int level) {
 	addstr(" - med pack ");
 	mvaddch(++msgs,X_+1,AIR_CAN|COLOR_AIR);
 	addstr(" - air canister ");
+	return msgs+1;
 }
 
 void draw_screen(void) {

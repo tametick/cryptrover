@@ -11,9 +11,11 @@
 #define KP_5 69
 #endif
 
+void add_message(char *msg,attr_t attr);
 void draw_screen(void);
 int init_curses(void);
-void print_info(int errs,int level);
+void init_message_win(int info_lines);
+int print_info(int errs,int level);
 int readchar(void);
 
 #endif
