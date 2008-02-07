@@ -167,8 +167,6 @@ int main(void) {
 		} else if (ent_l[0].air<=AIR_CHARGE)
 			add_message("DANGER - LOW AIR SUPPLY.",C_AIR|A_BOLD);
 
-
-
 		//mark current field of view as IN_SIGHT
 		fov(*y,*x, FOV_RADIUS);
 
