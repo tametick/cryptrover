@@ -19,6 +19,7 @@ void init_ents(int level) {
 		if (e>0) {
 			ce->hp=2;
 			ce->air=1;
+			ce->speed=3;
 			ce->type=ARACHNID;
 			ce->color=COLOR_PAIR(COLOR_RED);
 		}
@@ -28,6 +29,7 @@ void init_ents(int level) {
 	if (1==level) {
 		ent_l[0].hp=PLAYER_HP;
 		ent_l[0].air=PLAYER_AIR;
+		ent_l[0].speed=0;//special case: move every turn
 		ent_l[0].type='@';
 		ent_l[0].color=COLOR_PAIR(COLOR_WHITE);
 	}
