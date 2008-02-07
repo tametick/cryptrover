@@ -3,6 +3,7 @@
 #include "map.h"
 #include "entities.h"
 #include "items.h"
+#include "io.h"
 
 void init_items(void) {
 	memset(item_m,(int)NULL,sizeof(item_t *)*Y_*X_);
@@ -18,10 +19,10 @@ void init_items(void) {
 		         item_m[ci->y][ci->x]);
 		if (i<ITEMS_/2) {
 			ci->type=MED_PACK;
-			ci->color=COLOR_MED;
+			ci->color=C_MED;
 		} else {
 			ci->type=AIR_CAN;
-			ci->color=COLOR_AIR;
+			ci->color=C_AIR;
 		}
 		ci->used=false;
 

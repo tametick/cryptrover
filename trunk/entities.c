@@ -83,7 +83,7 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		if (de->hp<1) {
 			ent_m[de->y][de->x]=NULL;
 			if (!id)
-				add_message("You kill the archanid!",COLOR_PAIR(COLOR_RED));
+				add_message("You kill the archanid!",de->color);
 		}
 
 		//the move was still successful because of the attack

@@ -20,7 +20,7 @@ int init_curses(void) {
 	if (ERR==start_color() || !has_colors())
 		mvaddstr(error_lines++,X_+1,"Cannot enable colors");
 	else {
-		for (int c=0; c<8; c++)
+		for (int c=0; c<=8; c++)
 			init_pair(c,c,0);
 	}
 	return error_lines;
@@ -59,9 +59,9 @@ int print_info(int errs,int level) {
 	sprintf(msg, "Dungeon level: %d/%d ",level,LAST_LEVEL);
 	mvaddstr(msgs++,X_+1,msg);
 	mvaddstr(++msgs,X_+1,"Items:" );
-	mvaddch(++msgs,X_+1,MED_PACK|COLOR_MED);
+	mvaddch(++msgs,X_+1,MED_PACK|C_MED);
 	addstr(" - med pack ");
-	mvaddch(++msgs,X_+1,AIR_CAN|COLOR_AIR);
+	mvaddch(++msgs,X_+1,AIR_CAN|C_AIR);
 	addstr(" - air canister ");
 	return msgs+1;
 }
@@ -72,16 +72,9 @@ void draw_screen(void) {
 		for (int xx=0; xx<X_ ;xx++) {
 			chtype tile=tile_m[yy][xx].type;
 			if (IN_SIGHT==view_m[yy][xx]) {
-				if (WALL==tile)
-					//to distinguish it from SEEN walls
-					mvaddch(yy,xx,tile|A_BOLD);
-				else
-					mvaddch(yy,xx,tile);
+				mvaddch(yy,xx,tile);
 			} else if (SEEN==view_m[yy][xx]) {
-				if (WALL==tile)
-					mvaddch(yy,xx,tile);
-				else
-					mvaddch(yy,xx,' ');
+				mvaddch(yy,xx,tile|C_FOG);
 			} else {
 				mvaddch(yy,xx,' ');
 			}
