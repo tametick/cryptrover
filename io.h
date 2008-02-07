@@ -15,6 +15,7 @@
 #define C_FOG COLOR_PAIR(8)|A_BOLD //fog of war
 #define C_MED COLOR_PAIR(COLOR_GREEN)
 #define C_AIR COLOR_PAIR(COLOR_BLUE)
+#define C_BAT COLOR_PAIR(COLOR_YELLOW)
 
 void add_message(char *msg,attr_t attr);
 void draw_screen(void);

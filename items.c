@@ -17,12 +17,15 @@ void init_items(void) {
 		         NEXT_LEVEL==tile_m[ci->y][ci->x].type ||
 		         ent_m[ci->y][ci->x] ||
 		         item_m[ci->y][ci->x]);
-		if (i<ITEMS_/2) {
+		if (i%3==0) {
 			ci->type=MED_PACK;
 			ci->color=C_MED;
-		} else {
+		} else if (i%3==1) {
 			ci->type=AIR_CAN;
 			ci->color=C_AIR;
+		} else {
+			ci->type=BATTERY;
+			ci->color=C_BAT;
 		}
 		ci->used=false;
 

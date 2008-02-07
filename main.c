@@ -129,6 +129,14 @@ int main(void) {
 					add_message("You replensih your air supply.",ci->color);
 				} else
 					add_message("An air canister.",0);
+			} else if (BATTERY==ci->type) {
+				if (ent_l[0].battery<PLAYER_BATTERY) {
+					//charge battery
+					ent_l[0].battery=min(ent_l[0].battery+BATTERY_CHARGE,PLAYER_BATTERY);
+					ci->used=true;
+					add_message("You charge your battery.",ci->color);
+				} else
+					add_message("A battery.",0);
 			}
 		}
 
@@ -148,6 +156,10 @@ int main(void) {
 				if (IN_SIGHT==view_m[yy][xx])
 					view_m[yy][xx]=SEEN;
 
+		//decrease battery
+		if (ent_l[0].battery>0)
+			ent_l[0].battery--;
+
 		//decrease air
 		if (--ent_l[0].air<1) {
 			add_message("You suffocate!",C_AIR|A_STANDOUT);
@@ -155,8 +167,7 @@ int main(void) {
 		} else if (ent_l[0].air<=AIR_CHARGE)
 			add_message("DANGER - LOW AIR SUPPLY.",C_AIR|A_BOLD);
 
-		if (ent_l[0].hp<=MED_CHARGE && ent_l[0].hp>0)
-			add_message("DANGER - LOW HITPOINTS.",C_MED|A_BOLD);
+
 
 		//mark current field of view as IN_SIGHT
 		fov(*y,*x, FOV_RADIUS);

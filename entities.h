@@ -8,7 +8,7 @@
 #endif
 
 typedef struct {
-	int id,y,x,hp,air,speed;
+	int id,y,x,hp,air,speed,battery;
 	chtype type;
 	attr_t color;
 	bool awake;
@@ -19,7 +19,8 @@ typedef struct {
 //player attributes
 #define PLAYER_HP (MED_CHARGE*5)
 #define PLAYER_AIR (AIR_CHARGE*5)
-#define FOV_RADIUS 5
+#define PLAYER_BATTERY (BATTERY_CHARGE*5)
+#define FOV_RADIUS 6
 //enemy attributes
 #define CORPSE '%'
 #define ARACHNID 'a'

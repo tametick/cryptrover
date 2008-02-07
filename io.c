@@ -56,6 +56,8 @@ int print_info(int errs,int level) {
 	mvaddstr(msgs++,X_+1,msg);
 	sprintf(msg, "Air: %d%%            ",100*ent_l[0].air/PLAYER_AIR);
 	mvaddstr(msgs++,X_+1,msg);
+	sprintf(msg, "Battery: %d%%        ",100*ent_l[0].battery/PLAYER_BATTERY);
+	mvaddstr(msgs++,X_+1,msg);
 	sprintf(msg, "Dungeon level: %d/%d ",level,LAST_LEVEL);
 	mvaddstr(msgs++,X_+1,msg);
 	mvaddstr(++msgs,X_+1,"Items:" );
@@ -63,6 +65,8 @@ int print_info(int errs,int level) {
 	addstr(" - med pack ");
 	mvaddch(++msgs,X_+1,AIR_CAN|C_AIR);
 	addstr(" - air canister ");
+	mvaddch(++msgs,X_+1,BATTERY|C_BAT);
+	addstr(" - battery ");
 	return msgs+1;
 }
 
