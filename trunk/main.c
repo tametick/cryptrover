@@ -106,22 +106,29 @@ int main(void) {
 	bool lost=false;
 	while (!lost) {
 		turn++;
-		
+
 		//acting on player's input
 		while (!player_action(readchar(),y,x,&level));
 
 		//use unused item if the player is standing on one
 		item_t* ci=item_m[*y][*x];
 		if (NULL!=ci && !ci->used) {
-			//heal hp
-			if (MED_PACK==ci->type && ent_l[0].hp<PLAYER_HP) {
-				ent_l[0].hp=min(ent_l[0].hp+MED_CHARGE,PLAYER_HP);
-				ci->used=true;
-			}
-			//replenish air
-			if (AIR_CAN==ci->type && ent_l[0].air<PLAYER_AIR) {
-				ent_l[0].air=min(ent_l[0].air+AIR_CHARGE,PLAYER_AIR);
-				ci->used=true;
+			if (MED_PACK==ci->type) {
+				if (ent_l[0].hp<PLAYER_HP) {
+					//heal hp
+					ent_l[0].hp=min(ent_l[0].hp+MED_CHARGE,PLAYER_HP);
+					ci->used=true;
+					add_message("You feal healty.",ci->color);
+				} else
+					add_message("A med pack.",0);
+			} else if (AIR_CAN==ci->type) {
+				if (ent_l[0].air<PLAYER_AIR) {
+					//replenish air
+					ent_l[0].air=min(ent_l[0].air+AIR_CHARGE,PLAYER_AIR);
+					ci->used=true;
+					add_message("You replensih your air supply.",ci->color);
+				} else
+					add_message("An air canister.",0);
 			}
 		}
 
@@ -143,8 +150,13 @@ int main(void) {
 
 		//decrease air
 		if (--ent_l[0].air<1) {
+			add_message("You suffocate!",C_AIR|A_STANDOUT);
 			lost=true;
-		}
+		} else if (ent_l[0].air<=AIR_CHARGE)
+			add_message("DANGER - LOW AIR SUPPLY.",C_AIR|A_BOLD);
+
+		if (ent_l[0].hp<=MED_CHARGE && ent_l[0].hp>0)
+			add_message("DANGER - LOW HITPOINTS.",C_MED|A_BOLD);
 
 		//mark current field of view as IN_SIGHT
 		fov(*y,*x, FOV_RADIUS);

@@ -74,9 +74,9 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		//to prevent enemies from attacking one another
 		if (!id||!de->id) {
 			de->hp--;
-			if (id)
-				add_message("The archanid hits you.",0);
-			else
+			if (id) {
+				add_message("The archanid bites you.",0);
+			} else
 				add_message("You hit the archanid.",0);
 		} else
 			return false;
@@ -86,6 +86,8 @@ bool move_to(int *y,int *x,int dy,int dx) {
 			ent_m[de->y][de->x]=NULL;
 			if (!id)
 				add_message("You kill the archanid!",de->color);
+			else
+				add_message("The archanid kills you!",C_MED|A_STANDOUT);
 		}
 
 		//the move was still successful because of the attack
@@ -107,7 +109,10 @@ void move_enemy(ent_t *enemy, ent_t *player) {
 	if (enemy->awake ||
 	        (in_range(*ey,*ex,player->y,player->x,FOV_RADIUS) &&
 	         los(*ey,*ex,player->y,player->x,WALL,NULL))) {
-		enemy->awake=true;
+		if (!enemy->awake) {
+			enemy->awake=true;
+			add_message("The arachnid notices you.",0);
+		}
 
 		//sort the adjunct tiles by their distance to the player
 		tile_t adj_tile[9];
