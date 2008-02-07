@@ -102,8 +102,11 @@ int main(void) {
 	refresh();
 	init_message_win(info_lines);
 
+	unsigned int turn=0;
 	bool lost=false;
 	while (!lost) {
+		turn++;
+		
 		//acting on player's input
 		while (!player_action(readchar(),y,x,&level));
 
@@ -124,7 +127,7 @@ int main(void) {
 
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
-			if (ent_l[e].hp>0)
+			if (ent_l[e].hp>0 && ent_l[e].speed && turn%ent_l[e].speed)
 				move_enemy(&ent_l[e],&ent_l[0]);
 			if (ent_l[0].hp<1) {
 				lost=true;
