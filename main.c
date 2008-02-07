@@ -84,7 +84,7 @@ int main(void) {
 	int level=1;
 
 	srand((unsigned)time(NULL));
-	int errs=init_curses();
+	int error_lines=init_curses();
 	init_map();
 	init_ents(level);
 	init_items();
@@ -96,7 +96,11 @@ int main(void) {
 	//draw start conditions
 	fov(*y,*x, FOV_RADIUS);
 	draw_screen();
-	print_info(errs,level);
+
+	//message window
+	int info_lines=print_info(error_lines,level);
+	refresh();
+	init_message_win(info_lines);
 
 	bool lost=false;
 	while (!lost) {
@@ -144,7 +148,7 @@ int main(void) {
 
 		//draw screen
 		draw_screen();
-		print_info(errs,level);
+		print_info(error_lines,level);
 	}
 	you_lost();
 }
