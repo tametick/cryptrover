@@ -20,6 +20,7 @@ void init_ents(int level) {
 			ce->hp=2;
 			ce->air=1;
 			ce->speed=3;
+			ce->battery=1;
 			ce->type=ARACHNID;
 			ce->color=COLOR_PAIR(COLOR_RED);
 		}
@@ -30,6 +31,7 @@ void init_ents(int level) {
 		ent_l[0].hp=PLAYER_HP;
 		ent_l[0].air=PLAYER_AIR;
 		ent_l[0].speed=0;//special case: move every turn
+		ent_l[0].battery=PLAYER_BATTERY;
 		ent_l[0].type='@';
 		ent_l[0].color=COLOR_PAIR(COLOR_WHITE);
 	}
@@ -53,7 +55,8 @@ int compare_tiles(const void* t1, const void* t2) {
 void fov(int y, int x, int radius) {
 	for (int yy=max(y-radius,0); yy<=min(y+radius,Y_-1); yy++)
 		for (int xx=max(x-radius,0); xx<=min(x+radius,X_-1); xx++)
-			if (in_range(y,x,yy,xx,radius) && los(y,x,yy,xx,WALL,NULL))
+			if (in_range(y,x,yy,xx,radius*ent_l[0].battery/PLAYER_BATTERY)
+			        && los(y,x,yy,xx,WALL,NULL))
 				view_m[yy][xx]=IN_SIGHT;
 }
 
@@ -76,6 +79,8 @@ bool move_to(int *y,int *x,int dy,int dx) {
 			de->hp--;
 			if (id) {
 				add_message("The archanid bites you.",0);
+				if (de->hp<=MED_CHARGE && de->hp>0)
+					add_message("DANGER - LOW HITPOINTS.",C_MED|A_BOLD);
 			} else
 				add_message("You hit the archanid.",0);
 		} else

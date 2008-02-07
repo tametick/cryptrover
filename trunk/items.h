@@ -9,11 +9,13 @@ typedef struct {
 }item_t;
 
 //items
-#define ITEMS_ 6
+#define ITEMS_ 9
 #define MED_PACK '+'
 #define AIR_CAN '*'
+#define BATTERY '!'
 #define MED_CHARGE 3
 #define AIR_CHARGE 20
+#define BATTERY_CHARGE 40
 extern item_t item_l[];
 extern item_t *item_m[Y_][X_];
 
