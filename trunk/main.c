@@ -164,7 +164,8 @@ int main(void) {
 		if (--ent_l[0].air<1) {
 			add_message("You suffocate!",C_AIR|A_STANDOUT);
 			lost=true;
-		} else if (ent_l[0].air<=AIR_CHARGE)
+		} else if (ent_l[0].air<=AIR_CHARGE &&
+		           (100*ent_l[0].air/PLAYER_AIR)%5==0)
 			add_message("DANGER - LOW AIR SUPPLY.",C_AIR|A_BOLD);
 
 		//mark current field of view as IN_SIGHT
