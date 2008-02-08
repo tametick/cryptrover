@@ -78,11 +78,11 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		if (!id||!de->id) {
 			de->hp--;
 			if (id) {
-				add_message("The archanid bites you.",0);
+				add_message("The arachnid bites you.",0);
 				if (de->hp<=MED_CHARGE && de->hp>0)
 					add_message("DANGER - LOW HITPOINTS.",C_MED|A_BOLD);
 			} else
-				add_message("You hit the archanid.",0);
+				add_message("You hit the arachnid.",0);
 		} else
 			return false;
 
@@ -90,9 +90,9 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		if (de->hp<1) {
 			ent_m[de->y][de->x]=NULL;
 			if (!id)
-				add_message("You kill the archanid!",de->color);
+				add_message("You kill the arachnid!",de->color);
 			else
-				add_message("The archanid kills you!",C_MED|A_STANDOUT);
+				add_message("The arachnid kills you!",C_MED|A_STANDOUT);
 		}
 
 		//the move was still successful because of the attack
