@@ -93,8 +93,12 @@ void draw_screen(void) {
 	}
 	//draw items
 	for (int i=0; i<ITEMS_; i++) {
-		if (!item_l[i].used && view_m[item_l[i].y][item_l[i].x]==IN_SIGHT)
-			mvaddch(item_l[i].y,item_l[i].x,item_l[i].type|item_l[i].color);
+		if (!item_l[i].used) {
+			if (view_m[item_l[i].y][item_l[i].x]==IN_SIGHT)
+				mvaddch(item_l[i].y,item_l[i].x,item_l[i].type|item_l[i].color);
+			else if (view_m[item_l[i].y][item_l[i].x]==SEEN)
+				mvaddch(item_l[i].y,item_l[i].x,item_l[i].type|C_FOG);
+		}
 	}
 	//draw living entities
 	for (int e=0; e<ENTS_; e++) {
