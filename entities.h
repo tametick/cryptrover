@@ -20,7 +20,7 @@ typedef struct {
 #define PLAYER_HP (MED_CHARGE*5)
 #define PLAYER_AIR (AIR_CHARGE*5)
 #define PLAYER_BATTERY (BATTERY_CHARGE*5)
-#define FOV_RADIUS 6
+#define FOV_RADIUS 5
 //enemy attributes
 #define CORPSE '%'
 #define ARACHNID 'a'
