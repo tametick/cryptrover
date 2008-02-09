@@ -16,12 +16,12 @@ item_t item_l[ITEMS_];
 item_t *item_m[Y_][X_];
 
 void you_won(void) {
-	mvaddstr(Y_/2,X_/2," YOU HAVE WON! :) ");
+	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE WON! :) ");
 	readchar();
 	exit(endwin());
 }
 void you_lost(void) {
-	mvaddstr(Y_/2,X_/2," YOU HAVE LOST! :( ");
+	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE LOST! :( ");
 	readchar();
 	exit(endwin());
 }
