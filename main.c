@@ -77,7 +77,6 @@ bool player_action(int key,int *y,int *x, int *level) {
 	case '?':
 		refresh();
 		show_help();
-		readchar();
 		draw_screen();
 		return false;
 	default:
@@ -111,7 +110,6 @@ int main(void) {
 
 	//help window
 	show_help();
-	readchar();
 	draw_screen();
 
 	unsigned int turn=0;
