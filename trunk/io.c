@@ -26,8 +26,31 @@ int init_curses(void) {
 	return error_lines;
 }
 
+void show_help(void) {
+	WINDOW* help_win=newwin(Y_*3/4,X_*3/4,Y_/8,X_/8);
+	box(help_win,0,0);
+	int lines=1;
+	mvwaddstr(help_win,lines++,1,"To move or attack, use the numpad");
+	mvwaddstr(help_win,lines++,1,"or vi keys:");
+	mvwaddstr(help_win,lines++,1,"\t7 8 9    y k u");
+	mvwaddstr(help_win,lines++,1,"\t \\|/     \\|/ ");
+	mvwaddstr(help_win,lines++,1,"\t4-5-6    h-.-l");
+	mvwaddstr(help_win,lines++,1,"\t /|\\      /|\\ ");
+	mvwaddstr(help_win,lines++,1,"\t1 2 3    b j n");
+	lines++;
+	mvwaddstr(help_win,lines++,1,"To go up a staircase to the next ");
+	mvwaddstr(help_win,lines++,1,"level press '<' or ','.");
+	lines++;
+	mvwaddstr(help_win,lines++,1,"To quit the game press 'q', ESC ");
+	mvwaddstr(help_win,lines++,1,"or Ctrl+c.");
+	lines++;
+	mvwaddstr(help_win,lines++,1,"To come back to this help screen ");
+	mvwaddstr(help_win,lines++,1,"press '?'.");
+	wrefresh(help_win);
+}
+
 void init_message_win(int info_lines) {
-	message_win = newwin(message_win_height=LINES-info_lines-2,COLS-X_-1,info_lines+2,X_+1);
+	message_win=newwin(message_win_height=LINES-info_lines-2,COLS-X_-1,info_lines+2,X_+1);
 	scrollok(message_win,true);
 	wrefresh(message_win);
 	messages=0;

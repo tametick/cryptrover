@@ -74,6 +74,12 @@ bool player_action(int key,int *y,int *x, int *level) {
 	case 'q':
 	case CTRL_C:
 		you_lost();
+	case '?':
+		refresh();
+		show_help();
+		readchar();
+		draw_screen();
+		return false;
 	default:
 		return false;
 	}
@@ -85,6 +91,7 @@ int main(void) {
 
 	srand((unsigned)time(NULL));
 	int error_lines=init_curses();
+
 	init_map();
 	init_ents(level);
 	init_items();
@@ -101,6 +108,11 @@ int main(void) {
 	int info_lines=print_info(error_lines,level);
 	refresh();
 	init_message_win(info_lines);
+
+	//help window
+	show_help();
+	readchar();
+	draw_screen();
 
 	unsigned int turn=0;
 	bool lost=false;
