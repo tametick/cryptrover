@@ -6,6 +6,9 @@
 #include "items.h"
 #include "io.h"
 
+bool close_to_player(int y,int x) {
+	return in_range(ent_l[0].y,ent_l[0].x,y,x,FOV_RADIUS-1);
+}
 void init_ents(int level) {
 	memset(ent_m,(int)NULL,sizeof(ent_t *)*Y_*X_);
 	for (int e=0; e<ENTS_; e++) {
@@ -15,7 +18,9 @@ void init_ents(int level) {
 		do {
 			ce->y=rand()%Y_;
 			ce->x=rand()%X_;
-		} while (WALL==tile_m[ce->y][ce->x].type || NULL!=ent_m[ce->y][ce->x]);
+		} while (WALL==tile_m[ce->y][ce->x].type
+		         || NULL!=ent_m[ce->y][ce->x]
+		         || (e && close_to_player(ce->y,ce->x)) );
 		if (e>0) {
 			ce->hp=2;
 			ce->air=1;
