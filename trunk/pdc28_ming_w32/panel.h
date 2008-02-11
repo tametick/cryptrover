@@ -21,7 +21,7 @@
  *			   Panels for PDCurses				*
  *----------------------------------------------------------------------*/
 
-#include <curses.h>
+#include "curses.h"
 
 #if defined(__cplusplus) || defined(__cplusplus__) || defined(__CPLUSPLUS)
 extern "C"
