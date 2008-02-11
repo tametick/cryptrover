@@ -1,6 +1,12 @@
 #ifndef _IO_H
 #define _IO_H
 
+#ifdef __WIN32__
+#include "pdc28_ming_w32\panel.h"
+#else
+#include <panel.h>
+#endif 
+
 //key codes
 #define ESC 27
 #define CTRL_C 3

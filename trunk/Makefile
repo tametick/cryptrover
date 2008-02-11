@@ -5,11 +5,11 @@ CFLAGS= -std=c99 -O2
 endif
 
 ifdef WINDIR
-  LDFLAGS= pdc28_ming_w32/pdcurses.a -lm -D__WIN32__
+  LDFLAGS= pdc28_ming_w32/pdcurses.a pdc28_ming_w32/panel.a -lm -D__WIN32__
   BIN= $@.exe
   MDPORT_FLAGS=-D__WIN32__
 else
-  LDFLAGS= -lncurses -lm
+  LDFLAGS= -lncurses -lpanel -lm
   BIN= $@
 endif
 
