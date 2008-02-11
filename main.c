@@ -77,7 +77,7 @@ bool player_action(int key,int *y,int *x, int *level) {
 	case '?':
 		refresh();
 		show_help();
-		draw_screen();
+//		draw_screen();
 		return false;
 	default:
 		return false;
@@ -110,7 +110,7 @@ int main(void) {
 
 	//help window
 	show_help();
-	draw_screen();
+//	draw_screen();
 
 	unsigned int turn=0;
 	bool lost=false;

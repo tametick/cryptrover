@@ -27,7 +27,7 @@ int init_curses(void) {
 }
 
 void show_help(void) {
-	WINDOW* help_win=newwin(Y_*3/4,X_*3/4,Y_/8,X_/8);
+	WINDOW *help_win=newwin(Y_*3/4,X_*3/4,Y_/8,X_/8);
 	box(help_win,0,0);
 	int lines=1;
 	mvwaddstr(help_win,lines++,1,"To move or attack, use the numpad");
@@ -47,8 +47,11 @@ void show_help(void) {
 	mvwaddstr(help_win,lines++,1,"To come back to this help screen ");
 	mvwaddstr(help_win,lines++,1,"press '?'.");
 	wrefresh(help_win);
+	PANEL *help_panel=new_panel(help_win);
+	show_panel(help_panel);
+	update_panels();
 	readchar();
-	clear();
+	hide_panel(help_panel);
 	refresh();
 }
 
