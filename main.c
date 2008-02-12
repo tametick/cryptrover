@@ -18,12 +18,12 @@ item_t *item_m[Y_][X_];
 void you_won(void) {
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE WON! :) ");
 	readchar();
-	exit(endwin());
+	exit(end_curses());
 }
 void you_lost(void) {
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE LOST! :( ");
 	readchar();
-	exit(endwin());
+	exit(end_curses());
 }
 
 bool player_action(int key,int *y,int *x, int *level) {
@@ -77,7 +77,6 @@ bool player_action(int key,int *y,int *x, int *level) {
 	case '?':
 		refresh();
 		show_help();
-//		draw_screen();
 		return false;
 	default:
 		return false;
@@ -110,7 +109,6 @@ int main(void) {
 
 	//help window
 	show_help();
-//	draw_screen();
 
 	unsigned int turn=0;
 	bool lost=false;
