@@ -17,7 +17,7 @@ void dig_tile(int y, int x) {
 	tile_m[y][x].type=FLOOR;
 }
 void dig_path(int y0, int x0, int y1, int x1) {
-	los(y0,x0,y1,x1,(char)NULL,&dig_tile);
+	los(y0,x0,y1,x1,(chtype)NULL,&dig_tile);
 }
 bool dig_room(int y, int x, int radius, bool radial) {
 	if (!has_space(y,x,radius))
