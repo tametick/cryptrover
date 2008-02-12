@@ -5,7 +5,7 @@
 #include "pdc28_ming_w32\panel.h"
 #else
 #include <panel.h>
-#endif 
+#endif
 
 //key codes
 #define ESC 27

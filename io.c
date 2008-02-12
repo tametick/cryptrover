@@ -26,7 +26,7 @@ int init_curses(void) {
 	return error_lines;
 }
 
-int end_curses(void){
+int end_curses(void) {
 	delwin(message_win);
 	delwin(stdscr);
 	return endwin();
