@@ -61,8 +61,7 @@ void fov(int y, int x, int radius) {
 	int nr=radius*ent_l[0].battery/PLAYER_BATTERY;
 	for (int yy=max(y-nr,0); yy<=min(y+nr,Y_-1); yy++)
 		for (int xx=max(x-nr,0); xx<=min(x+nr,X_-1); xx++)
-			if (/*in_range(y,x,yy,xx,nr)
-			        &&*/ los(y,x,yy,xx,WALL,NULL))
+			if (los(y,x,yy,xx,WALL,NULL))
 				view_m[yy][xx]=IN_SIGHT;
 }
 
@@ -118,7 +117,6 @@ void move_enemy(ent_t *enemy, ent_t *player) {
 	int *ey=&enemy->y;
 	int *ex=&enemy->x;
 	if (enemy->awake ||
-//	        (in_range(*ey,*ex,player->y,player->x,FOV_RADIUS) &&
 	        (abs(*ey-player->y)<=FOV_RADIUS &&
 	         abs(*ex-player->x)<=FOV_RADIUS &&
 	         los(*ey,*ex,player->y,player->x,WALL,NULL))) {

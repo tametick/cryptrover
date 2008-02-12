@@ -25,6 +25,7 @@
 
 void add_message(char *msg,attr_t attr);
 void draw_screen(void);
+int end_curses(void);
 int init_curses(void);
 void init_message_win(int info_lines);
 void show_help(void);
