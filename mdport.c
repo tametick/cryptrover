@@ -31,7 +31,7 @@
 */
 
 #ifdef __WIN32__
-#include "pdc28_ming_w32/curses.h"
+#include "pdc33_ming_w32/curses.h"
 #else
 #include <ncurses.h>
 #endif
