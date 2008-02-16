@@ -20,7 +20,7 @@ void init_items(void) {
 		if (i<MED_NUM) {
 			ci->type=MED_PACK;
 			ci->color=C_MED;
-		} else if (i-MED_PACK<AIR_NUM) {
+		} else if (i-MED_NUM<AIR_NUM) {
 			ci->type=AIR_CAN;
 			ci->color=C_AIR;
 		} else {
