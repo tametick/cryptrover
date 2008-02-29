@@ -1,7 +1,7 @@
 ifdef DBG
 CFLAGS= -std=c99 -O0 -g -Wall -Wextra -pedantic
 else
-CFLAGS= -std=c99 -O2
+CFLAGS= -std=c99 -Os
 endif
 
 ifdef WINDIR
@@ -16,6 +16,7 @@ endif
 cr: main.c map.o utils.o entities.o items.o io.o mdport.o
 	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
 	strip ${BIN}
+	upx ${BIN}
 
 mdport.o: mdport.c
 	${CC} -c ${MDPORT_FLAGS} -o $@ $? 
