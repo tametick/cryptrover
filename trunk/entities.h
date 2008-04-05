@@ -17,7 +17,7 @@ typedef struct {
 //number of entities
 #define ENTS_ 12
 //player attributes
-#define PLAYER_HP (MED_CHARGE*5)
+#define PLAYER_HP (MED_CHARGE*6)
 #define PLAYER_AIR (AIR_CHARGE*5)
 #define PLAYER_BATTERY (BATTERY_CHARGE*5)
 #define FOV_RADIUS 5

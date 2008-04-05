@@ -14,7 +14,7 @@ typedef struct {
 #define BATTERY '!'
 #define MED_CHARGE 3
 #define AIR_CHARGE 21
-#define BATTERY_CHARGE 34
+#define BATTERY_CHARGE 36
 #define MED_NUM 3
 #define AIR_NUM 4
 #define BATTERY_NUM 3

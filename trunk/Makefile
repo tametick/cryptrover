@@ -16,7 +16,6 @@ endif
 cr: main.c map.o utils.o entities.o items.o io.o mdport.o
 	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
 	strip ${BIN}
-	upx ${BIN}
 
 mdport.o: mdport.c
 	${CC} -c ${MDPORT_FLAGS} -o $@ $? 
