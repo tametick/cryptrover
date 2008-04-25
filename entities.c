@@ -56,7 +56,7 @@ int compare_tiles(const void* t1, const void* t2) {
 		return 1;
 }
 
-//radial field of view
+//field of view
 void fov(int y, int x, int radius) {
 	int nr=radius*ent_l[0].battery/PLAYER_BATTERY;
 	for (int yy=max(y-nr,0); yy<=min(y+nr,Y_-1); yy++)
