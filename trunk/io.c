@@ -40,7 +40,7 @@ void show_help(void) {
 	mvwaddstr(help_win,lines++,1,"To move or attack, use the numpad");
 	mvwaddstr(help_win,lines++,1,"or vi keys:");
 	mvwaddstr(help_win,lines++,1,"\t7 8 9    y k u");
-	mvwaddstr(help_win,lines++,1,"\t \\|/     \\|/ ");
+	mvwaddstr(help_win,lines++,1,"\t \\|/      \\|/ ");
 	mvwaddstr(help_win,lines++,1,"\t4-5-6    h-.-l");
 	mvwaddstr(help_win,lines++,1,"\t /|\\      /|\\ ");
 	mvwaddstr(help_win,lines++,1,"\t1 2 3    b j n");
