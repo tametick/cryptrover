@@ -23,9 +23,12 @@ void init_items(void) {
 		} else if (i-MED_NUM<AIR_NUM) {
 			ci->type=AIR_CAN;
 			ci->color=C_AIR;
-		} else {
+		} else if (i-MED_NUM-AIR_NUM<COIN_NUM) {
 			ci->type=BATTERY;
 			ci->color=C_BAT;
+		} else {
+			ci->type=COIN;
+			ci->color=C_COIN;
 		}
 		ci->used=false;
 

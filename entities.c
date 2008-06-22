@@ -26,19 +26,22 @@ void init_ents(int level) {
 			ce->air=1;
 			ce->speed=3;
 			ce->battery=1;
+			ce->coins=0;
 			ce->type=ARACHNID;
 			ce->color=COLOR_PAIR(COLOR_RED);
 		}
 		ent_m[ce->y][ce->x]=ce;
 	}
 	//initial player attributes
+	ent_t *pl=&ent_l[0];
 	if (1==level) {
-		ent_l[0].hp=PLAYER_HP;
-		ent_l[0].air=PLAYER_AIR;
-		ent_l[0].speed=0;//special case: move every turn
-		ent_l[0].battery=PLAYER_BATTERY;
-		ent_l[0].type='@';
-		ent_l[0].color=COLOR_PAIR(COLOR_WHITE);
+		pl->hp=PLAYER_HP;
+		pl->air=PLAYER_AIR;
+		pl->speed=0;//special case: move every turn
+		pl->battery=PLAYER_BATTERY;
+		pl->coins=0;
+		pl->type='@';
+		pl->color=COLOR_PAIR(COLOR_WHITE);
 	}
 }
 
