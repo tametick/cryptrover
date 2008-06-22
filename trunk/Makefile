@@ -1,7 +1,14 @@
+BIN= $@
+
 ifdef DBG
 CFLAGS= -std=c99 -O0 -g -Wall -Wextra -pedantic
 else
 CFLAGS= -std=c99 -Os
+endif
+
+ifdef CROSS
+  WINDIR=1
+  CC= i586-mingw32msvc-gcc
 endif
 
 ifdef WINDIR
@@ -14,7 +21,7 @@ else
 endif
 
 cr: main.c map.o utils.o entities.o items.o io.o mdport.o
-	${CC} ${CFLAGS} $? -o $@ ${LDFLAGS}
+	${CC} ${CFLAGS} $? -o ${BIN} ${LDFLAGS}
 	strip ${BIN}
 
 mdport.o: mdport.c
