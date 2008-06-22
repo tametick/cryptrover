@@ -2,8 +2,8 @@
 
 *.* or *5*: wait one turn.
 
-*'<'* or *','*: go to the next level when standing on the staircase.
+*<* or *,*: go to the next level when standing on the staircase.
 
-*ESC* or *'q'*: quit the game.
+*ESC* or *q*: quit the game.
 
 Step on an item to use it.
