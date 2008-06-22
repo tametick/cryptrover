@@ -79,6 +79,42 @@ bool player_action(int key,int *y,int *x, int *level) {
 	}
 }
 
+void use_item(ent_t *pl) {
+    item_t *ci = item_m[pl->y][pl->x];
+    if (NULL!=ci && !ci->used) {
+		if (MED_PACK==ci->type) {
+			if (pl->hp<PLAYER_HP) {
+				//heal hp
+				pl->hp=min(pl->hp+MED_CHARGE,PLAYER_HP);
+				ci->used=true;
+				add_message("You feel healthy.",ci->color);
+			} else
+				add_message("A med pack.",0);
+		} else if (AIR_CAN==ci->type) {
+			if (pl->air<PLAYER_AIR) {
+				//replenish air
+				pl->air=min(pl->air+AIR_CHARGE,PLAYER_AIR);
+				ci->used=true;
+				add_message("You replenish your air supply.",ci->color);
+			} else
+				add_message("An air cannister.",0);
+		} else if (BATTERY==ci->type) {
+			if (pl->battery<PLAYER_BATTERY) {
+				//charge battery
+				pl->battery=min(pl->battery+BATTERY_CHARGE,PLAYER_BATTERY);
+				ci->used=true;
+				add_message("You charge your battery.",ci->color);
+			} else
+				add_message("A battery.",0);
+		} else if (COIN==ci->type) {
+			//take coin
+			pl->coins+=COIN_CHARGE;
+			ci->used=true;
+			add_message("You've found a gold coin.",ci->color);
+		}
+	}
+}
+
 int main(void) {
 	//current dungeon level
 	int level=1;
@@ -90,9 +126,10 @@ int main(void) {
 	init_ents(level);
 	init_items();
 
+	ent_t *pl=&ent_l[0];
 	//the player's coordinates
-	int *y=&ent_l[0].y;
-	int *x=&ent_l[0].x;
+	int *y=&(pl->y);
+	int *x=&(pl->x);
 
 	//draw start conditions
 	fov(*y,*x, FOV_RADIUS);
@@ -108,6 +145,7 @@ int main(void) {
 
 	unsigned int turn=0;
 	bool lost=false;
+
 	while (!lost) {
 		turn++;
 
@@ -115,45 +153,13 @@ int main(void) {
 		while (!player_action(readchar(),y,x,&level));
 
 		//use unused item if the player is standing on one
-		item_t* ci=item_m[*y][*x];
-		if (NULL!=ci && !ci->used) {
-			if (MED_PACK==ci->type) {
-				if (ent_l[0].hp<PLAYER_HP) {
-					//heal hp
-					ent_l[0].hp=min(ent_l[0].hp+MED_CHARGE,PLAYER_HP);
-					ci->used=true;
-					add_message("You feel healthy.",ci->color);
-				} else
-					add_message("A med pack.",0);
-			} else if (AIR_CAN==ci->type) {
-				if (ent_l[0].air<PLAYER_AIR) {
-					//replenish air
-					ent_l[0].air=min(ent_l[0].air+AIR_CHARGE,PLAYER_AIR);
-					ci->used=true;
-					add_message("You replenish your air supply.",ci->color);
-				} else
-					add_message("An air cannister.",0);
-			} else if (BATTERY==ci->type) {
-				if (ent_l[0].battery<PLAYER_BATTERY) {
-					//charge battery
-					ent_l[0].battery=min(ent_l[0].battery+BATTERY_CHARGE,PLAYER_BATTERY);
-					ci->used=true;
-					add_message("You charge your battery.",ci->color);
-				} else
-					add_message("A battery.",0);
-			} else if (COIN==ci->type) {
-				//take coin
-				ent_l[0].coins+=COIN_CHARGE;
-				ci->used=true;
-				add_message("You've found a gold coin.",ci->color);
-			}
-		}
+		use_item(pl);
 
 		//move living enemies in the player's direction
 		for (int e=1;e<ENTS_;e++) {
 			if (ent_l[e].hp>0 && ent_l[e].speed && turn%ent_l[e].speed)
-				move_enemy(&ent_l[e],&ent_l[0]);
-			if (ent_l[0].hp<1) {
+				move_enemy(&ent_l[e],pl);
+			if (pl->hp<1) {
 				lost=true;
 				break;
 			}
@@ -166,15 +172,15 @@ int main(void) {
 					view_m[yy][xx]=SEEN;
 
 		//decrease battery
-		if (ent_l[0].battery>0)
-			ent_l[0].battery--;
+		if (pl->battery>0)
+			pl->battery--;
 
 		//decrease air
-		if (--ent_l[0].air<1) {
+		if (--pl->air<1) {
 			add_message("You suffocate!",C_AIR|A_STANDOUT);
 			lost=true;
-		} else if (ent_l[0].air<=AIR_CHARGE &&
-		           (100*ent_l[0].air/PLAYER_AIR)%5==0)
+		} else if (pl->air<=AIR_CHARGE &&
+		           (100*pl->air/PLAYER_AIR)%5==0)
 			add_message("DANGER - LOW AIR SUPPLY.",C_AIR|A_BOLD);
 
 		//mark current field of view as IN_SIGHT
