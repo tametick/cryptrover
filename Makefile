@@ -1,9 +1,7 @@
-BIN= $@
-
 ifdef DBG
-CFLAGS= -std=c99 -O0 -g -Wall -Wextra -pedantic
+CFLAGS+= -std=c99 -O0 -g -Wall -Wextra -pedantic
 else
-CFLAGS= -std=c99 -Os
+CFLAGS+= -std=c99 -Os
 endif
 
 ifdef CROSS
@@ -12,11 +10,11 @@ ifdef CROSS
 endif
 
 ifdef WINDIR
-  LDFLAGS= pdc33_ming_w32/pdcurses.a -lm -D__WIN32__
+  LDFLAGS+= pdc33_ming_w32/pdcurses.a -lm -D__WIN32__
   BIN= $@.exe
   MDPORT_FLAGS=-D__WIN32__
 else
-  LDFLAGS= -lncurses -lpanel -lm
+  LDFLAGS+= -lncurses -lpanel -lm
   BIN= $@
 endif
 
