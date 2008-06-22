@@ -1,5 +1,7 @@
 *Numpad*: move around the level (if playing the 7drl version, make sure Num Lock is on).
 
+*.* or *5*: wait one turn.
+
 *'<'* or *','*: go to the next level when standing on the staircase.
 
 *ESC* or *'q'*: quit the game.
