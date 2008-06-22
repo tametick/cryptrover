@@ -95,15 +95,22 @@ int print_info(int errs,int level) {
 	mvaddstr(msgs++,X_+1,msg);
 	sprintf(msg, "Battery: %d%%        ",100*ent_l[0].battery/PLAYER_BATTERY);
 	mvaddstr(msgs++,X_+1,msg);
+	if(1==ent_l[0].coins)
+		sprintf(msg, "Gold: %d coin        ",ent_l[0].coins);
+	else
+		sprintf(msg, "Gold: %d coins       ",ent_l[0].coins);
+	mvaddstr(msgs++,X_+1,msg);
 	sprintf(msg, "Dungeon level: %d/%d ",level,LAST_LEVEL);
 	mvaddstr(msgs++,X_+1,msg);
 	mvaddstr(++msgs,X_+1,"Items:" );
 	mvaddch(++msgs,X_+1,MED_PACK|C_MED);
 	addstr(" - med pack ");
 	mvaddch(++msgs,X_+1,AIR_CAN|C_AIR);
-	addstr(" - air canister ");
+	addstr(" - air cannister ");
 	mvaddch(++msgs,X_+1,BATTERY|C_BAT);
 	addstr(" - battery ");
+	mvaddch(++msgs,X_+1,COIN|C_COIN);
+	addstr(" - gold coin ");
 	return msgs+1;
 }
 

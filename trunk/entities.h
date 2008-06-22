@@ -8,7 +8,7 @@
 #endif
 
 typedef struct {
-	int id,y,x,hp,air,speed,battery;
+	int id,y,x,hp,air,speed,battery,coins;
 	chtype type;
 	attr_t color;
 	bool awake;

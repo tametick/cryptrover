@@ -54,10 +54,6 @@ bool player_action(int key,int *y,int *x, int *level) {
 		return move_to(y,x,1,1);
 	case '.'://wait
 	case '5':
-	case KP_DEL:
-#ifdef KP_5
-	case KP_5:
-#endif
 		return true;
 	case '<'://next level
 	case ',':
@@ -126,7 +122,7 @@ int main(void) {
 					//heal hp
 					ent_l[0].hp=min(ent_l[0].hp+MED_CHARGE,PLAYER_HP);
 					ci->used=true;
-					add_message("You feal healty.",ci->color);
+					add_message("You feel healthy.",ci->color);
 				} else
 					add_message("A med pack.",0);
 			} else if (AIR_CAN==ci->type) {
@@ -134,9 +130,9 @@ int main(void) {
 					//replenish air
 					ent_l[0].air=min(ent_l[0].air+AIR_CHARGE,PLAYER_AIR);
 					ci->used=true;
-					add_message("You replensih your air supply.",ci->color);
+					add_message("You replenish your air supply.",ci->color);
 				} else
-					add_message("An air canister.",0);
+					add_message("An air cannister.",0);
 			} else if (BATTERY==ci->type) {
 				if (ent_l[0].battery<PLAYER_BATTERY) {
 					//charge battery
@@ -145,6 +141,11 @@ int main(void) {
 					add_message("You charge your battery.",ci->color);
 				} else
 					add_message("A battery.",0);
+			} else if (COIN==ci->type) {
+				//take coin
+				ent_l[0].coins+=COIN_CHARGE;
+				ci->used=true;
+				add_message("You've found a gold coin.",ci->color);
 			}
 		}
 
