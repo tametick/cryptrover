@@ -1,8 +1,8 @@
 #ifndef _IO_H
 #define _IO_H
 
-#ifdef __WIN32__
-#include "pdc33_ming_w32/panel.h"
+#ifdef __PDC__
+#include "pdc33/panel.h"
 #else
 #include <panel.h>
 #endif
