@@ -15,13 +15,19 @@ int init_curses(void) {
 		mvaddstr(error_lines++,X_+1,"Cannot enable keypad");
 	if (ERR==noecho())
 		mvaddstr(error_lines++,X_+1,"Cannot set noecho mode");
-	if (ERR==curs_set(0))
-		mvaddstr(error_lines++,X_+1,"Cannot set invisible cursor");
 	if (ERR==start_color() || !has_colors())
 		mvaddstr(error_lines++,X_+1,"Cannot enable colors");
 	else {
 		for (int c=0; c<=8; c++)
 			init_pair(c,c,0);
+	}
+	if (ERR==curs_set(0))
+		mvaddstr(error_lines++,X_+1,"Cannot set invisible cursor");
+
+	if(error_lines){
+		attron(A_STANDOUT);
+		mvaddstr(error_lines++,X_+1,"Please try a different terminal");
+		attroff(A_STANDOUT);
 	}
 	return error_lines;
 }

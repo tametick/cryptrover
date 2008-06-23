@@ -126,8 +126,8 @@ int main(void) {
 	init_ents(level);
 	init_items();
 
+	//the player and their coordinates
 	ent_t *pl=&ent_l[0];
-	//the player's coordinates
 	int *y=&(pl->y);
 	int *x=&(pl->x);
 
@@ -145,7 +145,6 @@ int main(void) {
 
 	unsigned int turn=0;
 	bool lost=false;
-
 	while (!lost) {
 		turn++;
 
