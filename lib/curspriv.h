@@ -1,4 +1,4 @@
-/************************************************************************ 
+/************************************************************************
  * This file is part of PDCurses. PDCurses is public domain software;	*
  * you may use it for any purpose. This software is provided AS IS with	*
  * NO WARRANTY whatsoever.						*
@@ -45,8 +45,7 @@
 
 /*----------------------------------------------------------------------*/
 
-typedef struct			/* structure for ripped off lines */
-{
+typedef struct {		/* structure for ripped off lines */
 	int line;
 	int (*init)(WINDOW *, int);
 } RIPPEDOFFLINE;
@@ -146,6 +145,6 @@ size_t	PDC_wcstombs(char *, const wchar_t *, size_t);
 #define DIVROUND(num, divisor) ((num) + ((divisor) >> 1)) / (divisor)
 
 #define PDC_CLICK_PERIOD	150	/* time to wait for a click, if
-					   not set by mouseinterval() */
+not set by mouseinterval() */
 
 #endif /* __CURSES_INTERNALS__*/
