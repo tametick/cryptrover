@@ -17,17 +17,17 @@ ifdef WINDIR
   BIN= $@.exe
   MDPORT_FLAGS=-D__PDC__ -D__WIN32__
 else ifeq ($(shell uname -sm), Linux i686)
-ifndef NCURSES
+ifdef NCURSES
+  #linux i686+ncurses
+  LDFLAGS+= -lncurses -lpanel -lm
+else
   #linux i686+pdcurses
   LDFLAGS+= pdc33_lin_i686/libXCurses.a -lm -lXaw -lXmu -lXt -lX11 -lSM -lICE -lXext -lXpm -lc  
   CFLAGS+= -D__PDC__
   MDPORT_FLAGS=-D__PDC__
-else
-  #linux+ncurses
-  LDFLAGS+= -lncurses -lpanel -lm
 endif
 else
-  #all other platforms+ncurses
+  #all others+ncurses
   LDFLAGS+= -lncurses -lpanel -lm
 endif
 
