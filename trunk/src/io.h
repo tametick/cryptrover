@@ -2,7 +2,7 @@
 #define _IO_H
 
 #ifdef __PDC__
-#include "pdc33/panel.h"
+#include "../lib/panel.h"
 #else
 #include <panel.h>
 #endif

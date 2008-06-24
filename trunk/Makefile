@@ -1,3 +1,5 @@
+VPATH= src:../headers
+
 ifdef DBG
 CFLAGS+= -std=c99 -O0 -g -Wall -Wextra -pedantic
 else
