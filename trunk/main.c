@@ -80,8 +80,8 @@ bool player_action(int key,int *y,int *x, int *level) {
 }
 
 void use_item(ent_t *pl) {
-    item_t *ci = item_m[pl->y][pl->x];
-    if (NULL!=ci && !ci->used) {
+	item_t *ci = item_m[pl->y][pl->x];
+	if (NULL!=ci && !ci->used) {
 		if (MED_PACK==ci->type) {
 			if (pl->hp<PLAYER_HP) {
 				//heal hp

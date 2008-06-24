@@ -24,7 +24,7 @@ int init_curses(void) {
 	if (ERR==curs_set(0))
 		mvaddstr(error_lines++,X_+1,"Cannot set invisible cursor");
 
-	if(error_lines){
+	if (error_lines) {
 		attron(A_STANDOUT);
 		mvaddstr(error_lines++,X_+1,"Please try a different terminal");
 		attroff(A_STANDOUT);
@@ -101,7 +101,7 @@ int print_info(int errs,int level) {
 	mvaddstr(msgs++,X_+1,msg);
 	sprintf(msg, "Battery: %d%%        ",100*ent_l[0].battery/PLAYER_BATTERY);
 	mvaddstr(msgs++,X_+1,msg);
-	if(1==ent_l[0].coins)
+	if (1==ent_l[0].coins)
 		sprintf(msg, "Gold: %d coin        ",ent_l[0].coins);
 	else
 		sprintf(msg, "Gold: %d coins       ",ent_l[0].coins);
