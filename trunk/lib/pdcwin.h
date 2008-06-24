@@ -1,4 +1,4 @@
-/************************************************************************ 
+/************************************************************************
  * This file is part of PDCurses. PDCurses is public domain software;	*
  * you may use it for any purpose. This software is provided AS IS with	*
  * NO WARRANTY whatsoever.						*

@@ -42,8 +42,7 @@ mdport.o: mdport.c
 	${CC} -c ${MDPORT_FLAGS} -o $@ $? 
 
 astyle:
-	astyle --style=java -t -n *.c *.h
-ctags:
-	ctags -f ~/tags $(shell pwd)/*.c $(shell pwd)/*.h
+	astyle --style=java -t -n src/*.c src/*.h lib/*.h
+
 clean:
 	rm -f *.o *~ cr cr.exe
