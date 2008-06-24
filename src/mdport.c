@@ -31,7 +31,7 @@
 */
 
 #ifdef __PDC__
-#include "pdc33/curses.h"
+#include "../lib/curses.h"
 #else
 #include <ncurses.h>
 #endif
