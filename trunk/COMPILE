@@ -1,0 +1,10 @@
+Requires gcc, make and a curses compliant library.
+
+Run 'make' if you want the default configuration (links to pdcurses on windows
+and linux i686, ncurses on all other platforms). 
+
+To cross compile for windows run 'make "C2WIN=1"' (uses mingw).
+
+To compile with ncurses on linux i686 run 'make "NCURSES=1"'.
+
+Run './cr' to play.
