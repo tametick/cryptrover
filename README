@@ -19,18 +19,17 @@ the crypt - use them wisely!
 
 2. Compilation
 
-The easiest way to compile cryptrover is to run the install.sh script, usually by typing './install.sh'.  If you don't want to use the install.sh script
-(which will also download libraries as needed), continue reading.
+If you want to use the pdcurses version, make sure you have it in the lib
+directory, either by running './getlibs.sh' or by downloading it yourself from
+http://code.google.com/p/cryptrover/downloads/list?q=pdcurses
 
 Run 'make' to build the default configuration (links to pdcurses on windows and
 ncurses all other platforms).  To compile with pdcurses on linux, run 
-'make "PDC=1"'.
+'make "PDC=1"'.  Ncurses is not supported on windows due to its poor
+performance on that platform.
 
 To cross compile to windows run 'make "CROSS=1"' (requires mingw, on Debian
-based system run 'sudo apt-get install mingw32').
-
-Make sure you have pdcurses in the lib directory, you can get it at: 
-http://code.google.com/p/cryptrover/downloads/list?q=pdcurses
+based systems run 'sudo apt-get install mingw32').
 ----
 
 
@@ -44,5 +43,8 @@ To move or attack, use the numpad or vi keys:
        1 2 3    b j n       
 
 To go up a staircase to the next level press '<' or ','.
+
 To quit the game press 'q', ESC or Ctrl+c.
-To come back to this help screen press '?'.
+
+To show the help screen press '?'.
+----
