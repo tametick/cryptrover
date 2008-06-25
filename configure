@@ -1,0 +1,47 @@
+#!/bin/sh
+
+for arg in "$@"
+do
+	if [ $arg = "--with-pdc" ]; then
+		PDC=1;
+	fi
+done
+
+linux_pdc() { 
+	if [ ! -e lib/libXCurses.a ]; then
+		mkdir tmp ;
+		cd tmp ;
+		wget http://heanet.dl.sourceforge.net/sourceforge/pdcurses/PDCurses-3.3.tar.gz ;
+		tar -xzf PDCurses-3.3.tar.gz ;
+		cd PDCurses-3.3 ;
+		./configure
+		cd x11 ;
+		cp Makefile Makefile.backup ;
+		sed s/\-O2/\-Os/ Makefile.backup > Makefile
+		make ;
+		cp libXCurses.a ../../../lib/
+		cd ../../../
+		rm -rf tmp/
+	fi
+	echo MODE=PDC > config
+}
+linux() {
+	echo "" >config
+}
+windows() {
+	if [ ! -e lib/pdcurses.a ]; then
+		wget -P lib/ http://cryptrover.googlecode.com/files/pdcurses.a ;
+	fi
+	echo "" >config
+}
+
+if [ "$WINDIR" = "" ]; then
+	if [ "$PDC" = "1" ]; then
+		linux_pdc ;
+	else
+		linux ;
+	fi
+else
+	windows ;
+fi
+

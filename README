@@ -19,17 +19,16 @@ the crypt - use them wisely!
 
 2. Compilation
 
-If you want to use the pdcurses version, make sure you have it in the lib
-directory, either by running './getlibs.sh' or by downloading it yourself from
-http://code.google.com/p/cryptrover/downloads/list?q=pdcurses
+To build type: 
 
-Run 'make' to build the default configuration (links to pdcurses on windows and
-ncurses all other platforms).  To compile with pdcurses on linux, run 
-'make "PDC=1"'.  Ncurses is not supported on windows due to its poor
-performance on that platform.
+./configure && make
 
-To cross compile to windows run 'make "CROSS=1"' (requires mingw, on Debian
-based systems run 'sudo apt-get install mingw32').
+Pdcurses is the default on windows, ncurses is the default on all other 
+platforms.  If you want to use pdcurses on linux, type:
+
+./configure --with-pdc && make
+
+Pdcurses will be downloaded as needed by the configure script.
 ----
 
 

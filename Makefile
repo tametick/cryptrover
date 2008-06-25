@@ -1,3 +1,4 @@
+-include config
 VPATH= src:../headers
 
 ifdef DBG
@@ -15,15 +16,15 @@ ifdef CROSS
   STRIP= i586-mingw32msvc-strip
 endif
 ifdef WINDIR
-  #windows+pdcurses, don't forget to get it before compiling 
+  #windows+pdcurses
   LDFLAGS+= lib/pdcurses.a -lm 
   CFLAGS+= -D__PDC__ -D__WIN32__
   BIN= $@.exe
   MDPORT_FLAGS=-D__PDC__ -D__WIN32__
 else ifeq ($(shell uname), Linux)
-ifdef PDC
-  #linux+pdcurses, don't forget to get it before compiling
-  LDFLAGS+= lib/libXCurses.a -lm -lXaw
+ifeq (${MODE}, PDC)
+  #linux+pdcurses
+  LDFLAGS+= lib/libXCurses.a -lm -lXaw -lXpm
   CFLAGS+= -D__PDC__
   MDPORT_FLAGS=-D__PDC__
 else
