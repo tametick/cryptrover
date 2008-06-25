@@ -2,7 +2,19 @@
 
 linux() {
     echo "Linux" ;
-    wget -P lib/ http://cryptrover.googlecode.com/files/libXCurses.a ;
+    mkdir tmp ;
+    cd tmp ;
+    wget http://heanet.dl.sourceforge.net/sourceforge/pdcurses/PDCurses-3.3.tar.gz ;
+    tar -xzf PDCurses-3.3.tar.gz ;
+    cd PDCurses-3.3 ;
+    ./configure
+    cd x11 ;
+    cp Makefile Makefile.backup ;
+    sed s/\-O2/\-Os/ Makefile.backup > Makefile
+    make ;
+    cp libXCurses.a ../../../lib/
+    cd ../../../
+    rm -rf tmp/
 }
 windows() {
     echo "Windows" ;
