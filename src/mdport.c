@@ -37,6 +37,7 @@
 #endif
 #include "mdport.h"
 
+#define KP_5 69
 #define MOD_MOVE(c) (toupper(c) )
 
 /*
@@ -235,6 +236,7 @@ int md_readchar(WINDOW * win) {
 				ch = 'b';
 				break;
 			case 'u':
+			case KP_5:
 				ch = '.';
 				break;
 			}
