@@ -40,32 +40,11 @@
 #define MOD_MOVE(c) (toupper(c) )
 
 /*
-    Cursor/Keypad Support
-
-    Sadly Cursor/Keypad support is less straightforward than it should be.
-
-    The various terminal emulators/consoles choose to differentiate the
-    cursor and keypad keys (with modifiers) in different ways (if at all!).
-    Furthermore they use different code set sequences for each key only
-    a subset of which the various curses libraries recognize. Partly due
-    to incomplete termcap/terminfo entries and partly due to inherent
-    limitations of those terminal capability databases.
-
-    I give curses first crack at decoding the sequences. If it fails to decode
-    it we check for common ESC-prefixed sequences.
-
     All cursor/keypad results are translated into standard rogue movement
     commands.
 
     Unmodified keys are translated to walk commands: hjklyubn
     Modified (shift,control,alt) are translated to run commands: HJKLYUBN
-
-    Console and supported (differentiated) keys
-    Interix:  Cursor Keys, Keypad, Ctl-Keypad
-    Cygwin:   Cursor Keys, Keypad, Alt-Cursor Keys
-    MSYS:     Cursor Keys, Keypad, Ctl-Cursor Keys, Ctl-Keypad
-    Win32:    Cursor Keys, Keypad, Ctl/Shift/Alt-Cursor Keys, Ctl/Alt-Keypad
-    DJGPP:    Cursor Keys, Keypad, Ctl/Shift/Alt-Cursor Keys, Ctl/Alt-Keypad
 */
 
 #define M_NORMAL 0
