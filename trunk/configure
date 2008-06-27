@@ -5,6 +5,9 @@ do
 	if [ $arg = "--with-pdc" ]; then
 		PDC=1;
 	fi
+	if [ $arg = "--debug" ]; then
+		DBG=1;
+	fi
 done
 
 linux_pdc() { 
@@ -26,13 +29,13 @@ linux_pdc() {
 	echo MODE=PDC > config
 }
 linux() {
-	echo "" >config
+	echo "" > config
 }
 windows() {
 	if [ ! -e lib/pdcurses.a ]; then
 		wget -P lib/ http://cryptrover.googlecode.com/files/pdcurses.a ;
 	fi
-	echo "" >config
+	echo "" > config
 }
 
 if [ "$WINDIR" = "" ]; then
@@ -45,3 +48,6 @@ else
 	windows ;
 fi
 
+if [ "$DBG" = "1" ]; then
+	echo DBG=1 >> config;
+fi
