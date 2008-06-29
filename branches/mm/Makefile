@@ -21,16 +21,20 @@ ifdef WINDIR
   CFLAGS+= -D__PDC__ -D__WIN32__
   BIN= $@.exe
   MDPORT_FLAGS=-D__PDC__ -D__WIN32__
+  #windows sdl
 else ifeq ($(shell uname), Linux)
 ifeq (${MODE}, PDC)
-  #linux+pdcurses
-  LDFLAGS+= lib/libXCurses.a -lm -lXaw -lXpm
-  CFLAGS+= -D__PDC__
-  MDPORT_FLAGS=-D__PDC__
+    #linux+pdcurses
+    LDFLAGS+= lib/libXCurses.a -lm -lXaw -lXpm
+    CFLAGS+= -D__PDC__
+    MDPORT_FLAGS=-D__PDC__
 else
-  #linux+ncurses
-  LDFLAGS+= -lncurses -lpanel -lm
+    #linux+ncurses
+    LDFLAGS+= -lncurses -lpanel -lm
 endif
+  #linux sdl
+  CFLAGS+= $(shell sdl-config --cflags) -D__SDL__
+  LDFLAGS+= $(shell sdl-config --libs) -lSDL_mixer
 else
   #all others+ncurses
   LDFLAGS+= -lncurses -lpanel -lm

@@ -16,6 +16,7 @@
     along with CryptRover.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 #include "map.h"
 #include "utils.h"
@@ -32,15 +33,22 @@ ent_t *ent_m[Y_][X_];
 item_t item_l[ITEMS_];
 item_t *item_m[Y_][X_];
 
+void end_game(){
+#ifdef __SDL__
+	Mix_CloseAudio();
+	SDL_Quit();
+#endif
+	exit(end_curses());
+}
 void you_won(void) {
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE WON! :) ");
 	readchar();
-	exit(end_curses());
+	end_game();
 }
 void you_lost(void) {
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE LOST! :( ");
 	readchar();
-	exit(end_curses());
+	end_game();
 }
 
 bool player_action(int key,int *y,int *x, int *level) {
@@ -131,13 +139,37 @@ void use_item(ent_t *pl) {
 		}
 	}
 }
+Mix_Music *music;
+#ifdef __SDL__
+void musicDone() {
+	Mix_HaltMusic();
+	Mix_FreeMusic(music);
+	music = NULL;
+}
+#endif
 
 int main(void) {
+	srand((unsigned)time(NULL));
+	//curses
+	int error_lines=init_curses();
+#ifdef __SDL__
+	//sdl
+	SDL_Init(SDL_INIT_AUDIO);
+
+	int audio_rate = 22050;
+	Uint16 audio_format = AUDIO_S16;
+	int audio_channels = 2;
+	int audio_buffers = 4096;
+	if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers)) {
+		mvaddstr(error_lines++,X_+1,"Unable to open audio");
+	}
+
+	music = Mix_LoadMUS("media/A_Nightmare_On_Elm_Street.ogg");
+	Mix_PlayMusic(music, -1);
+	Mix_HookMusicFinished(musicDone);
+#endif
 	//current dungeon level
 	int level=1;
-
-	srand((unsigned)time(NULL));
-	int error_lines=init_curses();
 
 	init_map();
 	init_ents(level);
