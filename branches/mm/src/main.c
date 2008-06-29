@@ -148,7 +148,7 @@ void musicDone() {
 }
 #endif
 
-int main(void) {
+int main(int argc, char *argv[]) {
 	srand((unsigned)time(NULL));
 	//curses
 	int error_lines=init_curses();
