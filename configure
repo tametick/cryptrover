@@ -32,7 +32,7 @@ linux() {
 	echo "" > config
 }
 windows() {
-	if [ ! -e lib/pdcurses.a ]; then
+	if [ ! -e lib/libpdcurses.a ]; then
 		wget http://cryptrover.googlecode.com/files/SDL_mixer.dll ;
 		wget http://cryptrover.googlecode.com/files/SDL.dll ;
 		wget http://cryptrover.googlecode.com/files/libvorbisfile-3.dll ;
