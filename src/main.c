@@ -46,6 +46,9 @@ void you_won(void) {
 	end_game();
 }
 void you_lost(void) {
+#ifdef __SDL__
+	Mix_PlayChannel(-1, Mix_LoadWAV("media/grunt.wav"), 0);
+#endif
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE LOST! :( ");
 	readchar();
 	end_game();

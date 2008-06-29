@@ -26,6 +26,7 @@
 #ifdef __SDL__
 Mix_Chunk *bite = NULL;
 Mix_Chunk *punch = NULL;
+Mix_Chunk *grunt = NULL;
 #endif
 
 bool close_to_player(int y,int x) {
@@ -37,6 +38,8 @@ void init_ents(int level) {
 		bite = Mix_LoadWAV("media/bite.wav");
 	if(!punch)
 		punch = Mix_LoadWAV("media/punch.wav");
+	if(!grunt)
+		grunt = Mix_LoadWAV("media/grunt.wav");
 #endif
 	memset(ent_m,(int)NULL,sizeof(ent_t *)*Y_*X_);
 	for (int e=0; e<ENTS_; e++) {
@@ -116,6 +119,7 @@ bool move_to(int *y,int *x,int dy,int dx) {
 			if (id) {
 #ifdef __SDL__
 				Mix_PlayChannel(-1, bite, 0);
+				Mix_PlayChannel(-1, grunt, 0);
 #endif
 				add_message("The arachnid bites you.",0);
 				if (de->hp<=MED_CHARGE && de->hp>0)
