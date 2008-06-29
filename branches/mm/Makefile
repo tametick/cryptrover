@@ -21,7 +21,11 @@ ifdef WINDIR
   CFLAGS+= -D__PDC__ -D__WIN32__
   BIN= $@.exe
   MDPORT_FLAGS=-D__PDC__ -D__WIN32__
-  #windows sdl
+  #windows native sdl
+ifndef CROSS
+    CFLAGS+= $(shell sdl-config --cflags) -D__SDL__
+    LDFLAGS+= $(shell sdl-config --libs) -lSDL_mixer
+endif
 else ifeq ($(shell uname), Linux)
 ifeq (${MODE}, PDC)
     #linux+pdcurses
