@@ -17,7 +17,7 @@ ifdef CROSS
 endif
 ifdef WINDIR
   #windows+pdcurses
-  LDFLAGS+= lib/pdcurses.a -lm 
+  LDFLAGS+= lib/libpdcurses.a -lm 
   CFLAGS+= -D__PDC__ -D__WIN32__
   BIN= $@.exe
   MDPORT_FLAGS=-D__PDC__ -D__WIN32__
