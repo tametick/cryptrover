@@ -33,7 +33,12 @@ linux() {
 }
 windows() {
 	if [ ! -e lib/pdcurses.a ]; then
-		wget -P lib/ http://cryptrover.googlecode.com/files/pdcurses.a ;
+		wget http://cryptrover.googlecode.com/files/SDL_mixer.dll ;
+		wget http://cryptrover.googlecode.com/files/SDL.dll ;
+		wget http://cryptrover.googlecode.com/files/libvorbisfile-3.dll ;
+		wget http://cryptrover.googlecode.com/files/libvorbis-0.dll ;
+		wget http://cryptrover.googlecode.com/files/libogg-0.dll ;
+		wget -P lib/ http://cryptrover.googlecode.com/files/libpdcurses.a ;
 	fi
 	echo "" > config
 }
