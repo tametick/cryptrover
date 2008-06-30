@@ -30,6 +30,7 @@ typedef enum {
 #define LAST_LEVEL 12
 
 extern tile_t tile_m[Y_][X_];
+extern int tile_color_m[Y_][X_];
 extern view_t view_m[Y_][X_];
 
 void init_map(void);
