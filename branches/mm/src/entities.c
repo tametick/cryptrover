@@ -1,6 +1,6 @@
 /*  Copyright 2008 Ido Yehieli
 
-   This file is part of CryptRover.
+    This file is part of CryptRover.
 
     CryptRover is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -128,8 +128,8 @@ bool move_to(int *y,int *x,int dy,int dx) {
 				add_message("You hit the arachnid.",0);
 #ifdef __SDL__
 				Mix_PlayChannel(-1, punch, 0);
-			}
 #endif
+			}
 		} else
 			return false;
 

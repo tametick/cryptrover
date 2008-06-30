@@ -1,6 +1,6 @@
 /*  Copyright 2008 Ido Yehieli
 
-   This file is part of CryptRover.
+    This file is part of CryptRover.
 
     CryptRover is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -107,56 +107,11 @@ bool player_action(int key,int *y,int *x, int *level) {
 	}
 }
 
-void use_item(ent_t *pl) {
-	item_t *ci = item_m[pl->y][pl->x];
-	if (NULL!=ci && !ci->used) {
-		if (MED_PACK==ci->type) {
-			if (pl->hp<PLAYER_HP) {
-				//heal hp
-				pl->hp=min(pl->hp+MED_CHARGE,PLAYER_HP);
-				ci->used=true;
-				add_message("You feel healthy.",ci->color);
-			} else
-				add_message("A med pack.",0);
-		} else if (AIR_CAN==ci->type) {
-			if (pl->air<PLAYER_AIR) {
-				//replenish air
-				pl->air=min(pl->air+AIR_CHARGE,PLAYER_AIR);
-				ci->used=true;
-				add_message("You replenish your air supply.",ci->color);
-			} else
-				add_message("An air cannister.",0);
-		} else if (BATTERY==ci->type) {
-			if (pl->battery<PLAYER_BATTERY) {
-				//charge battery
-				pl->battery=min(pl->battery+BATTERY_CHARGE,PLAYER_BATTERY);
-				ci->used=true;
-				add_message("You charge your battery.",ci->color);
-			} else
-				add_message("A battery.",0);
-		} else if (COIN==ci->type) {
-			//take coin
-			pl->coins+=COIN_CHARGE;
-			ci->used=true;
-			add_message("You've found a gold coin.",ci->color);
-		}
-	}
-}
-Mix_Music *music;
-#ifdef __SDL__
-void musicDone() {
-	Mix_HaltMusic();
-	Mix_FreeMusic(music);
-	music = NULL;
-}
-#endif
-
 int main(int argc, char *argv[]) {
+	//initialization
 	srand((unsigned)time(NULL));
-	//curses
 	int error_lines=init_curses();
 #ifdef __SDL__
-	//sdl
 	SDL_Init(SDL_INIT_AUDIO);
 
 	int audio_rate = 22050;
@@ -167,10 +122,10 @@ int main(int argc, char *argv[]) {
 		mvaddstr(error_lines++,X_+1,"Unable to open audio");
 	}
 
-	music = Mix_LoadMUS("media/A_Nightmare_On_Elm_Street.ogg");
+	Mix_Music *music = Mix_LoadMUS("media/A_Nightmare_On_Elm_Street.ogg");
 	Mix_PlayMusic(music, -1);
-	Mix_HookMusicFinished(musicDone);
 #endif
+
 	//current dungeon level
 	int level=1;
 
