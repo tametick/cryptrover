@@ -1,6 +1,6 @@
 /*  Copyright 2008 Ido Yehieli
 
-   This file is part of CryptRover.
+    This file is part of CryptRover.
 
     CryptRover is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,10 +23,24 @@
 #include "items.h"
 #include "io.h"
 
+#ifdef __SDL__
+Mix_Chunk *bite = NULL;
+Mix_Chunk *punch = NULL;
+Mix_Chunk *grunt = NULL;
+#endif
+
 bool close_to_player(int y,int x) {
 	return in_range(ent_l[0].y,ent_l[0].x,y,x,FOV_RADIUS-1);
 }
 void init_ents(int level) {
+#ifdef __SDL__
+	if(!bite)
+		bite = Mix_LoadWAV("media/bite.wav");
+	if(!punch)
+		punch = Mix_LoadWAV("media/punch.wav");
+	if(!grunt)
+		grunt = Mix_LoadWAV("media/grunt.wav");
+#endif
 	memset(ent_m,(int)NULL,sizeof(ent_t *)*Y_*X_);
 	for (int e=0; e<ENTS_; e++) {
 		ent_t *ce=&ent_l[e];
@@ -103,11 +117,19 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		if (!id||!de->id) {
 			de->hp--;
 			if (id) {
+#ifdef __SDL__
+				Mix_PlayChannel(-1, bite, 0);
+				Mix_PlayChannel(-1, grunt, 0);
+#endif
 				add_message("The arachnid bites you.",0);
 				if (de->hp<=MED_CHARGE && de->hp>0)
 					add_message("DANGER - LOW HITPOINTS.",C_MED|A_BOLD);
-			} else
+			} else {
 				add_message("You hit the arachnid.",0);
+#ifdef __SDL__
+				Mix_PlayChannel(-1, punch, 0);
+#endif
+			}
 		} else
 			return false;
 

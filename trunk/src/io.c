@@ -1,6 +1,9 @@
-/*  Copyright 2008 Ido Yehieli
+/*
+    io.c - handling keyboard input and screen output
 
-   This file is part of CryptRover.
+    Copyright 2008 Ido Yehieli
+
+    This file is part of CryptRover.
 
     CryptRover is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

@@ -1,6 +1,6 @@
 /*  Copyright 2008 Ido Yehieli
 
-   This file is part of CryptRover.
+    This file is part of CryptRover.
 
     CryptRover is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
     along with CryptRover.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 #include "map.h"
 #include "utils.h"
@@ -32,15 +33,25 @@ ent_t *ent_m[Y_][X_];
 item_t item_l[ITEMS_];
 item_t *item_m[Y_][X_];
 
+void end_game(){
+#ifdef __SDL__
+	Mix_CloseAudio();
+	SDL_Quit();
+#endif
+	exit(end_curses());
+}
 void you_won(void) {
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE WON! :) ");
 	readchar();
-	exit(end_curses());
+	end_game();
 }
 void you_lost(void) {
+#ifdef __SDL__
+	Mix_PlayChannel(-1, Mix_LoadWAV("media/grunt.wav"), 0);
+#endif
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE LOST! :( ");
 	readchar();
-	exit(end_curses());
+	end_game();
 }
 
 bool player_action(int key,int *y,int *x, int *level) {
@@ -96,48 +107,27 @@ bool player_action(int key,int *y,int *x, int *level) {
 	}
 }
 
-void use_item(ent_t *pl) {
-	item_t *ci = item_m[pl->y][pl->x];
-	if (NULL!=ci && !ci->used) {
-		if (MED_PACK==ci->type) {
-			if (pl->hp<PLAYER_HP) {
-				//heal hp
-				pl->hp=min(pl->hp+MED_CHARGE,PLAYER_HP);
-				ci->used=true;
-				add_message("You feel healthy.",ci->color);
-			} else
-				add_message("A med pack.",0);
-		} else if (AIR_CAN==ci->type) {
-			if (pl->air<PLAYER_AIR) {
-				//replenish air
-				pl->air=min(pl->air+AIR_CHARGE,PLAYER_AIR);
-				ci->used=true;
-				add_message("You replenish your air supply.",ci->color);
-			} else
-				add_message("An air cannister.",0);
-		} else if (BATTERY==ci->type) {
-			if (pl->battery<PLAYER_BATTERY) {
-				//charge battery
-				pl->battery=min(pl->battery+BATTERY_CHARGE,PLAYER_BATTERY);
-				ci->used=true;
-				add_message("You charge your battery.",ci->color);
-			} else
-				add_message("A battery.",0);
-		} else if (COIN==ci->type) {
-			//take coin
-			pl->coins+=COIN_CHARGE;
-			ci->used=true;
-			add_message("You've found a gold coin.",ci->color);
-		}
-	}
-}
-
-int main(void) {
-	//current dungeon level
-	int level=1;
-
+int main(int argc, char *argv[]) {
+	//initialization
 	srand((unsigned)time(NULL));
 	int error_lines=init_curses();
+#ifdef __SDL__
+	SDL_Init(SDL_INIT_AUDIO);
+
+	int audio_rate = 22050;
+	Uint16 audio_format = AUDIO_S16;
+	int audio_channels = 2;
+	int audio_buffers = 4096;
+	if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers)) {
+		mvaddstr(error_lines++,X_+1,"Unable to open audio");
+	}
+
+	Mix_Music *music = Mix_LoadMUS("media/A_Nightmare_On_Elm_Street.ogg");
+	Mix_PlayMusic(music, -1);
+#endif
+
+	//current dungeon level
+	int level=1;
 
 	init_map();
 	init_ents(level);

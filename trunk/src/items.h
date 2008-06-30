@@ -26,5 +26,6 @@ extern item_t item_l[];
 extern item_t *item_m[Y_][X_];
 
 void init_items(void);
+void use_item(ent_t *pl);
 
 #endif

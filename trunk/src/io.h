@@ -6,6 +6,10 @@
 #else
 #include <panel.h>
 #endif
+#ifdef __SDL__
+#include "SDL.h"
+#include "SDL_mixer.h"
+#endif
 
 //key codes
 #define ESC 27
