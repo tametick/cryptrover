@@ -124,6 +124,8 @@ int main(int argc, char *argv[]) {
 
 	Mix_Music *music = Mix_LoadMUS("media/A_Nightmare_On_Elm_Street.ogg");
 	Mix_PlayMusic(music, -1);
+
+	Mix_Chunk *alert = Mix_LoadWAV("media/alert.wav");
 #endif
 
 	//current dungeon level
@@ -186,8 +188,12 @@ int main(int argc, char *argv[]) {
 			add_message("You suffocate!",C_AIR|A_STANDOUT);
 			lost=true;
 		} else if (pl->air<=AIR_CHARGE &&
-		           (100*pl->air/PLAYER_AIR)%5==0)
+		           (100*pl->air/PLAYER_AIR)%5==0) {
+#ifdef __SDL__
+			Mix_PlayChannel(-1, alert, 0);
+#endif
 			add_message("DANGER - LOW AIR SUPPLY.",C_AIR|A_BOLD);
+		}
 
 		//mark current field of view as IN_SIGHT
 		fov(*y,*x, FOV_RADIUS);

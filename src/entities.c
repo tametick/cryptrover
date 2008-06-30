@@ -27,6 +27,7 @@
 Mix_Chunk *bite = NULL;
 Mix_Chunk *punch = NULL;
 Mix_Chunk *grunt = NULL;
+Mix_Chunk *alert = NULL;
 #endif
 
 bool close_to_player(int y,int x) {
@@ -40,6 +41,8 @@ void init_ents(int level) {
 		punch = Mix_LoadWAV("media/punch.wav");
 	if(!grunt)
 		grunt = Mix_LoadWAV("media/grunt.wav");
+	if(!alert)
+		alert = Mix_LoadWAV("media/alert.wav");
 #endif
 	memset(ent_m,(int)NULL,sizeof(ent_t *)*Y_*X_);
 	for (int e=0; e<ENTS_; e++) {
@@ -122,8 +125,12 @@ bool move_to(int *y,int *x,int dy,int dx) {
 				Mix_PlayChannel(-1, grunt, 0);
 #endif
 				add_message("The arachnid bites you.",0);
-				if (de->hp<=MED_CHARGE && de->hp>0)
+				if (de->hp<=MED_CHARGE && de->hp>0){
+#ifdef __SDL__
+					Mix_PlayChannel(-1, alert, 0);
+#endif
 					add_message("DANGER - LOW HITPOINTS.",C_MED|A_BOLD);
+				}
 			} else {
 				add_message("You hit the arachnid.",0);
 #ifdef __SDL__
