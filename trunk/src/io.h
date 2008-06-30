@@ -21,6 +21,7 @@
 #define C_AIR COLOR_PAIR(COLOR_BLUE)
 #define C_BAT COLOR_PAIR(COLOR_MAGENTA)|A_BOLD
 #define C_COIN COLOR_PAIR(COLOR_YELLOW)|A_BOLD
+#define C_LVL COLOR_PAIR(COLOR_CYAN)|A_BOLD
 
 void add_message(char *msg,attr_t attr);
 void draw_screen(void);
