@@ -88,6 +88,7 @@ void init_map(void) {
 			tile_m[y][x].y=y;
 			tile_m[y][x].x=x;
 			view_m[y][x]=UNSEEN;
+			tile_color_m[y][x]=A_NORMAL;
 		}
 	}
 	dig_level();

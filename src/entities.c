@@ -132,10 +132,10 @@ bool move_to(int *y,int *x,int dy,int dx) {
 					add_message("DANGER - LOW HITPOINTS.",C_MED|A_BOLD);
 				}
 			} else {
-				add_message("You hit the arachnid.",0);
 #ifdef __SDL__
 				Mix_PlayChannel(-1, punch, 0);
 #endif
+				add_message("You hit the arachnid.",0);
 			}
 		} else
 			return false;
@@ -143,8 +143,15 @@ bool move_to(int *y,int *x,int dy,int dx) {
 		//if it's dead remove its reference from the entity map
 		if (de->hp<1) {
 			ent_m[de->y][de->x]=NULL;
-			if (!id)
+			if (!id){
 				add_message("You kill the arachnid!",de->color);
+				//blood splatter
+				tile_color_m[de->y+dy][de->x+dx]=COLOR_PAIR(COLOR_RED);
+				for(int yy=de->y-1;yy<=de->y+1;yy++)
+					for(int xx=de->x-1;xx<=de->x+1;xx++)
+						if(!0==rand()%4)
+							tile_color_m[yy][xx]=COLOR_PAIR(COLOR_RED)|(!(rand()%3)?A_BOLD:A_NORMAL);
+			}
 			else
 				add_message("The arachnid kills you!",C_MED|A_STANDOUT);
 		}

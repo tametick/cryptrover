@@ -25,6 +25,7 @@
 #include "io.h"
 
 tile_t tile_m[Y_][X_];
+int tile_color_m[Y_][X_];
 view_t view_m[Y_][X_];
 
 ent_t ent_l[ENTS_];

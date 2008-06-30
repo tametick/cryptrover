@@ -163,7 +163,7 @@ void draw_screen(void) {
 		for (int xx=0; xx<X_ ;xx++) {
 			chtype tile=tile_m[yy][xx].type;
 			if (IN_SIGHT==view_m[yy][xx]) {
-				mvaddch(yy,xx,tile);
+				mvaddch(yy,xx,tile|tile_color_m[yy][xx]);
 			} else if (SEEN==view_m[yy][xx]) {
 				mvaddch(yy,xx,tile|C_FOG);
 			} else {
@@ -174,9 +174,12 @@ void draw_screen(void) {
 	//draw corpses
 	for (int e=0; e<ENTS_; e++) {
 		if ((ent_l[e].hp<1 || ent_l[e].air<1) &&
-		        view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT &&
-		        NEXT_LEVEL!=tile_m[ent_l[e].y][ent_l[e].x].type)
-			mvaddch(ent_l[e].y,ent_l[e].x,CORPSE|ent_l[e].color);
+				NEXT_LEVEL!=tile_m[ent_l[e].y][ent_l[e].x].type){
+			if (view_m[ent_l[e].y][ent_l[e].x]==IN_SIGHT)
+				mvaddch(ent_l[e].y,ent_l[e].x,CORPSE|ent_l[e].color);
+			else if (view_m[ent_l[e].y][ent_l[e].x]==SEEN)
+				mvaddch(ent_l[e].y,ent_l[e].x,CORPSE|C_FOG);
+		}
 	}
 	//draw items
 	for (int i=0; i<ITEMS_; i++) {
