@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#default builds with SDL
+SDL=1
 for arg in "$@"
 do
 	if [ $arg = "--with-pdc" ]; then
@@ -7,6 +9,9 @@ do
 	fi
 	if [ $arg = "--debug" ]; then
 		DBG=1;
+	fi
+	if [ $arg = "--without-sdl" ]; then
+		SDL=0
 	fi
 done
 
@@ -26,20 +31,34 @@ linux_pdc() {
 		cd ../../../
 		rm -rf tmp/
 	fi
-	echo MODE=PDC > config
+	echo MODE=PDC >> config
 }
 linux() {
-	echo "" > config
+	if [ "$SDL" = "1" ]; then
+		echo "SDL=1" > config
+	else
+		echo "" > config
+	fi
 }
 windows() {
-	if [ ! -e lib/pdcurses.a ]; then
-		wget -P lib/ http://cryptrover.googlecode.com/files/pdcurses.a ;
+	if [ "$SDL" = "1" ]; then
+		for file in SDL_mixer.dll SDL.dll libvorbisfile-3.dll libvorbis-0.dll libogg-0.dll 
+		do
+			if [ ! -e $file ]; then
+				wget http://cryptrover.googlecode.com/files/$file ;
+			fi
+		done
+		echo "SDL=1" > config
+	else
+		wget -P lib/ http://cryptrover.googlecode.com/files/libpdcurses.a ;
+		echo "" > config
 	fi
-	echo "" > config
+	
 }
 
 if [ "$WINDIR" = "" ]; then
 	if [ "$PDC" = "1" ]; then
+		linux ;
 		linux_pdc ;
 	else
 		linux ;
