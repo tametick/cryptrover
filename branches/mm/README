@@ -28,7 +28,11 @@ platforms.  If you want to use pdcurses on linux, type:
 
 ./configure --with-pdc && make
 
-Pdcurses will be downloaded as needed by the configure script.
+Pdcurses (as well as SDL on windows) will be downloaded as needed by the
+configure script.
+
+Other arguments that can be passed to the configure script are "--without-sdl"
+(no music and sound effects support) and "--debug".
 ----
 
 
