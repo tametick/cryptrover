@@ -117,10 +117,22 @@ int print_info(int errs,int level) {
 	char msg[COLS-X_-1];
 	sprintf(msg, "Hit points: %d%%     ",100*ent_l[0].hp/PLAYER_HP);
 	mvaddstr(msgs++,X_+1,msg);
+	mvaddstr(msgs,X_+1,"[----------]");
+	move(msgs++,X_+2);
+	for(int i=0;i<10*ent_l[0].hp/PLAYER_HP;i++)
+		addch('*'|C_MED);
 	sprintf(msg, "Air: %d%%            ",100*ent_l[0].air/PLAYER_AIR);
 	mvaddstr(msgs++,X_+1,msg);
+	mvaddstr(msgs,X_+1,"[----------]");
+	move(msgs++,X_+2);
+	for(int i=0;i<10*ent_l[0].air/PLAYER_AIR;i++)
+		addch('*'|C_AIR);
 	sprintf(msg, "Battery: %d%%        ",100*ent_l[0].battery/PLAYER_BATTERY);
 	mvaddstr(msgs++,X_+1,msg);
+	mvaddstr(msgs,X_+1,"[----------]");
+	move(msgs++,X_+2);
+	for(int i=0;i<10*ent_l[0].battery/PLAYER_BATTERY;i++)
+		addch('*'|C_BAT);
 	if (1==ent_l[0].coins)
 		sprintf(msg, "Gold: %d coin        ",ent_l[0].coins);
 	else
@@ -128,6 +140,11 @@ int print_info(int errs,int level) {
 	mvaddstr(msgs++,X_+1,msg);
 	sprintf(msg, "Dungeon level: %d/%d ",level,LAST_LEVEL);
 	mvaddstr(msgs++,X_+1,msg);
+	mvaddstr(msgs,X_+1,"[------------]");
+	move(msgs++,X_+2);
+		for(int i=0;i<level;i++)
+			addch('x'|C_LVL);
+
 	mvaddstr(++msgs,X_+1,"Items:" );
 	mvaddch(++msgs,X_+1,MED_PACK|C_MED);
 	addstr(" - med pack ");
@@ -137,7 +154,7 @@ int print_info(int errs,int level) {
 	addstr(" - battery ");
 	mvaddch(++msgs,X_+1,COIN|C_COIN);
 	addstr(" - gold coin ");
-	return msgs+1;
+	return msgs;
 }
 
 void draw_screen(void) {
