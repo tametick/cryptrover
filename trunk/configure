@@ -50,10 +50,11 @@ windows() {
 		done
 		echo "SDL=1" > config
 	else
-		wget -P lib/ http://cryptrover.googlecode.com/files/libpdcurses.a ;
 		echo "" > config
 	fi
-	
+	if [ ! -e lib/libpdcurses.a ]; then
+		wget -P lib/ http://cryptrover.googlecode.com/files/libpdcurses.a ;
+	fi
 }
 
 if [ "$WINDIR" = "" ]; then
