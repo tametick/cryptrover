@@ -58,30 +58,39 @@ void you_lost(void) {
 bool player_action(int key,int *y,int *x, int *level) {
 	switch (key) {
 	case 'k'://up
+	case 'w':
 	case '8':
 		return move_to(y,x,-1,0);
-	case '2'://down
-	case 'j':
+	case 'j'://down
+	case 'x':
+	case '2':
 		return move_to(y,x,1,0);
 	case 'h'://left
+	case 'a':
 	case '4':
 		return move_to(y,x,0,-1);
 	case 'l'://right
+	case 'd':
 	case '6':
 		return move_to(y,x,0,1);
 	case 'y'://upper left
+	case 'q':
 	case '7':
 		return move_to(y,x,-1,-1);
 	case 'u'://upper right
+	case 'e':
 	case '9':
 		return move_to(y,x,-1,1);
 	case 'b'://lower left
+	case 'z':
 	case '1':
 		return move_to(y,x,1,-1);
 	case 'n'://lower right
+	case 'c':
 	case '3':
 		return move_to(y,x,1,1);
 	case '.'://wait
+	case 's':
 	case '5':
 		return true;
 	case '<'://next level
@@ -96,7 +105,6 @@ bool player_action(int key,int *y,int *x, int *level) {
 		} else
 			return false;
 	case ESC:
-	case 'q':
 	case CTRL_C:
 		you_lost();
 	case '?':
