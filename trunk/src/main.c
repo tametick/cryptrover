@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
 		mvaddstr(error_lines++,X_+1,"Unable to open audio");
 	}
 
-	Mix_Music *music = Mix_LoadMUS("media/A_Nightmare_On_Elm_Street.ogg");
+	Mix_Music *music = Mix_LoadMUS("media/elmst.mid");
 	Mix_PlayMusic(music, -1);
 
 	Mix_Chunk *alert = Mix_LoadWAV("media/alert.wav");
