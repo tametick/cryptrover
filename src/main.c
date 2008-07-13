@@ -93,6 +93,9 @@ bool player_action(int key,int *y,int *x, int *level) {
 	case 's':
 	case '5':
 		return true;
+	case 'f'://flip flashlight on and off
+		ent_l[0].light_on=ent_l[0].light_on?0:1;
+		return true;
 	case '<'://next level
 	case ',':
 		if (NEXT_LEVEL==tile_m[*y][*x].type) {
@@ -189,7 +192,7 @@ int main(int argc, char *argv[]) {
 					view_m[yy][xx]=SEEN;
 
 		//decrease battery
-		if (pl->battery>0)
+		if (pl->battery>0 && pl->light_on)
 			pl->battery--;
 
 		//decrease air

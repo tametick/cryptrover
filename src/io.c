@@ -74,6 +74,9 @@ void show_help(void) {
 	mvwaddstr(help_win,lines++,1,"To go up a staircase to the next ");
 	mvwaddstr(help_win,lines++,1,"level press '<' or ','.");
 	lines++;
+	mvwaddstr(help_win,lines++,1,"To flip the flashlight on and off");
+	mvwaddstr(help_win,lines++,1,"press 'f'.");
+	lines++;
 	mvwaddstr(help_win,lines++,1,"To quit the game press ESC or");
 	mvwaddstr(help_win,lines++,1,"Ctrl+c.");
 	lines++;

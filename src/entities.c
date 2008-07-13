@@ -61,6 +61,7 @@ void init_ents(int level) {
 			ce->speed=3;
 			ce->battery=1;
 			ce->coins=0;
+			ce->light_on=1;
 			ce->type=ARACHNID;
 			ce->color=COLOR_PAIR(COLOR_RED);
 		}
@@ -74,6 +75,7 @@ void init_ents(int level) {
 		pl->speed=0;//special case: move every turn
 		pl->battery=PLAYER_BATTERY;
 		pl->coins=0;
+		pl->light_on=1;
 		pl->type='@';
 		pl->color=COLOR_PAIR(COLOR_WHITE);
 	}
@@ -95,7 +97,7 @@ int compare_tiles(const void* t1, const void* t2) {
 
 //field of view
 void fov(int y, int x, int radius) {
-	int nr=radius*ent_l[0].battery/PLAYER_BATTERY;
+	int nr=ent_l[0].light_on?radius*ent_l[0].battery/PLAYER_BATTERY:0;
 	for (int yy=max(y-nr,0); yy<=min(y+nr,Y_-1); yy++)
 		for (int xx=max(x-nr,0); xx<=min(x+nr,X_-1); xx++)
 			if (los(y,x,yy,xx,WALL,NULL))

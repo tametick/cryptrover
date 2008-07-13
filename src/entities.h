@@ -11,7 +11,7 @@ typedef struct {
 	int id,y,x,hp,air,speed,battery,coins;
 	chtype type;
 	attr_t color;
-	bool awake;
+	bool awake,light_on;
 }ent_t;
 
 //number of entities
