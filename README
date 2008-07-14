@@ -38,16 +38,18 @@ Other arguments that can be passed to the configure script are "--without-sdl"
 
 3. Keys
 
-To move or attack, use the numpad or vi keys:
-       7 8 9    y k u       
-        \|/      \|/        
-       4-5-6    h-.-l       
-        /|\      /|\        
-       1 2 3    b j n       
+To move or attack, use wasd, vi keys or the numpad:
+     q w e      7 8 9     y k u       
+      \|/        \|/       \|/        
+     a-s-d      4-5-6     h-.-l       
+      /|\        /|\       /|\        
+     z x c      1 2 3     b j n       
 
 To go up a staircase to the next level press '<' or ','.
 
-To quit the game press 'q', ESC or Ctrl+c.
+To flip the flashlight on and off press 'f'.
+
+To quit the game press ESC or Ctrl+c.
 
 To show the help screen press '?'.
 ----
