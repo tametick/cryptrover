@@ -18,6 +18,7 @@
     You should have received a copy of the GNU General Public License
     along with CryptRover.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <string.h>
 #include "map.h"
 #include "utils.h"
 #include "entities.h"
