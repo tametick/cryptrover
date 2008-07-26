@@ -23,7 +23,7 @@
 #include "utils.h"
 
 //check if there is enough free space for a room
-bool has_space(int y, int x, int radius) {
+static bool has_space(int y, int x, int radius) {
 	if (y-radius<1 || x-radius<1 || y+radius>=Y_-1 || x+radius>=X_-1)
 		return false;
 	for (int yy=y-radius-1; yy<=y+radius+1; yy++)
@@ -33,13 +33,13 @@ bool has_space(int y, int x, int radius) {
 	return true;
 }
 
-void dig_tile(int y, int x) {
+static void dig_tile(int y, int x) {
 	tile_m[y][x].type=FLOOR;
 }
-void dig_path(int y0, int x0, int y1, int x1) {
+static void dig_path(int y0, int x0, int y1, int x1) {
 	los(y0,x0,y1,x1,(chtype)NULL,&dig_tile);
 }
-bool dig_room(int y, int x, int radius, bool radial) {
+static bool dig_room(int y, int x, int radius, bool radial) {
 	if (!has_space(y,x,radius))
 		return false;
 
@@ -50,7 +50,7 @@ bool dig_room(int y, int x, int radius, bool radial) {
 
 	return true;
 }
-void dig_level(void) {
+static void dig_level(void) {
 	int new_ry=0;
 	int new_rx=0;
 	int radius=1+rand()%ROOM_RADIUS;
