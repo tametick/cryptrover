@@ -19,6 +19,7 @@
     along with CryptRover.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "map.h"
+#include "utils.h"
 #include "entities.h"
 #include "items.h"
 #include "io.h"
@@ -90,6 +91,66 @@ void show_help(void) {
 	delwin(help_win);
 	del_panel(help_panel);
 	refresh();
+}
+
+int compare_scores(const void* s1, const void* s2) {
+	char score_s1[80];//(char*)s1;
+	char score_s2[80];//(char*)s2;
+	
+	strcpy(score_s1 ,(char*)s1+strlen("Gold: ")*sizeof(char));
+	strcpy(score_s2 ,(char*)s2+strlen("Gold: ")*sizeof(char));
+	
+	int score1=atoi(score_s1);
+	int score2=atoi(score_s2);
+	
+	if (score1>score2)
+		return -1;
+	else if (score1==score2)
+		return 0;
+	else
+		return 1;
+}
+
+void show_highscore(void){
+	WINDOW *highscore_win=newwin(LINES*3/4,COLS*3/4,LINES/8-1,COLS/8);
+	PANEL *highscore_panel=new_panel(highscore_win);
+	show_panel(highscore_panel);
+	
+	int lines=0;
+	int llength=80;
+	char line[llength];
+	FILE *score_f = fopen("scores.dat", "r");
+	while(fgets(line, llength, score_f)!=NULL)
+		lines++;
+	fclose(score_f);
+
+	char scores[lines][llength];
+	score_f = fopen("scores.dat", "r");
+	int l=0;
+	while(fgets(line, llength, score_f)!=NULL)
+		strcpy(scores[l++],line);
+	fclose(score_f);
+
+	qsort(scores,lines,sizeof(char)*llength,compare_scores);
+
+	for(int l=0;l<min(LINES*3/4+LINES/8-1,lines);l++) {
+		//color the first score that is identical to the current one
+		if(!strcmp(line,scores[l])){
+			wattron(highscore_win,COLOR_PAIR(COLOR_BLUE)|A_BOLD);
+			mvwaddstr(highscore_win,l+1,2,scores[l]);
+			wattroff(highscore_win,COLOR_PAIR(COLOR_BLUE)|A_BOLD);
+			strcpy(line,"0");
+		} else
+			mvwaddstr(highscore_win,l+1,2,scores[l]);
+	}
+	
+	box(highscore_win,0,0);
+	wrefresh(highscore_win);
+	update_panels();
+	readchar();
+	hide_panel(highscore_panel);
+	delwin(highscore_win);
+	del_panel(highscore_panel);
 }
 
 void init_message_win(int info_lines) {

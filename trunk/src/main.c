@@ -34,25 +34,36 @@ ent_t *ent_m[Y_][X_];
 item_t item_l[ITEMS_];
 item_t *item_m[Y_][X_];
 
-void end_game(){
+void save_score(int level) {
+	FILE *score_f = fopen("scores.dat", "a+");
+	fprintf(score_f,
+		"Gold: %-4d Level: %-2d HP:%3d%%  Air:%3d%%  Battery:%3d%%\n",
+		ent_l[0].coins,level,100*ent_l[0].hp/PLAYER_HP,
+		100*ent_l[0].air/PLAYER_AIR,100*ent_l[0].battery/PLAYER_BATTERY);
+	fclose(score_f);
+}
+
+void end_game(int level){
+	save_score(level);
+	show_highscore();
 #ifdef __SDL__
 	Mix_CloseAudio();
 	SDL_Quit();
 #endif
 	exit(end_curses());
 }
-void you_won(void) {
+void you_won(int level) {
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE WON! :) ");
 	readchar();
-	end_game();
+	end_game(level);
 }
-void you_lost(void) {
+void you_lost(int level) {
 #ifdef __SDL__
 	Mix_PlayChannel(-1, Mix_LoadWAV("media/grunt.wav"), 0);
 #endif
 	mvaddstr(LINES/2-1,COLS/2-9," YOU HAVE LOST! :( ");
 	readchar();
-	end_game();
+	end_game(level);
 }
 
 bool player_action(int key,int *y,int *x, int *level) {
@@ -100,7 +111,7 @@ bool player_action(int key,int *y,int *x, int *level) {
 	case ',':
 		if (NEXT_LEVEL==tile_m[*y][*x].type) {
 			if (++(*level)>LAST_LEVEL)
-				you_won();
+				you_won(*level);
 			init_map();
 			init_ents(*level);
 			init_items();
@@ -109,7 +120,7 @@ bool player_action(int key,int *y,int *x, int *level) {
 			return false;
 	case ESC:
 	case CTRL_C:
-		you_lost();
+		you_lost(*level);
 	case '?':
 		refresh();
 		show_help();
@@ -214,6 +225,6 @@ int main(int argc, char *argv[]) {
 		draw_screen();
 		print_info(error_lines,level);
 	}
-	you_lost();
+	you_lost(level);
 }
 
