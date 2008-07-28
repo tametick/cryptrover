@@ -7,8 +7,13 @@
 #include <panel.h>
 #endif
 #ifdef __SDL__
-#include "SDL.h"
-#include "SDL_mixer.h"
+#ifdef __WIN32__
+	#include "SDL/SDL.h"
+	#include "SDL/SDL_mixer.h"
+#else
+	#include "SDL.h"
+	#include "SDL_mixer.h"
+#endif
 #endif
 
 //key codes

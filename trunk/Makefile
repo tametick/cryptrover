@@ -17,15 +17,15 @@ ifdef CROSS
 endif
 ifdef WINDIR
   #windows+pdcurses
-  LDFLAGS+= lib/libpdcurses.a -lm 
-  CFLAGS+= -D__PDC__ -D__WIN32__
+  LDFLAGS+= lib/libpdcurses.a -lm $(shell sdl-config --libs)
+  CFLAGS+= -D__PDC__ -D__WIN32__ $(shell sdl-config --cflags)
   BIN= $@.exe
   MDPORT_FLAGS=-D__PDC__ -D__WIN32__
 ifeq (${SDL}, 1)
 ifndef CROSS
-    #windows native sdl
-    CFLAGS+= $(shell sdl-config --cflags) -D__SDL__
-    LDFLAGS+= $(shell sdl-config --libs) -lSDL_mixer
+    #windows native sdl-mixer
+	CFLAGS+= -D__SDL__
+    LDFLAGS+= -lSDL_mixer 
 endif
 endif
 else ifeq ($(shell uname), Linux)
