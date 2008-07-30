@@ -215,7 +215,7 @@ int print_info(int errs,int level) {
 	mvaddch(++msgs,X_+1,MED_PACK|C_MED);
 	addstr(" - med pack ");
 	mvaddch(++msgs,X_+1,AIR_CAN|C_AIR);
-	addstr(" - air cannister ");
+	addstr(" - air canister ");
 	mvaddch(++msgs,X_+1,BATTERY|C_BAT);
 	addstr(" - battery ");
 	mvaddch(++msgs,X_+1,COIN|C_COIN);
