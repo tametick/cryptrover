@@ -4,6 +4,8 @@
 
 *<* or *,*: go to the next level when standing on the staircase.
 
-*ESC* or *q*: quit the game.
+*f* : flip the flashlight on and off (battery is conserved when the flashlight is off).
+
+*ESC* or *Ctrl-c*: quit the game.
 
 Step on an item to use it.
