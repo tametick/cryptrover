@@ -9,7 +9,3 @@ http://cryptrover.googlecode.com/files/Cryptrover%20revision%2092%20you%20won.PN
 Pol, 7drl victory:
 
 http://cryptrover.googlecode.com/files/cryptrover_7drl_you_won.png
-
-You Have Lost (7drl version):
-
-http://cryptrover.googlecode.com/files/cryptrover_7drl_you_lost.png
