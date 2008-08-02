@@ -28,24 +28,21 @@ ifndef CROSS
     LDFLAGS+= -lSDL_mixer 
 endif
 endif
-else ifeq ($(shell uname), Linux)
+else 
 ifeq (${MODE}, PDC)
-    #linux+pdcurses
+    #unix+pdcurses
     LDFLAGS+= lib/libXCurses.a -lm -lXaw -lXpm
     CFLAGS+= -D__PDC__
     MDPORT_FLAGS=-D__PDC__
 else
-    #linux+ncurses
+    #unix+ncurses
     LDFLAGS+= -lncurses -lpanel -lm
 endif
 ifeq (${SDL}, 1)
-    #linux sdl
+    #unix sdl
     CFLAGS+= $(shell sdl-config --cflags) -D__SDL__
     LDFLAGS+= $(shell sdl-config --libs) -lSDL_mixer
 endif
-else
-  #all others+ncurses
-  LDFLAGS+= -lncurses -lpanel -lm
 endif
 
 cr: main.c map.o utils.o entities.o items.o io.o mdport.o
