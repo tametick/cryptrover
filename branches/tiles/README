@@ -1,0 +1,55 @@
+1. Introduction
+2. Compilation
+3. Keys
+----
+
+
+1. Introduction
+
+You are an archaeologist trapped in an underground crypt with a limited supply
+of air.  You must survive long enough to reach the crypt's exit.
+
+    * Be too rash - and the arachnids will nibble you to death.
+    * Be too wary - and your air supply will run out. 
+
+Luckily, the ancients have left behind med packs, air cans and batteries in
+the crypt - use them wisely!
+----
+
+
+2. Compilation
+
+To build type: 
+
+./configure && make
+
+Pdcurses is the default on windows, ncurses is the default on all other 
+platforms.  If you want to use pdcurses on linux, type:
+
+./configure --with-pdc && make
+
+Pdcurses (as well as SDL on windows) will be downloaded as needed by the
+configure script.
+
+Other arguments that can be passed to the configure script are "--without-sdl"
+(no music and sound effects support) and "--debug".
+----
+
+
+3. Keys
+
+To move or attack, use wasd, vi keys or the numpad:
+     q w e      7 8 9     y k u       
+      \|/        \|/       \|/        
+     a-s-d      4-5-6     h-.-l       
+      /|\        /|\       /|\        
+     z x c      1 2 3     b j n       
+
+To go up a staircase to the next level press '<' or ','.
+
+To flip the flashlight on and off press 'f'.
+
+To quit the game press ESC or Ctrl+c.
+
+To show the help screen press '?'.
+----

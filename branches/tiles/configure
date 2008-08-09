@@ -1,0 +1,73 @@
+#!/bin/sh
+
+#default builds with SDL
+SDL=1
+for arg in "$@"
+do
+	if [ $arg = "--with-pdc" ]; then
+		PDC=1;
+	fi
+	if [ $arg = "--debug" ]; then
+		DBG=1;
+	fi
+	if [ $arg = "--without-sdl" ]; then
+		SDL=0
+	fi
+done
+
+linux_pdc() { 
+	if [ ! -e lib/libXCurses.a ]; then
+		mkdir tmp ;
+		cd tmp ;
+		wget http://heanet.dl.sourceforge.net/sourceforge/pdcurses/PDCurses-3.3.tar.gz ;
+		tar -xzf PDCurses-3.3.tar.gz ;
+		cd PDCurses-3.3 ;
+		./configure
+		cd x11 ;
+		cp Makefile Makefile.backup ;
+		sed s/\-O2/\-Os/ Makefile.backup > Makefile
+		make ;
+		cp libXCurses.a ../../../lib/
+		cd ../../../
+		rm -rf tmp/
+	fi
+	echo MODE=PDC >> config
+}
+linux() {
+	if [ "$SDL" = "1" ]; then
+		echo "SDL=1" > config
+	else
+		echo "" > config
+	fi
+}
+windows() {
+	if [ "$SDL" = "1" ]; then
+		for file in SDL_mixer.dll SDL.dll libvorbisfile-3.dll libvorbis-0.dll libogg-0.dll 
+		do
+			if [ ! -e $file ]; then
+				wget http://cryptrover.googlecode.com/files/$file ;
+			fi
+		done
+		echo "SDL=1" > config
+	else
+		echo "" > config
+	fi
+	if [ ! -e lib/libpdcurses.a ]; then
+		wget -P lib/ http://cryptrover.googlecode.com/files/libpdcurses.a ;
+	fi
+}
+
+if [ "$WINDIR" = "" ]; then
+	if [ "$PDC" = "1" ]; then
+		linux ;
+		linux_pdc ;
+	else
+		linux ;
+	fi
+else
+	windows ;
+fi
+
+if [ "$DBG" = "1" ]; then
+	echo DBG=1 >> config;
+fi

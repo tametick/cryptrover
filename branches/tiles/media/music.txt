@@ -1,0 +1,2 @@
+"A_Nightmare_On_Elm_Street" is a rendering of the main theme in the NES game
+of the same name, developed by Rareware and published by LJN in 1989.
