@@ -1,0 +1,1 @@
+If any of the above applies, or you have something else to say about the game, just leave a comment on this page.  If you want to start a discussion, or have a more lengthy comment, please post it on the [newsgroup](http://groups.google.com/group/CryptRover).
