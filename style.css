@@ -52,7 +52,7 @@ body {
 
 #game-container {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   max-width: 1200px;
 }
 
@@ -154,8 +154,8 @@ body {
 
 #messages {
   width: 100%;
-  max-width: 1000px;
-  margin-top: 15px;
+  max-width: 1014px;
+  margin-top: 10px;
   padding: 10px;
   background-color: var(--panel-bg);
   border: 2px solid var(--color-gray);
