@@ -7,7 +7,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "serve": "python3 -m http.server 8080",
-    "dev": "tsc && python3 -m http.server 8080",
+    "dev": "concurrently \"tsc --watch\" \"python3 -m http.server 8080\"",
     "test": "tsc && node dist/tests/harness.js"
   },
   "keywords": [
@@ -19,6 +19,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "@types/node": "^25.0.3",
+    "concurrently": "^9.2.1",
     "typescript": "^5.9.3"
   }
 }
