@@ -9,7 +9,7 @@
 - [x] Port entity init, player movement, wall collision, and occupancy map.
 - [x] Implement FOV/LOS and fog rendering.
 - [x] Add enemy AI, speed gate, combat, blood tinting.
-- [ ] Add item spawn/use with placement map.
+- [x] Add item spawn/use with placement map.
 - [ ] Build HUD, message log, end-game flow.
 - [ ] Add help modal, quit/win handling, and audio stubs.
 

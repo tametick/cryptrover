@@ -54,8 +54,9 @@ export function suite(name: string, fn: () => void): void {
 // Import utilities for testing
 import { setSeed, randInt, dist2, inRange, bresenham, min, max, clamp } from '../utils.js';
 import { initMap, tileM, isWalkable } from '../map.js';
-import { Y_, X_, FLOOR, WALL, NEXT_LEVEL, ENTS_, PLAYER, ARACHNID } from '../constants.js';
+import { Y_, X_, FLOOR, WALL, NEXT_LEVEL, ENTS_, PLAYER, ARACHNID, ITEMS_, MED_NUM, AIR_NUM, BATTERY_NUM, COIN_NUM, MED_PACK, AIR_CAN, BATTERY, COIN } from '../constants.js';
 import { initEnts, entL, entM, getPlayer } from '../entities.js';
+import { initItems, itemL, itemM } from '../items.js';
 
 // Run all tests
 function runTests(): void {
@@ -261,6 +262,49 @@ function runTests(): void {
       }
     }
     assertEqual(occupiedCount, ENTS_, 'occupancy map has correct entity count');
+  });
+
+  // Item tests
+  suite('Items: Initialization', () => {
+    initItems();
+
+    assertEqual(itemL.length, ITEMS_, `item list has ${ITEMS_} items`);
+
+    // Count items by type
+    let medCount = 0;
+    let airCount = 0;
+    let batteryCount = 0;
+    let coinCount = 0;
+
+    for (const item of itemL) {
+      if (item.glyph === MED_PACK) medCount++;
+      else if (item.glyph === AIR_CAN) airCount++;
+      else if (item.glyph === BATTERY) batteryCount++;
+      else if (item.glyph === COIN) coinCount++;
+    }
+
+    assertEqual(medCount, MED_NUM, `${MED_NUM} med packs`);
+    assertEqual(airCount, AIR_NUM, `${AIR_NUM} air cans`);
+    assertEqual(batteryCount, BATTERY_NUM, `${BATTERY_NUM} batteries`);
+    assertEqual(coinCount, COIN_NUM, `${COIN_NUM} coins`);
+
+    // Check no overlaps with entities or stairs
+    for (const item of itemL) {
+      assert(entM[item.y][item.x] === null, `item at (${item.y},${item.x}) not on entity`);
+      assert(tileM[item.y][item.x].type !== WALL, `item at (${item.y},${item.x}) not on wall`);
+      assert(tileM[item.y][item.x].type !== NEXT_LEVEL, `item at (${item.y},${item.x}) not on stairs`);
+    }
+
+    // Check item occupancy map consistency
+    let itemOccupied = 0;
+    for (let y = 0; y < Y_; y++) {
+      for (let x = 0; x < X_; x++) {
+        if (itemM[y][x] !== null) {
+          itemOccupied++;
+        }
+      }
+    }
+    assertEqual(itemOccupied, ITEMS_, 'item occupancy map has correct count');
   });
 
   // Print summary

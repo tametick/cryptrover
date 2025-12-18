@@ -14,6 +14,7 @@ import {
   initEnts, getPlayer, entL, moveTo, moveAllEnemies,
   isPlayerAlive, fov
 } from './entities.js';
+import { initItems, itemL, useItem } from './items.js';
 
 // Canvas and context
 let canvas: HTMLCanvasElement;
@@ -76,6 +77,22 @@ export function drawScreen(): void {
         ctx.fillText(glyph, px + 2, py + 1);
       }
       // UNSEEN tiles are not drawn (black)
+    }
+  }
+
+  // Draw items (only if visible)
+  for (const item of itemL) {
+    if (!item.used) {
+      const visibility = viewM[item.y][item.x];
+      const px = item.x * CELL_SIZE;
+      const py = item.y * CELL_SIZE;
+      if (visibility === IN_SIGHT) {
+        ctx.fillStyle = item.color;
+        ctx.fillText(item.glyph, px + 2, py + 1);
+      } else if (visibility === SEEN) {
+        ctx.fillStyle = Colors.fog;
+        ctx.fillText(item.glyph, px + 2, py + 1);
+      }
     }
   }
 
@@ -163,6 +180,7 @@ function processAction(action: InputAction): boolean {
         addMessage(`Descending to level ${level}...`, 'info');
         initMap();
         initEnts(level);
+        initItems();
         fov(player.y, player.x, FOV_RADIUS);
         return true;
       }
@@ -196,6 +214,9 @@ async function gameLoop(): Promise<void> {
 
     if (turnTaken && gameRunning) {
       turn++;
+
+      // Use item if player is standing on one
+      useItem(player);
 
       // Enemy phase
       moveAllEnemies(turn);
@@ -254,6 +275,9 @@ async function init(): Promise<void> {
 
   // Initialize entities
   initEnts(level);
+
+  // Initialize items
+  initItems();
 
   // Initial FOV
   const player = getPlayer();
