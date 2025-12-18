@@ -234,7 +234,8 @@ body {
 /* Game Over modal specific styles */
 .modal-content.gameover {
   text-align: center;
-  min-width: 300px;
+  min-width: 400px;
+  max-width: 650px;
 }
 
 .modal-content.gameover h2 {
