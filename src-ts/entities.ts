@@ -221,7 +221,9 @@ export function moveTo(ent: Ent, dy: number, dx: number): boolean {
             for (let xx = target.x - 1; xx <= target.x + 1; xx++) {
               if (yy >= 0 && yy < Y_ && xx >= 0 && xx < X_) {
                 if (randInt(0, 3) !== 0) {
-                  tileColorM[yy][xx] = Colors.blood;
+                  // C version: random bold (brighter) or normal
+                  const bright = randInt(0, 2) === 0;
+                  tileColorM[yy][xx] = bright ? Colors.bloodBright : Colors.blood;
                 }
               }
             }

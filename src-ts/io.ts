@@ -149,6 +149,14 @@ export function isHelpVisible(): boolean {
 let gameOverModalVisible = false;
 let gameOverResolve: (() => void) | null = null;
 
+interface Score {
+  gold: number;
+  level: number;
+  hpPct: number;
+  airPct: number;
+  batteryPct: number;
+}
+
 export function showGameOver(won: boolean, stats: {
   gold: number;
   level: number;
@@ -167,16 +175,62 @@ export function showGameOver(won: boolean, stats: {
     const hpEl = document.getElementById('go-hp');
     const airEl = document.getElementById('go-air');
     const batteryEl = document.getElementById('go-battery');
+    const highscoresList = document.getElementById('highscores-list');
 
     if (modal && title) {
       title.textContent = won ? 'YOU HAVE WON! :)' : 'YOU HAVE LOST! :(';
       title.className = won ? 'win' : 'lose';
 
+      const hpPct = Math.floor(100 * stats.hp / stats.maxHp);
+      const airPct = Math.floor(100 * stats.air / stats.maxAir);
+      const batteryPct = Math.floor(100 * stats.battery / stats.maxBattery);
+
       if (goldEl) goldEl.textContent = String(stats.gold);
       if (levelEl) levelEl.textContent = String(stats.level);
-      if (hpEl) hpEl.textContent = `${Math.floor(100 * stats.hp / stats.maxHp)}%`;
-      if (airEl) airEl.textContent = `${Math.floor(100 * stats.air / stats.maxAir)}%`;
-      if (batteryEl) batteryEl.textContent = `${Math.floor(100 * stats.battery / stats.maxBattery)}%`;
+      if (hpEl) hpEl.textContent = `${hpPct}%`;
+      if (airEl) airEl.textContent = `${airPct}%`;
+      if (batteryEl) batteryEl.textContent = `${batteryPct}%`;
+
+      // Load and display high scores
+      if (highscoresList) {
+        const scores: Score[] = JSON.parse(localStorage.getItem('cryptrover_scores') || '[]');
+
+        // Sort by gold descending
+        scores.sort((a, b) => b.gold - a.gold);
+
+        // Create current score for comparison
+        const currentScore = {
+          gold: stats.gold,
+          level: stats.level,
+          hpPct: hpPct,
+          airPct: airPct,
+          batteryPct: batteryPct
+        };
+
+        // Display scores (limit to 10)
+        const maxScores = Math.min(10, scores.length);
+        let html = '';
+        let currentHighlighted = false;
+
+        for (let i = 0; i < maxScores; i++) {
+          const score = scores[i];
+          const isCurrentScore = !currentHighlighted &&
+            score.gold === currentScore.gold &&
+            score.level === currentScore.level &&
+            score.hpPct === currentScore.hpPct &&
+            score.airPct === currentScore.airPct &&
+            score.batteryPct === currentScore.batteryPct;
+
+          if (isCurrentScore) {
+            currentHighlighted = true;
+          }
+
+          const className = isCurrentScore ? 'score-line current-score' : 'score-line';
+          html += `<div class="${className}">Gold: ${score.gold.toString().padStart(4, ' ')}  Level: ${score.level.toString().padStart(2, ' ')}  HP:${score.hpPct.toString().padStart(3, ' ')}%  Air:${score.airPct.toString().padStart(3, ' ')}%  Battery:${score.batteryPct.toString().padStart(3, ' ')}%</div>`;
+        }
+
+        highscoresList.innerHTML = html || '<div class="score-line">No scores yet!</div>';
+      }
 
       modal.classList.remove('hidden');
       gameOverModalVisible = true;
@@ -249,7 +303,7 @@ export function updateHUD(stats: {
   if (hpBar && hpText) {
     const hpPercent = (stats.hp / stats.maxHp) * 100;
     hpBar.style.width = `${hpPercent}%`;
-    hpText.textContent = `${stats.hp}/${stats.maxHp}`;
+    hpText.textContent = `Hit points: ${Math.floor(100 * stats.hp / stats.maxHp)}%`;
   }
 
   // Air bar
@@ -258,7 +312,7 @@ export function updateHUD(stats: {
   if (airBar && airText) {
     const airPercent = (stats.air / stats.maxAir) * 100;
     airBar.style.width = `${airPercent}%`;
-    airText.textContent = `${stats.air}/${stats.maxAir}`;
+    airText.textContent = `Air: ${Math.floor(100 * stats.air / stats.maxAir)}%`;
   }
 
   // Battery bar
@@ -267,13 +321,13 @@ export function updateHUD(stats: {
   if (batteryBar && batteryText) {
     const batteryPercent = (stats.battery / stats.maxBattery) * 100;
     batteryBar.style.width = `${batteryPercent}%`;
-    batteryText.textContent = `${stats.battery}/${stats.maxBattery}`;
+    batteryText.textContent = `Battery: ${Math.floor(100 * stats.battery / stats.maxBattery)}%`;
   }
 
   // Coins
   const coinsText = document.getElementById('coins-text');
   if (coinsText) {
-    coinsText.textContent = String(stats.coins);
+    coinsText.textContent = stats.coins === 1 ? '1 coin' : `${stats.coins} coins`;
   }
 
   // Level

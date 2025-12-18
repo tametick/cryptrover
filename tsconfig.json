@@ -12,6 +12,7 @@
     "rootDir": "./src-ts",
     "declaration": true,
     "sourceMap": true,
+    "incremental": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true

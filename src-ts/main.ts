@@ -9,7 +9,7 @@ import { initMap, tileM, tileColorM, viewM } from './map.js';
 import { initRng } from './utils.js';
 import {
   initInput, waitForInput, showHelp,
-  updateHUD, addMessage, clearMessages, showGameOver,
+  updateHUD, addMessage, showGameOver,
   type InputAction
 } from './io.js';
 import {
@@ -140,6 +140,22 @@ function decayFov(): void {
   }
 }
 
+// Save score to localStorage
+function saveScore(level: number): void {
+  const player = getPlayer();
+  const score = {
+    gold: player.coins,
+    level: level,
+    hpPct: Math.floor(100 * player.hp / PLAYER_HP),
+    airPct: Math.floor(100 * player.air / PLAYER_AIR),
+    batteryPct: Math.floor(100 * player.battery / PLAYER_BATTERY)
+  };
+  // Store in localStorage
+  const scores = JSON.parse(localStorage.getItem('cryptrover_scores') || '[]');
+  scores.push(score);
+  localStorage.setItem('cryptrover_scores', JSON.stringify(scores));
+}
+
 // Update HUD with current stats
 function refreshHUD(): void {
   const player = getPlayer();
@@ -206,110 +222,78 @@ function processAction(action: InputAction): boolean {
   }
 }
 
-// Main game loop - runs continuously, handles restarts internally
+// Main game loop - runs once per game session
 async function gameLoop(): Promise<void> {
-  // Outer loop for restarts
-  while (true) {
-    let player = getPlayer();
+  let player = getPlayer();
 
-    // Inner loop for single game session
-    while (gameRunning) {
-      // Wait for player input
-      const action = await waitForInput();
+  // Single game session loop
+  while (gameRunning) {
+    // Wait for player input
+    const action = await waitForInput();
 
-      // Process action (returns true if turn was consumed)
-      const turnTaken = processAction(action);
+    // Process action (returns true if turn was consumed)
+    const turnTaken = processAction(action);
 
-      if (turnTaken && gameRunning) {
-        turn++;
+    if (turnTaken && gameRunning) {
+      turn++;
 
-        // Use item if player is standing on one
-        useItem(player);
+      // Use item if player is standing on one
+      useItem(player);
 
-        // Enemy phase
-        moveAllEnemies(turn);
+      // Enemy phase
+      moveAllEnemies(turn);
 
-        // Check if player died from enemy attack
-        if (!isPlayerAlive()) {
-          addMessage('You died! Game over!', 'danger');
-          gameRunning = false;
-        }
-
-        // Decay FOV
-        decayFov();
-
-        // Drain battery if light is on
-        if (player.lightOn && player.battery > 0) {
-          player.battery--;
-        }
-
-        // Drain air
-        player.air--;
-        if (player.air <= 0) {
-          addMessage('You suffocated! Game over!', 'danger');
-          playSound('grunt');
-          gameRunning = false;
-        } else if (player.air <= AIR_CHARGE && Math.floor(100 * player.air / PLAYER_AIR) % 5 === 0) {
-          addMessage('DANGER - LOW AIR SUPPLY!', 'danger');
-          playSound('alert');
-        }
-
-        // Recompute FOV
-        fov(player.y, player.x, FOV_RADIUS);
+      // Check if player died from enemy attack
+      if (!isPlayerAlive()) {
+        addMessage('You died! Game over!', 'danger');
+        gameRunning = false;
       }
 
-      // Redraw
-      drawScreen();
-      refreshHUD();
+      // Decay FOV
+      decayFov();
+
+      // Drain battery if light is on
+      if (player.lightOn && player.battery > 0) {
+        player.battery--;
+      }
+
+      // Drain air
+      player.air--;
+      if (player.air <= 0) {
+        addMessage('You suffocated! Game over!', 'danger');
+        playSound('grunt');
+        gameRunning = false;
+      } else if (player.air <= AIR_CHARGE && Math.floor(100 * player.air / PLAYER_AIR) % 5 === 0) {
+        addMessage('DANGER - LOW AIR SUPPLY!', 'danger');
+        playSound('alert');
+      }
+
+      // Recompute FOV
+      fov(player.y, player.x, FOV_RADIUS);
     }
 
-    // Show game over modal with stats
-    await showGameOver(playerWon, {
-      gold: player.coins,
-      level: level,
-      hp: Math.max(0, player.hp),
-      maxHp: PLAYER_HP,
-      air: Math.max(0, player.air),
-      maxAir: PLAYER_AIR,
-      battery: Math.max(0, player.battery),
-      maxBattery: PLAYER_BATTERY,
-    });
-
-    // Reset game state for restart
-    resetGameState();
-    player = getPlayer();
+    // Redraw
+    drawScreen();
+    refreshHUD();
   }
-}
 
-// Reset game state for restart
-function resetGameState(): void {
-  level = 1;
-  turn = 0;
-  gameRunning = true;
-  playerWon = false;
+  // Save score before showing game over modal
+  saveScore(level);
 
-  // Clear entity list so initEnts creates fresh entities
-  entL.length = 0;
+  // Show game over modal with stats (waits for user acknowledgment)
+  await showGameOver(playerWon, {
+    gold: player.coins,
+    level: level,
+    hp: Math.max(0, player.hp),
+    maxHp: PLAYER_HP,
+    air: Math.max(0, player.air),
+    maxAir: PLAYER_AIR,
+    battery: Math.max(0, player.battery),
+    maxBattery: PLAYER_BATTERY,
+  });
 
-  // Clear messages
-  clearMessages();
-
-  // Reinitialize everything
-  const seed = initRng();
-  console.log(`Restarting with seed: ${seed}`);
-
-  initMap();
-  initEnts(level);
-  initItems();
-
-  const player = getPlayer();
-  fov(player.y, player.x, FOV_RADIUS);
-
-  drawScreen();
-  refreshHUD();
-
-  addMessage('Welcome to CryptRover! Find the stairs to escape.', 'info');
-  addMessage('Press ? for help.', 'info');
+  // Game ends here - no automatic restart (matching C version behavior)
+  // User can manually reload the page to play again
 }
 
 // Main initialization

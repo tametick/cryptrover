@@ -274,3 +274,39 @@ body {
   color: var(--color-yellow);
   font-weight: bold;
 }
+
+/* High Scores section */
+#highscores {
+  margin-top: 20px;
+  text-align: left;
+}
+
+#highscores h3 {
+  color: var(--color-cyan);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#highscores-list {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.score-line {
+  padding: 3px 5px;
+  border-bottom: 1px solid var(--color-dark-gray);
+  color: var(--text-color);
+  white-space: pre;
+}
+
+.score-line:last-child {
+  border-bottom: none;
+}
+
+.score-line.current-score {
+  background-color: var(--color-blue);
+  color: var(--color-white);
+  font-weight: bold;
+}

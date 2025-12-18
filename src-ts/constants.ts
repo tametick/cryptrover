@@ -71,9 +71,10 @@ export const Colors: Record<string, string> = {
   seen: '#606060',
   floor: '#808080',
   wall: '#a0a0a0',
-  player: '#00ff00',
+  player: '#ffffff',   // White (matches C COLOR_WHITE)
   enemy: '#ff0000',
   blood: '#800000',
+  bloodBright: '#ff0000',  // Bright red (A_BOLD equivalent)
   med: '#00ff00',
   air: '#0080ff',
   battery: '#ff00ff',
