@@ -102,10 +102,11 @@ body {
 }
 
 .stat-bar {
-  flex: 1;
+  min-width: 80px;
   height: 12px;
   background-color: var(--color-dark-gray);
   border: 1px solid var(--color-gray);
+  margin-left: 16px;
 }
 
 .bar-fill {
@@ -118,12 +119,12 @@ body {
 .bar-fill.battery { background-color: var(--color-battery); }
 
 .stat-value {
-  width: 60px;
+  width: 25px;
   text-align: right;
   font-size: 0.9em;
 }
 
-.stat-value.coins { color: var(--color-coin); }
+.stat-value.coins { color: var(--color-coin); white-space: nowrap; }
 .stat-value.level { color: var(--color-level); }
 
 #legend {
@@ -159,7 +160,7 @@ body {
   background-color: var(--panel-bg);
   border: 2px solid var(--color-gray);
   height: 100px;
-  overflow-y: auto;
+  overflow-y: scroll;
   font-size: 0.9em;
 }
 
