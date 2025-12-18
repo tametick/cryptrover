@@ -303,7 +303,7 @@ export function updateHUD(stats: {
   if (hpBar && hpText) {
     const hpPercent = (stats.hp / stats.maxHp) * 100;
     hpBar.style.width = `${hpPercent}%`;
-    hpText.textContent = `Hit points: ${Math.floor(100 * stats.hp / stats.maxHp)}%`;
+    hpText.textContent = `${Math.floor(100 * stats.hp / stats.maxHp)}%`;
   }
 
   // Air bar
@@ -312,7 +312,7 @@ export function updateHUD(stats: {
   if (airBar && airText) {
     const airPercent = (stats.air / stats.maxAir) * 100;
     airBar.style.width = `${airPercent}%`;
-    airText.textContent = `Air: ${Math.floor(100 * stats.air / stats.maxAir)}%`;
+    airText.textContent = `${Math.floor(100 * stats.air / stats.maxAir)}%`;
   }
 
   // Battery bar
@@ -321,7 +321,7 @@ export function updateHUD(stats: {
   if (batteryBar && batteryText) {
     const batteryPercent = (stats.battery / stats.maxBattery) * 100;
     batteryBar.style.width = `${batteryPercent}%`;
-    batteryText.textContent = `Battery: ${Math.floor(100 * stats.battery / stats.maxBattery)}%`;
+    batteryText.textContent = `${Math.floor(100 * stats.battery / stats.maxBattery)}%`;
   }
 
   // Coins
