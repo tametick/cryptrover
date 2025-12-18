@@ -124,8 +124,10 @@ function digLevel(): void {
   let newRx = 0;
   let radius = 1 + randInt(0, ROOM_RADIUS - 1);
   let radial = randInt(0, 1) === 1;
+  let outerTries = 0;
+  const MAX_OUTER_TRIES = 100;
 
-  while (true) {
+  while (outerTries++ < MAX_OUTER_TRIES) {
     // Continue digging from the last new room or
     // dig the first room in the middle of the level
     const ry = newRy !== 0 ? newRy : Math.floor(Y_ / 2);
