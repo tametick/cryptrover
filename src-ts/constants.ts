@@ -42,8 +42,8 @@ export const COIN_CHARGE = 1;
 // Item counts per level
 export const MED_NUM = 3;
 export const AIR_NUM = 4;
-export const BATTERY_NUM = 3;
-export const COIN_NUM = 5;
+export const BATTERY_NUM = 5;
+export const COIN_NUM = 3;
 export const ITEMS_ = MED_NUM + AIR_NUM + BATTERY_NUM + COIN_NUM;
 
 // Player stats

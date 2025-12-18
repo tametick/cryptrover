@@ -2,7 +2,8 @@
 
 import {
   X_, Y_, CELL_SIZE, Colors, WALL, NEXT_LEVEL, SEEN, IN_SIGHT,
-  PLAYER_HP, PLAYER_AIR, PLAYER_BATTERY, LAST_LEVEL, ENTS_, FOV_RADIUS, CORPSE
+  PLAYER_HP, PLAYER_AIR, PLAYER_BATTERY, LAST_LEVEL, ENTS_, FOV_RADIUS, CORPSE,
+  AIR_CHARGE
 } from './constants.js';
 import { initMap, tileM, tileColorM, viewM } from './map.js';
 import { initRng } from './utils.js';
@@ -248,7 +249,7 @@ async function gameLoop(): Promise<void> {
           addMessage('You suffocated! Game over!', 'danger');
           playSound('grunt');
           gameRunning = false;
-        } else if (player.air <= 21 && player.air % 5 === 0) {
+        } else if (player.air <= AIR_CHARGE && Math.floor(100 * player.air / PLAYER_AIR) % 5 === 0) {
           addMessage('DANGER - LOW AIR SUPPLY!', 'danger');
           playSound('alert');
         }

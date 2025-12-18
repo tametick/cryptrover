@@ -2,6 +2,18 @@
 
 This document lists all changes needed to make the TypeScript version 100% gameplay compatible with the original C version.
 
+## Progress Checklist
+
+- [x] **1. Enemy Movement Timing** - Fix inverted logic (`!== 0` instead of `=== 0`)
+- [x] **2. Item Spawn Counts** - Swap BATTERY_NUM and COIN_NUM constants
+- [x] **3. Map Generation Loop** - Remove outer loop limit for C parity
+- [x] **4. Air Warning Calculation** - Use percentage formula like C version
+- [ ] **5. Score Persistence** - Add localStorage-based score saving
+- [ ] **6. Player Color** - Change from green to white
+- [ ] **7. Blood Splatter Variation** - Add bright/dark red variation
+- [ ] **8. HUD Display Format** - Show percentages instead of absolute values
+- [ ] **9. Game Over Behavior** - Require explicit restart action
+
 ---
 
 ## Critical Gameplay Fixes

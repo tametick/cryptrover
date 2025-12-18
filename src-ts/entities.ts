@@ -292,7 +292,7 @@ export function moveAllEnemies(turn: number): void {
   for (let e = 1; e < ENTS_; e++) {
     const enemy = entL[e];
     // Speed gate: enemies with speed N move every N turns
-    if (enemy.alive && enemy.speed && turn % enemy.speed === 0) {
+    if (enemy.alive && enemy.speed && turn % enemy.speed !== 0) {
       moveEnemy(enemy, player);
       // Check if player died
       if (player.hp < 1) {
