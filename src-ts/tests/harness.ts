@@ -53,6 +53,8 @@ export function suite(name: string, fn: () => void): void {
 
 // Import utilities for testing
 import { setSeed, randInt, dist2, inRange, bresenham, min, max, clamp } from '../utils.js';
+import { initMap, tileM, isWalkable } from '../map.js';
+import { Y_, X_, FLOOR, WALL, NEXT_LEVEL } from '../constants.js';
 
 // Run all tests
 function runTests(): void {
@@ -131,6 +133,91 @@ function runTests(): void {
       assert(r >= 5 && r <= 10, `randInt(5,10) in bounds: ${r}`);
     }
     assert(true, 'all 20 randInt calls in bounds');
+  });
+
+  // Map tests
+  suite('Map: Generation', () => {
+    // Reset seed and generate map
+    setSeed(1234);
+    initMap();
+
+    // Count tiles
+    let floorCount = 0;
+    let wallCount = 0;
+    let stairCount = 0;
+    let stairY = -1;
+    let stairX = -1;
+
+    for (let y = 0; y < Y_; y++) {
+      for (let x = 0; x < X_; x++) {
+        const type = tileM[y][x].type;
+        if (type === FLOOR) floorCount++;
+        else if (type === WALL) wallCount++;
+        else if (type === NEXT_LEVEL) {
+          stairCount++;
+          stairY = y;
+          stairX = x;
+        }
+      }
+    }
+
+    assertEqual(stairCount, 1, 'exactly one stair exists');
+    assert(stairY >= 0 && stairX >= 0, 'stair has valid position');
+    assert(floorCount > 50, `enough floor tiles generated: ${floorCount}`);
+    assert(wallCount > 100, `walls exist: ${wallCount}`);
+
+    // Check that stair is reachable from center via flood fill
+    const centerY = Math.floor(Y_ / 2);
+    const centerX = Math.floor(X_ / 2);
+
+    // Find nearest floor to center
+    let startY = centerY;
+    let startX = centerX;
+    if (!isWalkable(centerY, centerX)) {
+      // Search outward for a floor tile
+      outer: for (let r = 1; r < 10; r++) {
+        for (let dy = -r; dy <= r; dy++) {
+          for (let dx = -r; dx <= r; dx++) {
+            if (isWalkable(centerY + dy, centerX + dx)) {
+              startY = centerY + dy;
+              startX = centerX + dx;
+              break outer;
+            }
+          }
+        }
+      }
+    }
+    assert(isWalkable(startY, startX), `found walkable start near center: (${startY},${startX})`);
+
+    // Flood fill to check connectivity
+    const visited = new Set<string>();
+    const queue: Array<{ y: number; x: number }> = [{ y: startY, x: startX }];
+    visited.add(`${startY},${startX}`);
+
+    while (queue.length > 0) {
+      const { y, x } = queue.shift()!;
+      // Include 8-directional neighbors (game allows diagonal movement)
+      const neighbors = [
+        { y: y - 1, x },
+        { y: y + 1, x },
+        { y, x: x - 1 },
+        { y, x: x + 1 },
+        { y: y - 1, x: x - 1 },
+        { y: y - 1, x: x + 1 },
+        { y: y + 1, x: x - 1 },
+        { y: y + 1, x: x + 1 },
+      ];
+      for (const n of neighbors) {
+        const key = `${n.y},${n.x}`;
+        if (!visited.has(key) && isWalkable(n.y, n.x)) {
+          visited.add(key);
+          queue.push(n);
+        }
+      }
+    }
+
+    const stairReachable = visited.has(`${stairY},${stairX}`);
+    assert(stairReachable, 'stair is reachable from center via flood fill');
   });
 
   // Print summary
