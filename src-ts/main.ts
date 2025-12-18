@@ -9,7 +9,7 @@ import { initMap, tileM, tileColorM, viewM } from './map.js';
 import { initRng } from './utils.js';
 import {
   initInput, waitForInput, showHelp,
-  updateHUD, addMessage, showGameOver,
+  updateHUD, addMessage, showGameOver, clearMessages,
   type InputAction
 } from './io.js';
 import {
@@ -292,8 +292,47 @@ async function gameLoop(): Promise<void> {
     maxBattery: PLAYER_BATTERY,
   });
 
-  // Game ends here - no automatic restart (matching C version behavior)
-  // User can manually reload the page to play again
+  // Restart the game
+  restartGame();
+}
+
+// Reset game state and start a new game
+function restartGame(): void {
+  // Reset game state
+  level = 1;
+  turn = 0;
+  gameRunning = true;
+  playerWon = false;
+
+  // Clear message log
+  clearMessages();
+
+  // Re-initialize RNG for new game
+  initRng();
+
+  // Re-initialize map
+  initMap();
+
+  // Re-initialize entities
+  initEnts(level);
+
+  // Re-initialize items
+  initItems();
+
+  // Initial FOV
+  const player = getPlayer();
+  fov(player.y, player.x, FOV_RADIUS);
+
+  // Initial draw
+  drawScreen();
+  refreshHUD();
+
+  // Show welcome message
+  addMessage('Welcome to CryptRover! Find the stairs to escape.', 'info');
+  addMessage('Press ? for help.', 'info');
+
+  // Start new game loop
+  void gameLoop();
 }
 
 // Main initialization
