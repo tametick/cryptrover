@@ -1,5 +1,7 @@
 // CryptRover Web - Input/Output handling
 
+import { resumeAudio } from './audio.js';
+
 // Input action types
 export type InputAction =
   | { type: 'move'; dy: number; dx: number }
@@ -87,6 +89,9 @@ let helpModalVisible = false;
 
 // Process keyboard event
 function handleKeyDown(e: KeyboardEvent): void {
+  // Resume audio on first interaction (browser autoplay policy)
+  resumeAudio();
+
   // Ignore if help modal is visible (any key closes it)
   if (helpModalVisible) {
     hideHelp();
