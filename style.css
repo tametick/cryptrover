@@ -160,7 +160,7 @@ body {
   background-color: var(--panel-bg);
   border: 2px solid var(--color-gray);
   height: 100px;
-  overflow-y: scroll;
+  overflow: hidden;
   font-size: 0.9em;
 }
 

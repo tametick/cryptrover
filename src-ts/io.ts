@@ -281,12 +281,13 @@ function renderMessages(): void {
   const container = document.getElementById('messages');
   if (!container) return;
 
-  container.innerHTML = messages
+  // Store full log in data attribute for inspection, display only last 4
+  container.setAttribute('data-full-log', JSON.stringify(messages));
+
+  const recentMessages = messages.slice(-4);
+  container.innerHTML = recentMessages
     .map((m) => `<div class="message ${m.cssClass}">${m.text}</div>`)
     .join('');
-
-  // Scroll to bottom
-  container.scrollTop = container.scrollHeight;
 }
 
 // HUD update functions
