@@ -13,3 +13,4 @@ dist/
 
 # Logs
 *.log
+tsconfig.tsbuildinfo
