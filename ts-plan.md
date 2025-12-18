@@ -11,7 +11,7 @@
 - [x] Add enemy AI, speed gate, combat, blood tinting.
 - [x] Add item spawn/use with placement map.
 - [x] Build HUD, message log, end-game flow.
-- [ ] Add help modal, quit/win handling, and audio stubs.
+- [x] Add help modal, quit/win handling, and audio stubs.
 
 Goal: replicate CryptRover in browser with minimal dependencies (no frameworks). Keep structure and naming spirit of C code while using idiomatic TypeScript and simple code.
 

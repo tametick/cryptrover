@@ -13,6 +13,7 @@ import { tileM } from './map.js';
 import { entM } from './entities.js';
 import { randInt, min } from './utils.js';
 import { addMessage } from './io.js';
+import { playSound } from './audio.js';
 
 // Global item state
 export let itemL: Item[] = [];
@@ -92,6 +93,7 @@ export function useItem(player: Ent): void {
         item.used = true;
         itemM[player.y][player.x] = null;
         addMessage('You feel healthy.', 'success');
+        playSound('clunk');
       } else {
         addMessage('A med pack.', '');
       }
@@ -103,6 +105,7 @@ export function useItem(player: Ent): void {
         item.used = true;
         itemM[player.y][player.x] = null;
         addMessage('You replenish your air supply.', 'info');
+        playSound('clunk');
       } else {
         addMessage('An air canister.', '');
       }
@@ -114,6 +117,7 @@ export function useItem(player: Ent): void {
         item.used = true;
         itemM[player.y][player.x] = null;
         addMessage('You charge your battery.', 'info');
+        playSound('clunk');
       } else {
         addMessage('A battery.', '');
       }
@@ -124,6 +128,7 @@ export function useItem(player: Ent): void {
       item.used = true;
       itemM[player.y][player.x] = null;
       addMessage("You've found a gold coin.", 'success');
+      playSound('money');
       break;
   }
 }

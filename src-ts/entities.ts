@@ -9,6 +9,7 @@ import { type Ent, makeGrid } from './types.js';
 import { tileM, tileColorM, viewM } from './map.js';
 import { randInt, dist2, inRange, max, min } from './utils.js';
 import { addMessage } from './io.js';
+import { playSound } from './audio.js';
 
 // Global entity state
 export let entL: Ent[] = [];
@@ -195,12 +196,16 @@ export function moveTo(ent: Ent, dy: number, dx: number): boolean {
       if (ent.id > 0) {
         // Enemy attacks player
         addMessage('The arachnid bites you.', 'danger');
+        playSound('bite');
+        playSound('grunt');
         if (target.hp <= MED_CHARGE && target.hp > 0) {
           addMessage('DANGER - LOW HITPOINTS.', 'danger');
+          playSound('alert');
         }
       } else {
         // Player attacks enemy
         addMessage('You hit the arachnid.', '');
+        playSound('punch');
       }
 
       // Check if target died

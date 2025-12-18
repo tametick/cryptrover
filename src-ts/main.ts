@@ -16,6 +16,7 @@ import {
   isPlayerAlive, fov
 } from './entities.js';
 import { initItems, itemL, useItem } from './items.js';
+import { initAudio, playMusic, playSound } from './audio.js';
 
 // Canvas and context
 let canvas: HTMLCanvasElement;
@@ -245,9 +246,11 @@ async function gameLoop(): Promise<void> {
         player.air--;
         if (player.air <= 0) {
           addMessage('You suffocated! Game over!', 'danger');
+          playSound('grunt');
           gameRunning = false;
         } else if (player.air <= 21 && player.air % 5 === 0) {
           addMessage('DANGER - LOW AIR SUPPLY!', 'danger');
+          playSound('alert');
         }
 
         // Recompute FOV
@@ -321,6 +324,10 @@ async function init(): Promise<void> {
 
   // Initialize input handling
   initInput();
+
+  // Initialize audio
+  initAudio();
+  playMusic('theme');
 
   // Initialize map (generates dungeon)
   initMap();
