@@ -1,0 +1,232 @@
+/* CryptRover Web - Styles */
+
+:root {
+  /* Curses-inspired color palette */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-red: #ff0000;
+  --color-green: #00ff00;
+  --color-blue: #0080ff;
+  --color-yellow: #ffff00;
+  --color-magenta: #ff00ff;
+  --color-cyan: #00ffff;
+  --color-gray: #808080;
+  --color-dark-gray: #404040;
+
+  /* Game-specific colors */
+  --color-fog: #404040;
+  --color-seen: #606060;
+  --color-floor: #808080;
+  --color-wall: #a0a0a0;
+  --color-player: #00ff00;
+  --color-enemy: #ff0000;
+  --color-hp: #00ff00;
+  --color-air: #0080ff;
+  --color-battery: #ff00ff;
+  --color-coin: #ffff00;
+  --color-level: #00ffff;
+  --color-blood: #800000;
+
+  /* UI colors */
+  --bg-color: #1a1a1a;
+  --panel-bg: #2a2a2a;
+  --text-color: #e0e0e0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Courier New', Courier, monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+#game-container {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+}
+
+#map {
+  background-color: var(--color-black);
+  border: 2px solid var(--color-gray);
+  image-rendering: pixelated;
+}
+
+#sidebar {
+  background-color: var(--panel-bg);
+  padding: 15px;
+  border: 2px solid var(--color-gray);
+  min-width: 200px;
+}
+
+#sidebar h1 {
+  color: var(--color-cyan);
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+#sidebar h2 {
+  color: var(--color-gray);
+  font-size: 1em;
+  margin: 15px 0 10px 0;
+  border-bottom: 1px solid var(--color-dark-gray);
+  padding-bottom: 5px;
+}
+
+#stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-label {
+  width: 60px;
+  color: var(--color-gray);
+}
+
+.stat-bar {
+  flex: 1;
+  height: 12px;
+  background-color: var(--color-dark-gray);
+  border: 1px solid var(--color-gray);
+}
+
+.bar-fill {
+  height: 100%;
+  transition: width 0.2s ease;
+}
+
+.bar-fill.hp { background-color: var(--color-hp); }
+.bar-fill.air { background-color: var(--color-air); }
+.bar-fill.battery { background-color: var(--color-battery); }
+
+.stat-value {
+  width: 60px;
+  text-align: right;
+  font-size: 0.9em;
+}
+
+.stat-value.coins { color: var(--color-coin); }
+.stat-value.level { color: var(--color-level); }
+
+#legend {
+  margin-top: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.glyph {
+  font-weight: bold;
+  width: 16px;
+  text-align: center;
+}
+
+.glyph.player { color: var(--color-player); }
+.glyph.enemy { color: var(--color-enemy); }
+.glyph.med { color: var(--color-hp); }
+.glyph.air { color: var(--color-air); }
+.glyph.battery { color: var(--color-battery); }
+.glyph.coin { color: var(--color-coin); }
+.glyph.stairs { color: var(--color-level); }
+
+#messages {
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 15px;
+  padding: 10px;
+  background-color: var(--panel-bg);
+  border: 2px solid var(--color-gray);
+  height: 100px;
+  overflow-y: auto;
+  font-size: 0.9em;
+}
+
+#messages .message {
+  padding: 2px 0;
+}
+
+#messages .message.warning { color: var(--color-yellow); }
+#messages .message.danger { color: var(--color-red); }
+#messages .message.success { color: var(--color-green); }
+#messages .message.info { color: var(--color-cyan); }
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: var(--panel-bg);
+  border: 2px solid var(--color-cyan);
+  padding: 30px;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content h2 {
+  color: var(--color-cyan);
+  margin-bottom: 15px;
+}
+
+.modal-content h3 {
+  color: var(--color-yellow);
+  margin: 15px 0 10px 0;
+}
+
+.modal-content ul {
+  margin-left: 20px;
+}
+
+.modal-content li {
+  margin: 5px 0;
+}
+
+.modal-content button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: var(--color-dark-gray);
+  color: var(--text-color);
+  border: 1px solid var(--color-gray);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.modal-content button:hover {
+  background-color: var(--color-gray);
+}

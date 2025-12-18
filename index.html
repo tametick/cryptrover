@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CryptRover</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="map" width="768" height="384"></canvas>
+    <section id="sidebar">
+      <h1>CryptRover</h1>
+      <div id="stats">
+        <div class="stat-row">
+          <span class="stat-label">HP:</span>
+          <div class="stat-bar">
+            <div id="hp-bar" class="bar-fill hp"></div>
+          </div>
+          <span id="hp-text" class="stat-value">18/18</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Air:</span>
+          <div class="stat-bar">
+            <div id="air-bar" class="bar-fill air"></div>
+          </div>
+          <span id="air-text" class="stat-value">105/105</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Battery:</span>
+          <div class="stat-bar">
+            <div id="battery-bar" class="bar-fill battery"></div>
+          </div>
+          <span id="battery-text" class="stat-value">180/180</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Gold:</span>
+          <span id="coins-text" class="stat-value coins">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Level:</span>
+          <span id="level-text" class="stat-value level">1/12</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Light:</span>
+          <span id="light-text" class="stat-value">ON</span>
+        </div>
+      </div>
+      <div id="legend">
+        <h2>Legend</h2>
+        <div class="legend-item"><span class="glyph player">@</span> You</div>
+        <div class="legend-item"><span class="glyph enemy">a</span> Arachnid</div>
+        <div class="legend-item"><span class="glyph med">+</span> Med Pack</div>
+        <div class="legend-item"><span class="glyph air">*</span> Air Can</div>
+        <div class="legend-item"><span class="glyph battery">!</span> Battery</div>
+        <div class="legend-item"><span class="glyph coin">$</span> Coin</div>
+        <div class="legend-item"><span class="glyph stairs">&lt;</span> Stairs Up</div>
+      </div>
+    </section>
+  </div>
+  <div id="messages"></div>
+
+  <div id="help-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>CryptRover - Help</h2>
+      <p>You are trapped in an underground crypt. Find the stairs to escape!</p>
+      <h3>Controls</h3>
+      <ul>
+        <li><strong>Movement:</strong> Arrow keys, WASD, HJKL (vi), or Numpad</li>
+        <li><strong>Wait:</strong> . or S or 5</li>
+        <li><strong>Toggle Light:</strong> F</li>
+        <li><strong>Use Stairs:</strong> &lt; or ,</li>
+        <li><strong>Help:</strong> ?</li>
+        <li><strong>Quit:</strong> Escape</li>
+      </ul>
+      <h3>Tips</h3>
+      <ul>
+        <li>Watch your air supply - you'll suffocate if it runs out!</li>
+        <li>Your flashlight drains battery. Toggle it off to conserve power.</li>
+        <li>Pick up items by walking over them.</li>
+        <li>Defeat all 12 levels to win!</li>
+      </ul>
+      <button id="help-close">Press any key to continue</button>
+    </div>
+  </div>
+
+  <script type="module" src="dist/main.js"></script>
+</body>
+</html>

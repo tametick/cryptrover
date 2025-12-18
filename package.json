@@ -1,0 +1,23 @@
+{
+  "name": "cryptrover-web",
+  "version": "1.0.0",
+  "description": "CryptRover - Terminal roguelike ported to TypeScript/browser",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "python3 -m http.server 8080",
+    "dev": "tsc && python3 -m http.server 8080",
+    "test": "tsc && node dist/tests/harness.js"
+  },
+  "keywords": [
+    "roguelike",
+    "game",
+    "typescript"
+  ],
+  "author": "Ido Yehieli",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

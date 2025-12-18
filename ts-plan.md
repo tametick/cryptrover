@@ -1,7 +1,7 @@
 # Web Port Plan (HTML/CSS/TypeScript)
 
 ## Implementation TODO
-- [ ] Set up HTML/CSS skeleton, tsconfig, strict build (no any), and static serve script.
+- [x] Set up HTML/CSS skeleton, tsconfig, strict build (no any), and static serve script.
 - [ ] Add minimal seedable test harness (`tests/harness.ts`, `npm test`).
 - [ ] Port utilities (`dist2`, `inRange`, `bresenham`, RNG) with tests if added.
 - [ ] Implement map generation and visualize rooms/paths on canvas grid.
