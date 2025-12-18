@@ -4,7 +4,7 @@
 
 Terminal roguelike. TypeScript/browser version in `src-ts/`, legacy C99 + ncurses version in `src/`.
 
-**Detailed documentation**: [code.md](code.md) (architecture), [game.md](game.md) (game design), [ts-plan.md](ts-plan.md) (web port).
+**Detailed documentation**: [code-ts.md](code-ts.md) (architecture), [game.md](game.md) (game design).
 
 ## Development
 
