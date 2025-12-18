@@ -2,6 +2,7 @@
 
 ## Implementation TODO
 - [ ] Set up HTML/CSS skeleton, tsconfig, strict build (no any), and static serve script.
+- [ ] Add minimal seedable test harness (`tests/harness.ts`, `npm test`).
 - [ ] Port utilities (`dist2`, `inRange`, `bresenham`, RNG) with tests if added.
 - [ ] Implement map generation and visualize rooms/paths on canvas grid.
 - [ ] Wire base rendering loop and key input normalization.
@@ -91,6 +92,18 @@ Goal: replicate CryptRover in browser with minimal dependencies (no frameworks).
 - Source layout mirrors C files in `src-ts/`.
 - Simple `npm` script: `tsc --watch` for dev; static file server (e.g., `python -m http.server`) for testing.
 - No `any` types; always declare concrete interfaces/enums/tuples so surfaces stay typed.
+
+## Pragmatic Test Harness (incremental)
+- Add `tests/harness.ts` (compiled to `dist/tests/harness.js`) with tiny `assert(cond, msg)` helper; run via `npm test` script `node dist/tests/harness.js`. Keep pure logic—no DOM/jsdom.
+- Use seeded RNG to make checks deterministic (`seed=1234` default, override via env/arg). Export `setSeed` from `utils.ts` to share seeding.
+- Stage the checks to match the implementation order:
+  1) Utils: validate `dist2`, `inRange`, and `bresenham` hits expected coordinates for a few pairs; assert `randInt` stays within bounds and is repeatable with the same seed.
+  2) Map: after `digLevel`, assert at least one stair, stair sits on a floor, and there is a path of floors from center to stair (simple flood-fill on `tileM`).
+  3) Entities: after `initEnts`, assert player on floor, no overlapping `entM` entries, and enemy count matches config; `moveTo` blocks walls and swaps occupancy correctly when combat resolves death.
+  4) Items: after `initItems`, assert no overlaps with entities/stairs, counts per type match expectations, and `useItem` flips `used` and clears `itemM`.
+  5) FOV/LOS: seed a small synthetic map to assert that `fov` only marks tiles within `FOV_RADIUS` and respects walls by comparing two known layouts.
+- Keep harness fast (<1s) and runnable after each milestone; fail fast with terse messages. Prefer a couple of representative cases over exhaustive suites.
+- For rendering/input, rely on manual smoke runs (canvas + keyboard) but keep a saved harness seed to reproduce logic regressions before debugging UI.
 
 ## Testing/Verification
 - Manual smoke tests: movement, FOV reveal, combat resolution, item pickup, level transitions, loss conditions (HP/air/battery).
