@@ -1,29 +1,27 @@
 // CryptRover Web - Main entry point
 
 import {
-  X_, Y_, CELL_SIZE, Colors, WALL, FLOOR, NEXT_LEVEL,
-  PLAYER_HP, PLAYER_AIR, PLAYER_BATTERY, LAST_LEVEL
+  X_, Y_, CELL_SIZE, Colors, WALL, NEXT_LEVEL, SEEN, IN_SIGHT,
+  PLAYER_HP, PLAYER_AIR, PLAYER_BATTERY, LAST_LEVEL, ENTS_, FOV_RADIUS, CORPSE
 } from './constants.js';
-import { initMap, tileM } from './map.js';
+import { initMap, tileM, tileColorM, viewM } from './map.js';
 import { initRng } from './utils.js';
 import {
   initInput, waitForInput, showHelp,
   updateHUD, addMessage, type InputAction
 } from './io.js';
+import {
+  initEnts, getPlayer, entL, moveTo, moveAllEnemies,
+  isPlayerAlive, fov
+} from './entities.js';
 
 // Canvas and context
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 
-// Game state (temporary - will be moved to entities module)
-let playerY = 12;
-let playerX = 24;
-let playerHp = PLAYER_HP;
-let playerAir = PLAYER_AIR;
-let playerBattery = PLAYER_BATTERY;
-let playerCoins = 0;
-let playerLightOn = true;
+// Game state
 let level = 1;
+let turn = 0;
 let gameRunning = true;
 
 // Initialize canvas
@@ -45,113 +43,117 @@ function initCanvas(): void {
   ctx.textBaseline = 'top';
 }
 
-// Find a walkable starting position
-function findStartPosition(): { y: number; x: number } {
-  // Start from center and search outward
-  const centerY = Math.floor(Y_ / 2);
-  const centerX = Math.floor(X_ / 2);
-
-  for (let r = 0; r < Math.max(Y_, X_); r++) {
-    for (let dy = -r; dy <= r; dy++) {
-      for (let dx = -r; dx <= r; dx++) {
-        const y = centerY + dy;
-        const x = centerX + dx;
-        if (y >= 0 && y < Y_ && x >= 0 && x < X_) {
-          const type = tileM[y][x].type;
-          if (type === FLOOR) {
-            return { y, x };
-          }
-        }
-      }
-    }
-  }
-  return { y: centerY, x: centerX };
-}
-
-// Draw the map grid
+// Draw the map grid with FOV
 export function drawScreen(): void {
   // Clear canvas
   ctx.fillStyle = Colors.black;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw each tile
+  // Draw map tiles based on visibility
   for (let y = 0; y < Y_; y++) {
     for (let x = 0; x < X_; x++) {
       const tile = tileM[y][x];
       const glyph = tile.type;
       const px = x * CELL_SIZE;
       const py = y * CELL_SIZE;
+      const visibility = viewM[y][x];
 
-      // Choose color based on tile type
-      let color = Colors.darkGray;
-      if (glyph === FLOOR) {
-        color = Colors.floor;
-      } else if (glyph === WALL) {
-        color = Colors.wall;
-      } else if (glyph === NEXT_LEVEL) {
-        color = Colors.stairs;
+      if (visibility === IN_SIGHT) {
+        // Fully visible - use tile color or blood tint
+        let color = Colors.floor;
+        if (glyph === WALL) {
+          color = Colors.wall;
+        } else if (glyph === NEXT_LEVEL) {
+          color = Colors.stairs;
+        } else if (tileColorM[y][x] === Colors.blood) {
+          color = Colors.blood;
+        }
+        ctx.fillStyle = color;
+        ctx.fillText(glyph, px + 2, py + 1);
+      } else if (visibility === SEEN) {
+        // Previously seen - fog of war
+        ctx.fillStyle = Colors.fog;
+        ctx.fillText(glyph, px + 2, py + 1);
       }
-
-      ctx.fillStyle = color;
-      ctx.fillText(glyph, px + 2, py + 1);
+      // UNSEEN tiles are not drawn (black)
     }
   }
 
-  // Draw player
-  const px = playerX * CELL_SIZE;
-  const py = playerY * CELL_SIZE;
-  ctx.fillStyle = Colors.player;
-  ctx.fillText('@', px + 2, py + 1);
+  // Draw corpses
+  for (let e = 0; e < ENTS_; e++) {
+    const ent = entL[e];
+    if (!ent.alive && tileM[ent.y][ent.x].type !== NEXT_LEVEL) {
+      const px = ent.x * CELL_SIZE;
+      const py = ent.y * CELL_SIZE;
+      const visibility = viewM[ent.y][ent.x];
+      if (visibility === IN_SIGHT) {
+        ctx.fillStyle = ent.color;
+        ctx.fillText(CORPSE, px + 2, py + 1);
+      } else if (visibility === SEEN) {
+        ctx.fillStyle = Colors.fog;
+        ctx.fillText(CORPSE, px + 2, py + 1);
+      }
+    }
+  }
+
+  // Draw living entities (only if visible)
+  for (let e = 0; e < ENTS_; e++) {
+    const ent = entL[e];
+    if (ent.alive && viewM[ent.y][ent.x] === IN_SIGHT) {
+      const px = ent.x * CELL_SIZE;
+      const py = ent.y * CELL_SIZE;
+      ctx.fillStyle = ent.color;
+      ctx.fillText(ent.glyph, px + 2, py + 1);
+    }
+  }
+}
+
+// Decay FOV from IN_SIGHT to SEEN
+function decayFov(): void {
+  for (let y = 0; y < Y_; y++) {
+    for (let x = 0; x < X_; x++) {
+      if (viewM[y][x] === IN_SIGHT) {
+        viewM[y][x] = SEEN;
+      }
+    }
+  }
 }
 
 // Update HUD with current stats
 function refreshHUD(): void {
+  const player = getPlayer();
   updateHUD({
-    hp: playerHp,
+    hp: player.hp,
     maxHp: PLAYER_HP,
-    air: playerAir,
+    air: player.air,
     maxAir: PLAYER_AIR,
-    battery: playerBattery,
+    battery: player.battery,
     maxBattery: PLAYER_BATTERY,
-    coins: playerCoins,
+    coins: player.coins,
     level: level,
     maxLevel: LAST_LEVEL,
-    lightOn: playerLightOn,
+    lightOn: player.lightOn,
   });
-}
-
-// Check if a position is walkable
-function canMoveTo(y: number, x: number): boolean {
-  if (y < 0 || y >= Y_ || x < 0 || x >= X_) {
-    return false;
-  }
-  const type = tileM[y][x].type;
-  return type === FLOOR || type === NEXT_LEVEL;
 }
 
 // Process player action
 function processAction(action: InputAction): boolean {
+  const player = getPlayer();
+
   switch (action.type) {
     case 'move': {
-      const newY = playerY + action.dy;
-      const newX = playerX + action.dx;
-      if (canMoveTo(newY, newX)) {
-        playerY = newY;
-        playerX = newX;
-        return true;
-      }
-      return false;
+      return moveTo(player, action.dy, action.dx);
     }
     case 'wait':
       return true;
 
     case 'toggleLight':
-      playerLightOn = !playerLightOn;
-      addMessage(`Flashlight ${playerLightOn ? 'ON' : 'OFF'}`, 'info');
+      player.lightOn = !player.lightOn;
+      addMessage(`Flashlight ${player.lightOn ? 'ON' : 'OFF'}`, 'info');
       return true;
 
     case 'useStairs':
-      if (tileM[playerY][playerX].type === NEXT_LEVEL) {
+      if (tileM[player.y][player.x].type === NEXT_LEVEL) {
         level++;
         if (level > LAST_LEVEL) {
           addMessage('You escaped the crypt! YOU WON!', 'success');
@@ -160,9 +162,8 @@ function processAction(action: InputAction): boolean {
         }
         addMessage(`Descending to level ${level}...`, 'info');
         initMap();
-        const start = findStartPosition();
-        playerY = start.y;
-        playerX = start.x;
+        initEnts(level);
+        fov(player.y, player.x, FOV_RADIUS);
         return true;
       }
       addMessage('No stairs here.', 'warning');
@@ -184,6 +185,8 @@ function processAction(action: InputAction): boolean {
 
 // Main game loop
 async function gameLoop(): Promise<void> {
+  const player = getPlayer();
+
   while (gameRunning) {
     // Wait for player input
     const action = await waitForInput();
@@ -192,19 +195,36 @@ async function gameLoop(): Promise<void> {
     const turnTaken = processAction(action);
 
     if (turnTaken && gameRunning) {
+      turn++;
+
+      // Enemy phase
+      moveAllEnemies(turn);
+
+      // Check if player died from enemy attack
+      if (!isPlayerAlive()) {
+        addMessage('You died! Game over!', 'danger');
+        gameRunning = false;
+      }
+
+      // Decay FOV
+      decayFov();
+
       // Drain battery if light is on
-      if (playerLightOn && playerBattery > 0) {
-        playerBattery--;
+      if (player.lightOn && player.battery > 0) {
+        player.battery--;
       }
 
       // Drain air
-      playerAir--;
-      if (playerAir <= 0) {
+      player.air--;
+      if (player.air <= 0) {
         addMessage('You suffocated! Game over!', 'danger');
         gameRunning = false;
-      } else if (playerAir <= 21 && playerAir % 5 === 0) {
+      } else if (player.air <= 21 && player.air % 5 === 0) {
         addMessage('DANGER - LOW AIR SUPPLY!', 'danger');
       }
+
+      // Recompute FOV
+      fov(player.y, player.x, FOV_RADIUS);
     }
 
     // Redraw
@@ -212,7 +232,7 @@ async function gameLoop(): Promise<void> {
     refreshHUD();
   }
 
-  addMessage('Press any key to restart...', 'info');
+  addMessage('Press F5 to restart...', 'info');
 }
 
 // Main initialization
@@ -232,10 +252,12 @@ async function init(): Promise<void> {
   // Initialize map (generates dungeon)
   initMap();
 
-  // Find starting position
-  const start = findStartPosition();
-  playerY = start.y;
-  playerX = start.x;
+  // Initialize entities
+  initEnts(level);
+
+  // Initial FOV
+  const player = getPlayer();
+  fov(player.y, player.x, FOV_RADIUS);
 
   // Initial draw
   drawScreen();

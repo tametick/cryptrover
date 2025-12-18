@@ -54,7 +54,8 @@ export function suite(name: string, fn: () => void): void {
 // Import utilities for testing
 import { setSeed, randInt, dist2, inRange, bresenham, min, max, clamp } from '../utils.js';
 import { initMap, tileM, isWalkable } from '../map.js';
-import { Y_, X_, FLOOR, WALL, NEXT_LEVEL } from '../constants.js';
+import { Y_, X_, FLOOR, WALL, NEXT_LEVEL, ENTS_, PLAYER, ARACHNID } from '../constants.js';
+import { initEnts, entL, entM, getPlayer } from '../entities.js';
 
 // Run all tests
 function runTests(): void {
@@ -218,6 +219,48 @@ function runTests(): void {
 
     const stairReachable = visited.has(`${stairY},${stairX}`);
     assert(stairReachable, 'stair is reachable from center via flood fill');
+  });
+
+  // Entity tests
+  suite('Entities: Initialization', () => {
+    // Map and entities already initialized from map tests above
+    initEnts(1);
+
+    assertEqual(entL.length, ENTS_, `entity list has ${ENTS_} entities`);
+
+    const player = getPlayer();
+    assertEqual(player.id, 0, 'player is at index 0');
+    assertEqual(player.glyph, PLAYER, 'player glyph is @');
+    assert(player.hp > 0, `player has HP: ${player.hp}`);
+    assert(player.air > 0, `player has air: ${player.air}`);
+    assert(player.battery > 0, `player has battery: ${player.battery}`);
+
+    // Check player is on a floor tile
+    assert(
+      tileM[player.y][player.x].type === FLOOR ||
+      tileM[player.y][player.x].type === NEXT_LEVEL,
+      `player is on walkable tile at (${player.y},${player.x})`
+    );
+
+    // Count enemies
+    let enemyCount = 0;
+    for (let e = 1; e < ENTS_; e++) {
+      if (entL[e].glyph === ARACHNID) {
+        enemyCount++;
+      }
+    }
+    assertEqual(enemyCount, ENTS_ - 1, `${ENTS_ - 1} enemies spawned`);
+
+    // Check no overlapping entities in entM
+    let occupiedCount = 0;
+    for (let y = 0; y < Y_; y++) {
+      for (let x = 0; x < X_; x++) {
+        if (entM[y][x] !== null) {
+          occupiedCount++;
+        }
+      }
+    }
+    assertEqual(occupiedCount, ENTS_, 'occupancy map has correct entity count');
   });
 
   // Print summary

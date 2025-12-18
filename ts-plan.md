@@ -6,9 +6,9 @@
 - [x] Port utilities (`dist2`, `inRange`, `bresenham`, RNG) with tests if added.
 - [x] Implement map generation and visualize rooms/paths on canvas grid.
 - [x] Wire base rendering loop and key input normalization.
-- [ ] Port entity init, player movement, wall collision, and occupancy map.
-- [ ] Implement FOV/LOS and fog rendering.
-- [ ] Add enemy AI, speed gate, combat, blood tinting.
+- [x] Port entity init, player movement, wall collision, and occupancy map.
+- [x] Implement FOV/LOS and fog rendering.
+- [x] Add enemy AI, speed gate, combat, blood tinting.
 - [ ] Add item spawn/use with placement map.
 - [ ] Build HUD, message log, end-game flow.
 - [ ] Add help modal, quit/win handling, and audio stubs.
