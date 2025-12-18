@@ -2,7 +2,7 @@
 
 ## Implementation TODO
 - [x] Set up HTML/CSS skeleton, tsconfig, strict build (no any), and static serve script.
-- [ ] Add minimal seedable test harness (`tests/harness.ts`, `npm test`).
+- [x] Add minimal seedable test harness (`tests/harness.ts`, `npm test`).
 - [ ] Port utilities (`dist2`, `inRange`, `bresenham`, RNG) with tests if added.
 - [ ] Implement map generation and visualize rooms/paths on canvas grid.
 - [ ] Wire base rendering loop and key input normalization.
