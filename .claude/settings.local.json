@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(npm test:*)",
+    ],
+    "deny": [
+      "Read(./node_modules/**)",
+      "Read(./dist/**)",
+      "Read(./build/**)",
+      "Read(./.next/**)",
+      "Read(./venv/**)",
+      "Read(./.git/**)",
+      "Read(./**/*.lock)",
+      "Read(./**/*.png)",
+      "Read(./**/*.zip)"
+    ]
+  }
+}

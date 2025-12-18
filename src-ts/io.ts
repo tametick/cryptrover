@@ -94,6 +94,13 @@ function handleKeyDown(e: KeyboardEvent): void {
     return;
   }
 
+  // Game over modal: any key triggers restart
+  if (gameOverModalVisible) {
+    hideGameOver();
+    e.preventDefault();
+    return;
+  }
+
   const code = getKeyCode(e);
   const action = keyMap[code];
 
@@ -136,6 +143,62 @@ export function hideHelp(): void {
 
 export function isHelpVisible(): boolean {
   return helpModalVisible;
+}
+
+// Game Over modal functions
+let gameOverModalVisible = false;
+let gameOverResolve: (() => void) | null = null;
+
+export function showGameOver(won: boolean, stats: {
+  gold: number;
+  level: number;
+  hp: number;
+  maxHp: number;
+  air: number;
+  maxAir: number;
+  battery: number;
+  maxBattery: number;
+}): Promise<void> {
+  return new Promise((resolve) => {
+    const modal = document.getElementById('gameover-modal');
+    const title = document.getElementById('gameover-title');
+    const goldEl = document.getElementById('go-gold');
+    const levelEl = document.getElementById('go-level');
+    const hpEl = document.getElementById('go-hp');
+    const airEl = document.getElementById('go-air');
+    const batteryEl = document.getElementById('go-battery');
+
+    if (modal && title) {
+      title.textContent = won ? 'YOU HAVE WON! :)' : 'YOU HAVE LOST! :(';
+      title.className = won ? 'win' : 'lose';
+
+      if (goldEl) goldEl.textContent = String(stats.gold);
+      if (levelEl) levelEl.textContent = String(stats.level);
+      if (hpEl) hpEl.textContent = `${Math.floor(100 * stats.hp / stats.maxHp)}%`;
+      if (airEl) airEl.textContent = `${Math.floor(100 * stats.air / stats.maxAir)}%`;
+      if (batteryEl) batteryEl.textContent = `${Math.floor(100 * stats.battery / stats.maxBattery)}%`;
+
+      modal.classList.remove('hidden');
+      gameOverModalVisible = true;
+      gameOverResolve = resolve;
+    }
+  });
+}
+
+export function hideGameOver(): void {
+  const modal = document.getElementById('gameover-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+    gameOverModalVisible = false;
+    if (gameOverResolve) {
+      gameOverResolve();
+      gameOverResolve = null;
+    }
+  }
+}
+
+export function isGameOverVisible(): boolean {
+  return gameOverModalVisible;
 }
 
 // Message log

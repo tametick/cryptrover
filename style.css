@@ -230,3 +230,47 @@ body {
 .modal-content button:hover {
   background-color: var(--color-gray);
 }
+
+/* Game Over modal specific styles */
+.modal-content.gameover {
+  text-align: center;
+  min-width: 300px;
+}
+
+.modal-content.gameover h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.modal-content.gameover h2.win {
+  color: var(--color-green);
+}
+
+.modal-content.gameover h2.lose {
+  color: var(--color-red);
+}
+
+#gameover-stats {
+  margin: 20px 0;
+  text-align: left;
+}
+
+#gameover-stats .stat-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--color-dark-gray);
+}
+
+#gameover-stats .stat-line:last-child {
+  border-bottom: none;
+}
+
+#gameover-stats span:first-child {
+  color: var(--color-gray);
+}
+
+#gameover-stats span:last-child {
+  color: var(--color-yellow);
+  font-weight: bold;
+}

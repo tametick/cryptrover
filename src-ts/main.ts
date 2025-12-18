@@ -8,7 +8,8 @@ import { initMap, tileM, tileColorM, viewM } from './map.js';
 import { initRng } from './utils.js';
 import {
   initInput, waitForInput, showHelp,
-  updateHUD, addMessage, type InputAction
+  updateHUD, addMessage, clearMessages, showGameOver,
+  type InputAction
 } from './io.js';
 import {
   initEnts, getPlayer, entL, moveTo, moveAllEnemies,
@@ -24,6 +25,7 @@ let ctx: CanvasRenderingContext2D;
 let level = 1;
 let turn = 0;
 let gameRunning = true;
+let playerWon = false;
 
 // Initialize canvas
 function initCanvas(): void {
@@ -174,6 +176,7 @@ function processAction(action: InputAction): boolean {
         level++;
         if (level > LAST_LEVEL) {
           addMessage('You escaped the crypt! YOU WON!', 'success');
+          playerWon = true;
           gameRunning = false;
           return true;
         }
@@ -201,59 +204,108 @@ function processAction(action: InputAction): boolean {
   }
 }
 
-// Main game loop
+// Main game loop - runs continuously, handles restarts internally
 async function gameLoop(): Promise<void> {
-  const player = getPlayer();
+  // Outer loop for restarts
+  while (true) {
+    let player = getPlayer();
 
-  while (gameRunning) {
-    // Wait for player input
-    const action = await waitForInput();
+    // Inner loop for single game session
+    while (gameRunning) {
+      // Wait for player input
+      const action = await waitForInput();
 
-    // Process action (returns true if turn was consumed)
-    const turnTaken = processAction(action);
+      // Process action (returns true if turn was consumed)
+      const turnTaken = processAction(action);
 
-    if (turnTaken && gameRunning) {
-      turn++;
+      if (turnTaken && gameRunning) {
+        turn++;
 
-      // Use item if player is standing on one
-      useItem(player);
+        // Use item if player is standing on one
+        useItem(player);
 
-      // Enemy phase
-      moveAllEnemies(turn);
+        // Enemy phase
+        moveAllEnemies(turn);
 
-      // Check if player died from enemy attack
-      if (!isPlayerAlive()) {
-        addMessage('You died! Game over!', 'danger');
-        gameRunning = false;
+        // Check if player died from enemy attack
+        if (!isPlayerAlive()) {
+          addMessage('You died! Game over!', 'danger');
+          gameRunning = false;
+        }
+
+        // Decay FOV
+        decayFov();
+
+        // Drain battery if light is on
+        if (player.lightOn && player.battery > 0) {
+          player.battery--;
+        }
+
+        // Drain air
+        player.air--;
+        if (player.air <= 0) {
+          addMessage('You suffocated! Game over!', 'danger');
+          gameRunning = false;
+        } else if (player.air <= 21 && player.air % 5 === 0) {
+          addMessage('DANGER - LOW AIR SUPPLY!', 'danger');
+        }
+
+        // Recompute FOV
+        fov(player.y, player.x, FOV_RADIUS);
       }
 
-      // Decay FOV
-      decayFov();
-
-      // Drain battery if light is on
-      if (player.lightOn && player.battery > 0) {
-        player.battery--;
-      }
-
-      // Drain air
-      player.air--;
-      if (player.air <= 0) {
-        addMessage('You suffocated! Game over!', 'danger');
-        gameRunning = false;
-      } else if (player.air <= 21 && player.air % 5 === 0) {
-        addMessage('DANGER - LOW AIR SUPPLY!', 'danger');
-      }
-
-      // Recompute FOV
-      fov(player.y, player.x, FOV_RADIUS);
+      // Redraw
+      drawScreen();
+      refreshHUD();
     }
 
-    // Redraw
-    drawScreen();
-    refreshHUD();
-  }
+    // Show game over modal with stats
+    await showGameOver(playerWon, {
+      gold: player.coins,
+      level: level,
+      hp: Math.max(0, player.hp),
+      maxHp: PLAYER_HP,
+      air: Math.max(0, player.air),
+      maxAir: PLAYER_AIR,
+      battery: Math.max(0, player.battery),
+      maxBattery: PLAYER_BATTERY,
+    });
 
-  addMessage('Press F5 to restart...', 'info');
+    // Reset game state for restart
+    resetGameState();
+    player = getPlayer();
+  }
+}
+
+// Reset game state for restart
+function resetGameState(): void {
+  level = 1;
+  turn = 0;
+  gameRunning = true;
+  playerWon = false;
+
+  // Clear entity list so initEnts creates fresh entities
+  entL.length = 0;
+
+  // Clear messages
+  clearMessages();
+
+  // Reinitialize everything
+  const seed = initRng();
+  console.log(`Restarting with seed: ${seed}`);
+
+  initMap();
+  initEnts(level);
+  initItems();
+
+  const player = getPlayer();
+  fov(player.y, player.x, FOV_RADIUS);
+
+  drawScreen();
+  refreshHUD();
+
+  addMessage('Welcome to CryptRover! Find the stairs to escape.', 'info');
+  addMessage('Press ? for help.', 'info');
 }
 
 // Main initialization
